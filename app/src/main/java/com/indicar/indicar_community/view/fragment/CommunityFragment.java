@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.utils.BoardListAdapter;
 import com.indicar.indicar_community.view.activity.BoardWriteActivity;
+import com.indicar.indicar_community.view.activity.BoardWriteFilterActivity;
 import com.indicar.indicar_community.vo.BoardVO;
 
 import java.util.ArrayList;
@@ -61,12 +62,11 @@ public class CommunityFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         ImageView iv_write_board = view.findViewById(R.id.iv_write_board);
-
         iv_write_board.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    Intent intent = new Intent(context, BoardWriteActivity.class);
+                    Intent intent = new Intent(context, BoardWriteFilterActivity.class);
                     context.startActivity(intent);
                 }
                 return true;

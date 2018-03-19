@@ -1,7 +1,11 @@
 package com.indicar.indicar_community.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +18,10 @@ import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.view.activity.AddPhotoActivity;
 import com.indicar.indicar_community.vo.BoardWriteVO;
 
+import java.io.File;
 import java.util.ArrayList;
+
+import static com.indicar.indicar_community.utils.Constants.*;
 
 /**
  * Created by yeseul on 2018-02-26.
@@ -64,8 +71,22 @@ public class BoardWriteAdapter extends RecyclerView.Adapter<BoardWriteAdapter.Vi
             iv_from_album.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(context, AddPhotoActivity.class);
-                    context.startActivity(intent);
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    ((Activity) context).startActivityForResult(intent, PICK_FROM_ALBUM);
+                }
+            });
+            iv_from_camera.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                    String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
+                    Uri mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
+                    ((Activity) context).startActivityForResult(intent, PICK_FROM_CAMERA);
                 }
             });
         }

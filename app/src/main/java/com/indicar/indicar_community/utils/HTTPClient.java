@@ -12,16 +12,16 @@ public class HTTPClient {
     private static final String BASE_URL = "http://13.125.28.35:9080";
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static AsyncHttpClient getInstance(){
-        return HTTPClient.client;
+    private HTTPClient(){
+
     }
 
     public static void get(String url, RequestParams params, AsyncHttpResponseHandler responseHandler){
-        client.get(url, params, responseHandler);
+        client.get(getAbsoluteURL(url), params, responseHandler);
     }
 
     public static void post(String url, RequestParams params, AsyncHttpResponseHandler responseHandler){
-        client.post(url, params, responseHandler);
+        client.post(getAbsoluteURL(url), params, responseHandler);
     }
 
     private static String getAbsoluteURL(String url){
