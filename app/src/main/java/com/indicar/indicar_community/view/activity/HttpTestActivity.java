@@ -185,6 +185,7 @@ public class HttpTestActivity extends AppCompatActivity {
                         });
                         break;
                     case 5:
+
                         LinearLayout linear = findViewById(R.id.linear);
                         final ImageView[] imageViews = new ImageView[len];
                         for(int j = 0 ; j < len ; j++){
