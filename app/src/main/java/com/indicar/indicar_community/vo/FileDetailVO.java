@@ -1,10 +1,13 @@
 package com.indicar.indicar_community.vo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by yeseul on 2018-03-26.
  */
 
-public class FileDetailVO {
+public class FileDetailVO implements Parcelable{
     private String _id;
     private String atch_file_id;
     private int file_sn;
@@ -16,6 +19,35 @@ public class FileDetailVO {
     private int file_size;
     private int __v;
     private String fileStoreUri;
+
+    public FileDetailVO() {
+    }
+
+    protected FileDetailVO(Parcel in) {
+        _id = in.readString();
+        atch_file_id = in.readString();
+        file_sn = in.readInt();
+        file_stre_cours = in.readString();
+        stre_file_nm = in.readString();
+        orignl_file_nm = in.readString();
+        file_extsn = in.readString();
+        file_cn = in.readString();
+        file_size = in.readInt();
+        __v = in.readInt();
+        fileStoreUri = in.readString();
+    }
+
+    public static final Creator<FileDetailVO> CREATOR = new Creator<FileDetailVO>() {
+        @Override
+        public FileDetailVO createFromParcel(Parcel in) {
+            return new FileDetailVO(in);
+        }
+
+        @Override
+        public FileDetailVO[] newArray(int size) {
+            return new FileDetailVO[size];
+        }
+    };
 
     @Override
     public String toString() {
@@ -119,5 +151,25 @@ public class FileDetailVO {
 
     public void set__v(int __v) {
         this.__v = __v;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(_id);
+        parcel.writeString(atch_file_id);
+        parcel.writeInt(file_sn);
+        parcel.writeString(file_stre_cours);
+        parcel.writeString(stre_file_nm);
+        parcel.writeString(orignl_file_nm);
+        parcel.writeString(file_extsn);
+        parcel.writeString(file_cn);
+        parcel.writeInt(file_size);
+        parcel.writeInt(__v);
+        parcel.writeString(fileStoreUri);
     }
 }

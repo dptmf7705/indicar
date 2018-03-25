@@ -33,6 +33,7 @@ public class NormalBoardFragment extends Fragment {
     private RecyclerView recyclerView;
     private BoardListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private ArrayList<BbsVO> bbsVoList;
 
     public NormalBoardFragment() {
         // Required empty public constructor
@@ -65,7 +66,7 @@ public class NormalBoardFragment extends Fragment {
             @Override
             public void onSuccess(int index, Header[] headers, byte[] bytes) {
                 String result = new String(bytes);
-                ArrayList<BbsVO> list = new ArrayList<>();
+                bbsVoList = new ArrayList<>();
                 try {
                     JSONArray array = new JSONArray(result);
 
@@ -84,16 +85,16 @@ public class NormalBoardFragment extends Fragment {
                         vo.setLike(json.getInt("like"));
                         vo.setNtt_id(json.getString("ntt_id"));
                         vo.set__v(json.getInt("__v"));
-                        list.add(vo);
+                        bbsVoList.add(vo);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-                setTextView(list);
+                setTextView(bbsVoList);
 
-                for(int i = 0 ; i < list.size() ; i++) {
-                    selectFileInfs(i, list.get(i).getAtch_file_id());
+                for(int i = 0 ; i < bbsVoList.size() ; i++) {
+                    selectFileInfs(i, bbsVoList.get(i).getAtch_file_id());
                 }
 
             }
@@ -146,6 +147,7 @@ public class NormalBoardFragment extends Fragment {
                 }
 
                 adapter.addFileList(index, list);
+                bbsVoList.get(index).setFileList(list);
             }
 
             @Override

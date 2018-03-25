@@ -40,7 +40,7 @@ public class BoardListAdapter extends RecyclerView.Adapter<BoardListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        BbsVO item = items.get(position);
+        final BbsVO item = items.get(position);
         Bitmap bitmap = bitmaps[position];
         if(bitmap != null) {
             holder.iv_board_img.setImageBitmap(bitmap);
@@ -53,9 +53,16 @@ public class BoardListAdapter extends RecyclerView.Adapter<BoardListAdapter.View
 //        holder.tv_comment.setText(""+item.getComment());
         holder.tv_comment.setText("0");
         holder.tv_like.setText(""+item.getLike());
-//        holder.view.setTag(0, item.getNtt_id());
-//        holder.view.setTag(1, item.getBbs_id());
-//        holder.view.setOnClickListener(this);
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, BoardDetailActivity.class);
+                intent.putExtra("ntt_id", item.getNtt_id());
+                intent.putExtra("bbs_id", item.getBbs_id());
+                intent.putParcelableArrayListExtra("files", item.getFileList());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -66,15 +73,6 @@ public class BoardListAdapter extends RecyclerView.Adapter<BoardListAdapter.View
             return 0;
         }
     }
-/*
-    @Override
-    public void onClick(View view) {
-        Intent intent = new Intent(context, BoardWriteActivity.class);
-        intent.putExtra("ntt_id", view.getTag(0).toString());
-        intent.putExtra("bbs_id", view.getTag(1).toString());
-
-        context.startActivity(intent);
-    }*/
 
     public class ViewHolder extends  RecyclerView.ViewHolder{
         public ImageView iv_board_img;
