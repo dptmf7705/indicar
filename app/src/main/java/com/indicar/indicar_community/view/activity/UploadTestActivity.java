@@ -32,7 +32,6 @@ public class UploadTestActivity extends AppCompatActivity {
     String inputText;
     Uri uri;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

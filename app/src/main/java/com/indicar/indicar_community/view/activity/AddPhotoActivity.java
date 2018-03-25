@@ -13,22 +13,11 @@ import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.utils.ActionbarManager;
 import com.indicar.indicar_community.view.fragment.AlbumFragment;
 import com.indicar.indicar_community.view.fragment.AllPhotosFragment;
-import com.indicar.indicar_community.view.fragment.CommunityFragment;
-import com.indicar.indicar_community.view.fragment.ProfileFragment;
-import com.indicar.indicar_community.view.fragment.StoreFragment;
-import com.indicar.indicar_community.view.fragment.TunningFragment;
 
 import static com.indicar.indicar_community.utils.Constants.ALBUM;
 import static com.indicar.indicar_community.utils.Constants.ALL_PHOTO;
 import static com.indicar.indicar_community.utils.Constants.AV_ADD_PHOTO;
-import static com.indicar.indicar_community.utils.Constants.COMMUNITY;
-import static com.indicar.indicar_community.utils.Constants.LAYOUT_MAIN_TAB_BUTTONS;
 import static com.indicar.indicar_community.utils.Constants.NUM_OF_ADD_PHOTO_OPTION_BUTTONS;
-import static com.indicar.indicar_community.utils.Constants.NUM_OF_BOARD_BUTTONS;
-import static com.indicar.indicar_community.utils.Constants.NUM_OF_MAIN_TAB_BUTTONS;
-import static com.indicar.indicar_community.utils.Constants.PROFILE;
-import static com.indicar.indicar_community.utils.Constants.STORE;
-import static com.indicar.indicar_community.utils.Constants.TUNING;
 
 public class AddPhotoActivity extends AppCompatActivity {
     private final int IMG_ALL_PHOTOS_CLICKED = R.drawable.all_photos_clicked;

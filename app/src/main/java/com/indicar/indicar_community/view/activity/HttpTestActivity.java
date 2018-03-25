@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.utils.HTTPClient;
+import com.indicar.indicar_community.vo.BbsVO;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.BinaryHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -26,6 +27,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -40,6 +43,7 @@ public class HttpTestActivity extends AppCompatActivity {
     StringBuffer[] files;
     FileOutputStream outputStream;
     File file = new File("/download/img.jpg");
+    List<BbsVO> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +56,7 @@ public class HttpTestActivity extends AppCompatActivity {
             public void onClick(View view) {
                 switch (cnt){
                     case 0:
-                        HTTPClient.get("/selectBoardList", null, new AsyncHttpResponseHandler() {
+                        /*HTTPClient.get("/selectBoardList", null, new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                                 String result = new String(bytes);
@@ -72,7 +76,9 @@ public class HttpTestActivity extends AppCompatActivity {
                             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
 
                             }
-                        });
+                        });*/
+                        bbs_id = "market";
+                        cnt++;
                         break;
                     case 1:
                         RequestParams params = new RequestParams();
@@ -80,13 +86,30 @@ public class HttpTestActivity extends AppCompatActivity {
                         params.put("searchCnd", "");
                         HTTPClient.post("/selectBoardArticles", params, new AsyncHttpResponseHandler() {
                             @Override
-                            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+                            public void onSuccess(int index, Header[] headers, byte[] bytes) {
                                 String result = new String(bytes);
                                 try {
                                     JSONArray array = new JSONArray(result);
-                                    JSONObject json = array.getJSONObject(0);
-                                    textView.setText(json.toString());
-                                    ntt_id = json.getString("ntt_id");
+
+                                    for(int i = 0 ; i < array.length() ; i++) {
+                                        BbsVO vo = new BbsVO();
+                                        JSONObject json = array.getJSONObject(0);
+                                        vo.set_id(json.getString("_id"));
+                                        vo.setBbs_id(json.getString("bbs_id"));
+                                        vo.setNtt_sj(json.getString("ntt_sj"));
+                                        vo.setNtt_cn(json.getString("ntt_cn"));
+                                        vo.setNtcr_nm(json.getString("ntcr_nm"));
+                                        vo.setAtch_file_id(json.getString("atch_file_id"));
+                                        vo.setFrst_time(json.getString("frst_time"));
+                                        vo.setLast_updt_time(json.getString("last_updt_time"));
+                                        vo.setRdcnt(json.getInt("rdcnt"));
+                                        vo.setLike(json.getInt("like"));
+                                        vo.setNtt_id(json.getString("ntt_id"));
+                                        vo.set__v(json.getInt("__v"));
+
+                                        textView.append(vo.toString() + "\n");
+                                        list.add(vo);
+                                    }
                                     btn.setText(ntt_id);
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -102,17 +125,30 @@ public class HttpTestActivity extends AppCompatActivity {
                         break;
                     case 2:
                         RequestParams params2 = new RequestParams();
-                        params2.put("ntt_id", ntt_id);
+                        params2.put("ntt_id", list.get(1).getNtt_id());
                         params2.put("bbs_id", bbs_id);
                         HTTPClient.post("/selectBoardArticle", params2, new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                                 String result = new String(bytes);
                                 try {
+                                    BbsVO vo = new BbsVO();
                                     JSONObject json = new JSONObject(result);
-                                    textView.setText(json.toString());
-                                    atch_file_id = json.getString("atch_file_id");
-                                    btn.setText(atch_file_id);
+                                    vo.set_id(json.getString("_id"));
+                                    vo.setBbs_id(json.getString("bbs_id"));
+                                    vo.setNtt_sj(json.getString("ntt_sj"));
+                                    vo.setNtt_cn(json.getString("ntt_cn"));
+                                    vo.setNtcr_nm(json.getString("ntcr_nm"));
+                                    vo.setAtch_file_id(json.getString("atch_file_id"));
+                                    vo.setFrst_time(json.getString("frst_time"));
+                                    vo.setLast_updt_time(json.getString("last_updt_time"));
+                                    vo.setRdcnt(json.getInt("rdcnt"));
+                                    vo.setLike(json.getInt("like"));
+                                    vo.setNtt_id(json.getString("ntt_id"));
+                                    vo.set__v(json.getInt("__v"));
+
+                                    textView.setText(vo.toString());
+                                    btn.setText(vo.getAtch_file_id());
                                     cnt++;
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -126,7 +162,7 @@ public class HttpTestActivity extends AppCompatActivity {
                         });
                         break;
                     case 3:
-                        RequestParams params1 = new RequestParams();
+                        /*RequestParams params1 = new RequestParams();
                         params1.put("ntt_id", ntt_id);
                         params1.put("bbs_id", bbs_id);
                         HTTPClient.post("/selectCommentList", params1, new AsyncHttpResponseHandler() {
@@ -134,7 +170,7 @@ public class HttpTestActivity extends AppCompatActivity {
                             public void onSuccess(int i, Header[] headers, byte[] bytes) {
                                 String result = new String(bytes);
                                 textView.setText(result);
-                                /*
+                                *//*
                                 board = new StringBuffer("");
                                 try {
                                     JSONArray array = new JSONArray(result);
@@ -144,7 +180,7 @@ public class HttpTestActivity extends AppCompatActivity {
                                     textView.setText(board.toString());
                                 } catch (JSONException e) {
                                     e.printStackTrace();
-                                }*/
+                                }*//*
                                 cnt++;
                             }
 
@@ -152,10 +188,12 @@ public class HttpTestActivity extends AppCompatActivity {
                             public void onFailure(int i, Header[] headers, byte[] bytes, Throwable throwable) {
 
                             }
-                        });
+                        });*/
+                        btn.setText("next");
+                        cnt++;
                         break;
                     case 4:
-                        RequestParams params3 = new RequestParams("atch_file_id", atch_file_id);
+                        RequestParams params3 = new RequestParams("atch_file_id", list.get(2).getAtch_file_id());
                         HTTPClient.post("/selectFileInfs", params3, new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int i, Header[] headers, byte[] bytes) {
@@ -163,7 +201,7 @@ public class HttpTestActivity extends AppCompatActivity {
                                 try {
                                     JSONArray array = new JSONArray(result);
                                     StringBuffer text = new StringBuffer("");
-                                    len = array.getInt(array.length() - 1);
+                                    len = array.length();
                                     files = new StringBuffer[len];
                                     textView.setText(len+"\n");
                                     for(int j = 0 ; j < len; j++) {

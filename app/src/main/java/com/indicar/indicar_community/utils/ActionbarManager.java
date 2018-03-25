@@ -42,7 +42,6 @@ public class ActionbarManager {
 
         LayoutInflater inflater = (LayoutInflater)activity.getSystemService(LAYOUT_INFLATER_SERVICE);
         actionbarLayout = inflater.inflate(R.layout.layout_actionbar, null); //커스텀 액션바 레이아웃
-
     }
 
     public void setCustomActionbar(int tag){
@@ -55,9 +54,9 @@ public class ActionbarManager {
     }
 
     private void setCustomLayout(int tag){
-        background = actionbarLayout.findViewById(R.id.iv_background);
-        tab_container = actionbarLayout.findViewById(R.id.ll_tab_container);
-        left_btn = actionbarLayout.findViewById(R.id.lv_left_btn);
+//        background = actionbarLayout.findViewById(R.id.iv_background);
+//        tab_container = actionbarLayout.findViewById(R.id.ll_tab_container);
+//        left_btn = actionbarLayout.findViewById(R.id.lv_left_btn);
 
         /* 액션바 왼쪽버튼. 탭 기본적으로 안보이게 설정 후 필요할때만 아래서 VISIBLE 풀어줌 */
         tab_container.setVisibility(View.GONE);
@@ -84,7 +83,7 @@ public class ActionbarManager {
                 tab_container.setVisibility(View.VISIBLE);
                 tabButtons = new ImageView[NUM_OF_BOARD_BUTTONS];
                 for(int i = 0; i < NUM_OF_BOARD_BUTTONS; i++){
-                    tabButtons[i] = actionbarLayout.findViewById(LAYOUT_ACTIONBAR_TAB_BUTTONS[i]);
+//                    tabButtons[i] = actionbarLayout.findViewById(LAYOUT_ACTIONBAR_TAB_BUTTONS[i]);
                     tabButtons[i].setTag(i);
                 }
 
@@ -114,8 +113,8 @@ public class ActionbarManager {
                 tab_container.setVisibility(View.VISIBLE);
                 tabButtons = new ImageView[NUM_OF_ADD_PHOTO_OPTION_BUTTONS];
                 for(int i = 0; i < NUM_OF_ADD_PHOTO_OPTION_BUTTONS; i++){
-                    tabButtons[i] = actionbarLayout.findViewById(LAYOUT_ACTIONBAR_TAB_BUTTONS[i]);
-                    tabButtons[i].setTag(i);
+//                    tabButtons[i] = actionbarLayout.findViewById(LAYOUT_ACTIONBAR_TAB_BUTTONS[i]);
+//                    tabButtons[i].setTag(i);
                 }
 
                 break;

@@ -1,48 +1,66 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ffffff"
-    tools:context="com.indicar.indicar_community.view.fragment.CommunityFragment">
+    android:background="@color/colorPrimary">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary"
+        android:elevation="1dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:paddingBottom="5dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/btn_search" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:tabBackground="@color/colorPrimary"
+            app:tabIndicatorColor="#454545"
+            app:tabIndicatorHeight="3dp"
+            app:tabSelectedTextColor="#454545"
+            app:tabTextColor="#828282">
+
+        </android.support.design.widget.TabLayout>
+
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout">
+
+    </android.support.v4.view.ViewPager>
 
     <ImageView
-        android:id="@+id/iv_search_bar"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginBottom="10dp"
-        android:layout_width="match_parent"
+        android:id="@+id/iv_write_board"
+        android:layout_margin="26dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:scaleType="centerInside"
         android:adjustViewBounds="true"
-        android:src="@drawable/img_search_bar"/>
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/btn_write_board"/>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="none">
-
-        </android.support.v7.widget.RecyclerView>
-
-        <ImageView
-            android:id="@+id/iv_write_board"
-            android:layout_margin="26dp"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:scaleType="centerInside"
-            android:adjustViewBounds="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:src="@drawable/btn_write_board"/>
-
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

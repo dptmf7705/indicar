@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
         android:name=".utils.App"
@@ -25,13 +25,12 @@
         </activity>
         <activity android:name=".view.activity.CarFilterActivity" />
         <activity android:name=".view.activity.BoardDetailActivity" />
-        <activity android:name=".view.activity.BoardWriteActivity" />
+        <activity android:name=".view.activity.BoardWrite" />
         <activity android:name=".view.activity.AddPhotoActivity" />
-        <activity android:name=".view.activity.BoardWriteFilterActivity" />
-        <activity android:name=".view.activity.HttpTestActivity">
-        </activity>
-        <activity android:name=".view.activity.UploadTestActivity">
-        </activity>
+        <activity android:name=".view.activity.BoardWriteActivity" />
+        <activity android:name=".view.activity.HttpTestActivity"></activity>
+        <activity android:name=".view.activity.UploadTestActivity"></activity>
+        <activity android:name=".view.activity.BoardWriteDetailActivity"></activity>
     </application>
 
 </manifest>
