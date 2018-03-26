@@ -24,13 +24,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.CarFilterActivity" />
-        <activity android:name=".view.activity.BoardDetailActivity" />
+        <activity android:name=".view.activity.BoardDetailActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".view.activity.BoardWrite" />
         <activity android:name=".view.activity.AddPhotoActivity" />
         <activity android:name=".view.activity.BoardWriteActivity" />
-        <activity android:name=".view.activity.HttpTestActivity"></activity>
-        <activity android:name=".view.activity.UploadTestActivity"></activity>
-        <activity android:name=".view.activity.BoardWriteDetailActivity"></activity>
+        <activity android:name=".view.activity.HttpTestActivity" />
+        <activity android:name=".view.activity.UploadTestActivity" />
+        <activity android:name=".view.activity.BoardWriteDetailActivity" />
+        <activity android:name=".view.activity.BoardSearchActivity"></activity>
     </application>
 
 </manifest>

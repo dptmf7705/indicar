@@ -18,6 +18,8 @@ import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.utils.CommunityPagerAdapter;
 import com.indicar.indicar_community.utils.HTTPClient;
 import com.indicar.indicar_community.view.activity.BoardWriteActivity;
+import com.indicar.indicar_community.view.activity.CarFilterActivity;
+import com.indicar.indicar_community.view.activity.MainActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -63,8 +65,19 @@ public class CommunityFragment extends Fragment {
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     Intent intent = new Intent(context, BoardWriteActivity.class);
                     context.startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.enter_right_bottom, R.anim.exit_no_anim);
                 }
                 return true;
+            }
+        });
+
+        ImageView searchButton = view.findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, CarFilterActivity.class);
+                context.startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.enter_left, R.anim.exit_no_anim);
             }
         });
 

@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.indicar.indicar_community.R;
-import com.indicar.indicar_community.utils.ActionbarManager;
 import com.indicar.indicar_community.view.fragment.AlbumFragment;
 import com.indicar.indicar_community.view.fragment.AllPhotosFragment;
 
@@ -25,7 +24,7 @@ public class AddPhotoActivity extends AppCompatActivity {
     private final int IMG_ALL_PHOTOS_UNCLICKED = R.drawable.all_photos_unclicked;
     private final int IMG_ALBUM_UNCLICKED = R.drawable.album_unclicked;
 
-    private ActionbarManager actionbarManager; // 액션바 커스텀 클래스
+//    private ActionbarManager actionbarManager; // 액션바 커스텀 클래스
     private ImageView[] actionbarTabButtons; //게시판 버튼 배열
     private int currentTab = 0; //현재 게시판
     private ImageView actionbarBtnBack;
@@ -35,7 +34,7 @@ public class AddPhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
-
+/*
         actionbarManager = new ActionbarManager(this);
         actionbarManager.setCustomActionbar(AV_ADD_PHOTO);
         actionbarTabButtons = actionbarManager.getTabButtons();
@@ -46,10 +45,10 @@ public class AddPhotoActivity extends AppCompatActivity {
                 finish();
             }
         });
-        //initViewPager();
-        setTabButtons();
+        //initViewPager();*/
+//        setTabButtons();
     }
-
+/*
     private void initViewPager(){
         //뷰페이저 세팅
         pager = findViewById(R.id.vp_photos);
@@ -140,5 +139,5 @@ public class AddPhotoActivity extends AppCompatActivity {
 
         //////////////////// 뷰 로딩 ////////////////////
 
-    }
+    }*/
 }

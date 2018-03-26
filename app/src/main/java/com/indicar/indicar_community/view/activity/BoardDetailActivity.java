@@ -46,7 +46,7 @@ import cz.msebera.android.httpclient.Header;
  * 6. 글 수정
  * (+)
  * 7. 이미지 슬라이드 뷰
- * 8. 게시글 제목 UI
+ * 8. 액션바 없애고 툴바 -> 글 제목
  *
  * @version 1.0 2018-02-23
  * @author yeseul
@@ -62,15 +62,15 @@ public class BoardDetailActivity extends AppCompatActivity {
     private ImageView iv_comment;
     private Boolean isLike = false;
     private InputMethodManager inputManager;
-    private ImageView mainImage;
+//    private ImageView mainImage;
     private ImageView userImage;
     private TextView userName;
     private TextView filter;
     private TextView likeCount;
     private TextView commentCount;
     private TextView lastDate;
-    private TextView mainText;
-    private NestedScrollView scrollView;
+//    private TextView mainText;
+    private TextView title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +80,12 @@ public class BoardDetailActivity extends AppCompatActivity {
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         itemView = findViewById(R.id.recyclerView);
         itemView.setFocusable(false);
-
+/*
         customActionBar = new CustomActionBar(this, getSupportActionBar());
         customActionBar.setBackgroundImage(R.drawable.logo_community);
         customActionBar.setLeftButtonImage(R.drawable.btn_back);
         customActionBar.commit();
+
 
         actionbarLeftBtn = customActionBar.getLeftButton();
         actionbarLeftBtn.setOnClickListener(new View.OnClickListener() {
@@ -93,18 +94,17 @@ public class BoardDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+*/
 
-        scrollView = findViewById(R.id.scrollView);
-//        scrollView.smoothScrollTo(0,0);
-
-        mainImage = findViewById(R.id.mainImage);
+//        mainImage = findViewById(R.id.mainImage);
         userImage = findViewById(R.id.userImage);
         userName = findViewById(R.id.userName);
         filter = findViewById(R.id.filter);
         likeCount = findViewById(R.id.likeCount);
         commentCount = findViewById(R.id.commentCount);
         lastDate = findViewById(R.id.lastDate);
-        mainText = findViewById(R.id.mainText);
+        title = findViewById(R.id.title);
+//        mainText = findViewById(R.id.mainText);
 
         layoutManager = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
         itemView.setLayoutManager(layoutManager);
@@ -138,9 +138,10 @@ public class BoardDetailActivity extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
                     if(bitmap != null) {
                         int index = file.getFile_sn();
-                        if(index == 0){
+                       /* if(index == 0){
                             setMainFile(bitmap, file.getFile_cn());
                         }
+                        */
                         adapter.addImage(index, bitmap);
                         adapter.notifyDataSetChanged();
                     }
@@ -191,18 +192,19 @@ public class BoardDetailActivity extends AppCompatActivity {
         });
 
     }
-
+/*
     private void setMainFile(Bitmap bitmap, String text){
         mainImage.setImageBitmap(bitmap);
         mainText.setText("" + text);
-    }
+    }*/
 
     private void setView(BbsVO vo){
         userName.setText("" + vo.getNtcr_nm());
         filter.setText("" + vo.getBbs_id());
         likeCount.setText("" + vo.getLike());
-        commentCount.setText("");
+        commentCount.setText("" + vo.get__v());
         lastDate.setText("" + vo.getLast_updt_time());
+        title.setText("" + vo.getNtt_sj());
     }
 
     private void selectBoardArticle(String nttId, String bbsId){

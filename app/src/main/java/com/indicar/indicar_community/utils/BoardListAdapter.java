@@ -1,5 +1,6 @@
 package com.indicar.indicar_community.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -61,6 +62,7 @@ public class BoardListAdapter extends RecyclerView.Adapter<BoardListAdapter.View
                 intent.putExtra("bbs_id", item.getBbs_id());
                 intent.putParcelableArrayListExtra("files", item.getFileList());
                 context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.enter_no_anim_start, R.anim.exit_no_anim_start);
             }
         });
     }

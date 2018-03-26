@@ -68,6 +68,10 @@ public class CustomActionBar {
         return leftButton;
     }
 
+    public void removeLeftButton(){
+        leftButton.setVisibility(View.GONE);
+    }
+
     public void commit(){
         actionBar.setCustomView(view);
     }

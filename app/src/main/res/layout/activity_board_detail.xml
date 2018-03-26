@@ -19,14 +19,29 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
+<!--
             <ImageView
                 android:id="@+id/mainImage"
-                android:src="@drawable/car_img_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"/>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="?android:attr/actionBarSize"
+                android:orientation="horizontal"
+                style="?android:attr/actionBarStyle">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"/>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:background="@color/colorWhite"
@@ -39,7 +54,7 @@
 
                 <ImageView
                     android:id="@+id/userImage"
-                    android:src="@drawable/car_img_1"
+                    android:src="@drawable/app_icon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:adjustViewBounds="true"
@@ -52,7 +67,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="신데렐라"
                     android:textSize="14sp"
                     android:gravity="center_vertical"/>
 
@@ -60,7 +74,6 @@
                     android:id="@+id/filter"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="DIY"
                     android:textSize="14sp"
                     android:gravity="center_vertical|end"
                     android:textAlignment="textEnd"/>
@@ -88,7 +101,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="1만개"
                     android:textSize="14sp"/>
 
                 <TextView
@@ -106,7 +118,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="100개"
                     android:textSize="13sp"/>
 
                 <TextView
@@ -118,7 +129,7 @@
                     android:textAlignment="textEnd"/>
 
             </LinearLayout>
-
+<!--
             <TextView
                 android:id="@+id/mainText"
                 android:layout_marginLeft="20dp"
@@ -129,7 +140,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
-                android:lineSpacingMultiplier="1.3"/>
+                android:lineSpacingMultiplier="1.3"/>-->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"

@@ -1,8 +1,8 @@
 package com.indicar.indicar_community.view.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,18 +19,27 @@ public class BoardWriteActivity extends AppCompatActivity {
     private WriteFilterRadio filterRadio;
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_right_bottom);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board_write);
 
         customActionBar = new CustomActionBar(this, getSupportActionBar());
-        actionBarView = customActionBar.getView();
-        ImageView background = actionBarView.findViewById(R.id.imageCenter);
-        background.setImageResource(R.drawable.logo_write);
-        ImageView leftButton = actionBarView.findViewById(R.id.leftButton);
-        leftButton.setImageResource(R.drawable.btn_back);
-        leftButton.setVisibility(View.VISIBLE);
-        customActionBar.setView(actionBarView);
+        customActionBar.setBackgroundImage(R.drawable.logo_write);
+        customActionBar.setLeftButtonImage(R.drawable.btn_back);
+        customActionBar.commit();
+        (customActionBar.getLeftButton()).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_right_bottom);
+            }
+        });
 
         ImageButton buttonDayLife = findViewById(R.id.buttonDayLife);
         ImageButton buttonMarket = findViewById(R.id.buttonMarket);
@@ -48,6 +57,7 @@ public class BoardWriteActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), BoardWriteDetailActivity.class);
                     intent.putExtra("filter", filter);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.enter_no_anim_start, R.anim.exit_no_anim_start);
                 }
             }
         });

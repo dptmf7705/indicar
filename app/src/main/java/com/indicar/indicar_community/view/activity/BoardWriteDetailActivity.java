@@ -1,5 +1,6 @@
 package com.indicar.indicar_community.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.utils.BoardWritePagerAdapter;
 import com.indicar.indicar_community.utils.CustomActionBar;
+import com.indicar.indicar_community.utils.ZoomOutPageTransformer;
 import com.indicar.indicar_community.view.fragment.BoardWriteItemFragment;
 import com.indicar.indicar_community.vo.WriteFileAndTextVO;
 
@@ -40,6 +42,12 @@ public class BoardWriteDetailActivity extends AppCompatActivity{
     private ArrayList<WriteFileAndTextVO> itemList = new ArrayList<>();
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board_write_detail);
@@ -58,7 +66,9 @@ public class BoardWriteDetailActivity extends AppCompatActivity{
         leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                Intent intent = new Intent(getApplicationContext(), BoardWriteActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
             }
         });
 
@@ -82,11 +92,12 @@ public class BoardWriteDetailActivity extends AppCompatActivity{
         });
 
         viewPager = findViewById(R.id.writeDetailPager);
+        viewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         View view = getLayoutInflater().inflate(R.layout.fragment_board_write_item, null);
         viewPager.addView(view, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
 
-        //showPager();
+        showPager();
     }
 
     private void showPager(){
