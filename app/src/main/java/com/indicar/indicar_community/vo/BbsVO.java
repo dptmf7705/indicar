@@ -31,9 +31,20 @@ public class BbsVO implements Parcelable{
     private int like;
     private String ntt_id;
     private int __v;
+    private String popPoint;
+
     private ArrayList<FileDetailVO> fileList = new ArrayList<>();
 
     public BbsVO() {
+    }
+
+
+    public String getPopPoint() {
+        return popPoint;
+    }
+
+    public void setPopPoint(String popPoint) {
+        this.popPoint = popPoint;
     }
 
     protected BbsVO(Parcel in) {

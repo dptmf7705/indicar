@@ -26,6 +26,7 @@ import com.indicar.indicar_community.vo.FileDetailVO;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -62,15 +63,14 @@ public class BoardDetailActivity extends AppCompatActivity {
     private ImageView iv_comment;
     private Boolean isLike = false;
     private InputMethodManager inputManager;
-//    private ImageView mainImage;
+    private ImageView mainImage;
     private ImageView userImage;
     private TextView userName;
     private TextView filter;
     private TextView likeCount;
     private TextView commentCount;
     private TextView lastDate;
-//    private TextView mainText;
-    private TextView title;
+    private TextView mainText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +80,6 @@ public class BoardDetailActivity extends AppCompatActivity {
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         itemView = findViewById(R.id.recyclerView);
         itemView.setFocusable(false);
-/*
         customActionBar = new CustomActionBar(this, getSupportActionBar());
         customActionBar.setBackgroundImage(R.drawable.logo_community);
         customActionBar.setLeftButtonImage(R.drawable.btn_back);
@@ -94,17 +93,16 @@ public class BoardDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
-*/
 
-//        mainImage = findViewById(R.id.mainImage);
+        mainImage = findViewById(R.id.mainImage);
+
         userImage = findViewById(R.id.userImage);
         userName = findViewById(R.id.userName);
         filter = findViewById(R.id.filter);
         likeCount = findViewById(R.id.likeCount);
         commentCount = findViewById(R.id.commentCount);
         lastDate = findViewById(R.id.lastDate);
-        title = findViewById(R.id.title);
-//        mainText = findViewById(R.id.mainText);
+        mainText = findViewById(R.id.mainText);
 
         layoutManager = new StaggeredGridLayoutManager(1,StaggeredGridLayoutManager.VERTICAL);
         itemView.setLayoutManager(layoutManager);
@@ -138,10 +136,9 @@ public class BoardDetailActivity extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(fileData, 0, fileData.length);
                     if(bitmap != null) {
                         int index = file.getFile_sn();
-                       /* if(index == 0){
+                        if(index == 0){
                             setMainFile(bitmap, file.getFile_cn());
                         }
-                        */
                         adapter.addImage(index, bitmap);
                         adapter.notifyDataSetChanged();
                     }
@@ -192,11 +189,10 @@ public class BoardDetailActivity extends AppCompatActivity {
         });
 
     }
-/*
     private void setMainFile(Bitmap bitmap, String text){
         mainImage.setImageBitmap(bitmap);
         mainText.setText("" + text);
-    }*/
+    }
 
     private void setView(BbsVO vo){
         userName.setText("" + vo.getNtcr_nm());
@@ -204,7 +200,6 @@ public class BoardDetailActivity extends AppCompatActivity {
         likeCount.setText("" + vo.getLike());
         commentCount.setText("" + vo.get__v());
         lastDate.setText("" + vo.getLast_updt_time());
-        title.setText("" + vo.getNtt_sj());
     }
 
     private void selectBoardArticle(String nttId, String bbsId){
@@ -213,11 +208,12 @@ public class BoardDetailActivity extends AppCompatActivity {
         params2.put("bbs_id", bbsId);
         HTTPClient.post("/selectBoardArticle", params2, new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(int i, Header[] headers, byte[] bytes) {
+            public void onSuccess(int index, Header[] headers, byte[] bytes) {
                 String result = new String(bytes);
                 try {
                     BbsVO vo = new BbsVO();
-                    JSONObject json = new JSONObject(result);
+                    JSONArray array = new JSONArray(result);
+                    JSONObject json = array.getJSONObject(0);
                     vo.set_id(json.getString("_id"));
                     vo.setBbs_id(json.getString("bbs_id"));
                     vo.setNtt_sj(json.getString("ntt_sj"));
@@ -230,6 +226,12 @@ public class BoardDetailActivity extends AppCompatActivity {
                     vo.setLike(json.getInt("like"));
                     vo.setNtt_id(json.getString("ntt_id"));
                     vo.set__v(json.getInt("__v"));
+                    vo.setPopPoint(json.getString("popPoint"));
+/*                    JSONArray commentArray = json.getJSONArray("COMMENT");
+                    for(int i = 0; i < commentArray.length() ; i++){
+                        JSONObject comment = commentArray.getJSONObject(i);
+
+                    }*/
 
                     setView(vo);
 

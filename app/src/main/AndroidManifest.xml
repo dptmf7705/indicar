@@ -24,8 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.CarFilterActivity" />
-        <activity android:name=".view.activity.BoardDetailActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".view.activity.BoardDetailActivity"/>
         <activity android:name=".view.activity.BoardWrite" />
         <activity android:name=".view.activity.AddPhotoActivity" />
         <activity android:name=".view.activity.BoardWriteActivity" />
