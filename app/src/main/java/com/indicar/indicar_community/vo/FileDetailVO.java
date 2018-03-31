@@ -37,6 +37,10 @@ public class FileDetailVO implements Parcelable{
         fileStoreUri = in.readString();
     }
 
+    public static Creator<FileDetailVO> getCREATOR() {
+        return CREATOR;
+    }
+
     public static final Creator<FileDetailVO> CREATOR = new Creator<FileDetailVO>() {
         @Override
         public FileDetailVO createFromParcel(Parcel in) {

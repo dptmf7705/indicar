@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorWhite"
-    tools:context="com.indicar.indicar_community.view.activity.BoardDetailActivity">
+    tools:context="com.indicar.indicar_community.view.activity.C13BoardDetailActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -134,6 +134,13 @@
                 android:nestedScrollingEnabled="true">
 
             </android.support.v7.widget.RecyclerView>
+
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            </ListView>
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>

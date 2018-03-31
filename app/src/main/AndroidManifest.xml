@@ -16,22 +16,26 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.MainActivity">
+        <activity android:name=".view.activity.A01MainActivity"
+            android:windowSoftInputMode="adjustNothing">
+
+        </activity>
+        <activity android:name=".view.activity.CarFilterActivity" />
+        <activity android:name=".view.activity.C13BoardDetailActivity" />
+        <activity android:name=".view.activity.BoardWrite" />
+        <activity android:name=".view.activity.AddPhotoActivity" />
+        <activity android:name=".view.activity.C21BoardWriteActivity" />
+        <activity android:name=".view.activity.UploadTestActivity" />
+        <activity android:name=".view.activity.C22BoardWriteDetailActivity" />
+        <activity android:name=".view.activity.BoardSearchActivity" />
+        <activity android:name=".view.activity.A00SplashActivity"
+            android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.CarFilterActivity" />
-        <activity android:name=".view.activity.BoardDetailActivity"/>
-        <activity android:name=".view.activity.BoardWrite" />
-        <activity android:name=".view.activity.AddPhotoActivity" />
-        <activity android:name=".view.activity.BoardWriteActivity" />
-        <activity android:name=".view.activity.HttpTestActivity" />
-        <activity android:name=".view.activity.UploadTestActivity" />
-        <activity android:name=".view.activity.BoardWriteDetailActivity" />
-        <activity android:name=".view.activity.BoardSearchActivity"></activity>
     </application>
 
 </manifest>

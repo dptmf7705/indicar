@@ -1,5 +1,6 @@
 package com.indicar.indicar_community.vo;
 
+import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  * Created by yeseul on 2018-03-24.
  */
 
-public class BbsVO implements Parcelable{
+public class BbsVO{
     private String _id;
     private String bbs_id;
     private String ntt_sj;
@@ -32,56 +33,29 @@ public class BbsVO implements Parcelable{
     private String ntt_id;
     private int __v;
     private String popPoint;
-
+    private Bitmap mainImage;
+    private int CntCOMMENT;
     private ArrayList<FileDetailVO> fileList = new ArrayList<>();
 
     public BbsVO() {
+
     }
 
-
-    public String getPopPoint() {
-        return popPoint;
+    public int getCntCOMMENT() {
+        return CntCOMMENT;
     }
 
-    public void setPopPoint(String popPoint) {
-        this.popPoint = popPoint;
+    public void setCntCOMMENT(int cntCOMMENT) {
+        CntCOMMENT = cntCOMMENT;
     }
 
-    protected BbsVO(Parcel in) {
-        _id = in.readString();
-        bbs_id = in.readString();
-        ntt_sj = in.readString();
-        ntt_cn = in.readString();
-        use_secret_at = in.readString();
-        use_notice_at = in.readString();
-        ntcr_nm = in.readString();
-        password = in.readString();
-        atch_file_id = in.readString();
-        frst_time = in.readString();
-        last_updt_time = in.readString();
-        field1 = in.readString();
-        field2 = in.readString();
-        field3 = in.readString();
-        field4 = in.readString();
-        field5 = in.readString();
-        use_at = in.readString();
-        rdcnt = in.readInt();
-        like = in.readInt();
-        ntt_id = in.readString();
-        __v = in.readInt();
+    public Bitmap getMainImage() {
+        return mainImage;
     }
 
-    public static final Creator<BbsVO> CREATOR = new Creator<BbsVO>() {
-        @Override
-        public BbsVO createFromParcel(Parcel in) {
-            return new BbsVO(in);
-        }
-
-        @Override
-        public BbsVO[] newArray(int size) {
-            return new BbsVO[size];
-        }
-    };
+    public void setMainImage(Bitmap mainImage) {
+        this.mainImage = mainImage;
+    }
 
     public String get_id() {
         return _id;
@@ -259,33 +233,40 @@ public class BbsVO implements Parcelable{
         this.fileList = fileList;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getPopPoint() {
+        return popPoint;
+    }
+    public void setPopPoint(String popPoint) {
+        this.popPoint = popPoint;
     }
 
     @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(_id);
-        parcel.writeString(bbs_id);
-        parcel.writeString(ntt_sj);
-        parcel.writeString(ntt_cn);
-        parcel.writeString(use_secret_at);
-        parcel.writeString(use_notice_at);
-        parcel.writeString(ntcr_nm);
-        parcel.writeString(password);
-        parcel.writeString(atch_file_id);
-        parcel.writeString(frst_time);
-        parcel.writeString(last_updt_time);
-        parcel.writeString(field1);
-        parcel.writeString(field2);
-        parcel.writeString(field3);
-        parcel.writeString(field4);
-        parcel.writeString(field5);
-        parcel.writeString(use_at);
-        parcel.writeInt(rdcnt);
-        parcel.writeInt(like);
-        parcel.writeString(ntt_id);
-        parcel.writeInt(__v);
+    public String toString() {
+        return "BbsVO{" +
+                "_id='" + _id + '\'' +
+                ", bbs_id='" + bbs_id + '\'' +
+                ", ntt_sj='" + ntt_sj + '\'' +
+                ", ntt_cn='" + ntt_cn + '\'' +
+                ", use_secret_at='" + use_secret_at + '\'' +
+                ", use_notice_at='" + use_notice_at + '\'' +
+                ", ntcr_nm='" + ntcr_nm + '\'' +
+                ", password='" + password + '\'' +
+                ", atch_file_id='" + atch_file_id + '\'' +
+                ", frst_time='" + frst_time + '\'' +
+                ", last_updt_time='" + last_updt_time + '\'' +
+                ", field1='" + field1 + '\'' +
+                ", field2='" + field2 + '\'' +
+                ", field3='" + field3 + '\'' +
+                ", field4='" + field4 + '\'' +
+                ", field5='" + field5 + '\'' +
+                ", use_at='" + use_at + '\'' +
+                ", rdcnt=" + rdcnt +
+                ", like=" + like +
+                ", ntt_id='" + ntt_id + '\'' +
+                ", __v=" + __v +
+                ", popPoint='" + popPoint + '\'' +
+                ", fileList=" + fileList +
+                '}';
     }
+
 }

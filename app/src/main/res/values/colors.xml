@@ -10,4 +10,5 @@
         <color name="colorActionBar">#fcfcfc</color>
         <color name="colorFont">#525252</color>
         <color name="colorFontLight">#acacac</color>
+        <color name="colorSplashBackground">#ededed</color>
 </resources>

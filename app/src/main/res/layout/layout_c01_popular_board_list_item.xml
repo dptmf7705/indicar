@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?android:borderlessButtonStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="false"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginBottom="1dp">
+
+        <ImageView
+            android:id="@+id/iv_board_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/car_img_1" />
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#64000000"
+            android:orientation="vertical"
+            android:gravity="right"
+            android:padding="20dp"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:textColor="@color/colorWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:textAlignment="gravity"
+                android:text="Writer."/>
+
+            <TextView
+                android:textColor="@color/colorWhite"
+                android:id="@+id/tv_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textSize="15sp"
+                android:textAlignment="gravity"
+                android:text="유저 이름"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_margin="5dp"
+                android:textColor="@color/colorWhite"
+                android:id="@+id/tv_board_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textSize="13sp"
+                android:textAlignment="gravity"
+                android:text="필터"/>
+
+            <TextView
+                android:layout_margin="5dp"
+                android:textColor="@color/colorWhite"
+                android:id="@+id/tv_board_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:singleLine="false"
+                android:textAlignment="gravity"
+                android:maxWidth="250dp"
+                android:text="'박수형 님의 일상이야기'"/>
+
+            <TextView
+                android:layout_margin="5dp"
+                android:textColor="@color/colorWhite"
+                android:id="@+id/tv_board_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:textSize="12sp"
+                android:singleLine="false"
+                android:maxWidth="200dp"
+                android:textAlignment="gravity"
+                android:maxLines="2"
+                android:text="내용"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/icon_like"
+                    android:padding="3dp"/>
+                <TextView
+                    android:id="@+id/tv_like"
+                    android:textColor="@color/colorWhite"
+                    android:minWidth="25dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textAlignment="gravity"
+                    android:text="5"
+                    android:textSize="13sp" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/icon_comment"
+                    android:adjustViewBounds="true"
+                    android:padding="3dp"/>
+                <TextView
+                    android:layout_margin="5dp"
+                    android:textColor="@color/colorWhite"
+                    android:minWidth="25dp"
+                    android:id="@+id/tv_comment"
+                    android:textAlignment="gravity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:textSize="13sp"
+                    android:text="5"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

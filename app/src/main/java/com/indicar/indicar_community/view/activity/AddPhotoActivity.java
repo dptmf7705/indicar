@@ -1,22 +1,11 @@
 package com.indicar.indicar_community.view.activity;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.indicar.indicar_community.R;
-import com.indicar.indicar_community.view.fragment.AlbumFragment;
-import com.indicar.indicar_community.view.fragment.AllPhotosFragment;
-
-import static com.indicar.indicar_community.utils.Constants.ALBUM;
-import static com.indicar.indicar_community.utils.Constants.ALL_PHOTO;
-import static com.indicar.indicar_community.utils.Constants.AV_ADD_PHOTO;
-import static com.indicar.indicar_community.utils.Constants.NUM_OF_ADD_PHOTO_OPTION_BUTTONS;
 
 public class AddPhotoActivity extends AppCompatActivity {
     private final int IMG_ALL_PHOTOS_CLICKED = R.drawable.all_photos_clicked;
