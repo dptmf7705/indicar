@@ -38,12 +38,6 @@ public final class Constants {
     public static final int COMMUNITY = 1;
     public static final int STORE = 2;
     public static final int PROFILE = 3;
-    public static final int[] LAYOUT_MAIN_TAB_BUTTONS = { // 하단 탭 버튼 레이아웃
-            R.id.btn_tab_t,
-            R.id.btn_tab_c,
-            R.id.btn_tab_s,
-            R.id.btn_tab_a
-    };
 
     /** 액션바 관련 상수 */
     public static final int NUM_OF_BOARD_BUTTONS = 2; // 게시판 탭 버튼 개수
@@ -64,10 +58,10 @@ public final class Constants {
             R.drawable.actionbar_bg_write,
             R.drawable.actionbar_bg_write
     };
-    public static final int[] LAYOUT_ACTIONBAR_TAB_BUTTONS = { // 액션바 탭 버튼 레이아웃
-            R.id.iv_tab_left,
-            R.id.iv_tab_right
-    };
+//    public static final int[] LAYOUT_ACTIONBAR_TAB_BUTTONS = { // 액션바 탭 버튼 레이아웃
+//            R.id.iv_tab_left,
+//            R.id.iv_tab_right
+//    };
 
     public static final int AV_TUNING = 0;
     public static final int AV_COMMUNITY = 1;
@@ -82,4 +76,5 @@ public final class Constants {
     public static final int PICK_FROM_ALBUM = 1;
     public static final int CROP_FROM_IMAGE = 2;
 
+    public final static int BOARD_COUNT = 2;
 }

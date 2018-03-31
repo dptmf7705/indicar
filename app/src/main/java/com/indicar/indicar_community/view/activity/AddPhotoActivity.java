@@ -10,25 +10,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.indicar.indicar_community.R;
-import com.indicar.indicar_community.utils.ActionbarManager;
 import com.indicar.indicar_community.view.fragment.AlbumFragment;
 import com.indicar.indicar_community.view.fragment.AllPhotosFragment;
-import com.indicar.indicar_community.view.fragment.CommunityFragment;
-import com.indicar.indicar_community.view.fragment.ProfileFragment;
-import com.indicar.indicar_community.view.fragment.StoreFragment;
-import com.indicar.indicar_community.view.fragment.TunningFragment;
 
 import static com.indicar.indicar_community.utils.Constants.ALBUM;
 import static com.indicar.indicar_community.utils.Constants.ALL_PHOTO;
 import static com.indicar.indicar_community.utils.Constants.AV_ADD_PHOTO;
-import static com.indicar.indicar_community.utils.Constants.COMMUNITY;
-import static com.indicar.indicar_community.utils.Constants.LAYOUT_MAIN_TAB_BUTTONS;
 import static com.indicar.indicar_community.utils.Constants.NUM_OF_ADD_PHOTO_OPTION_BUTTONS;
-import static com.indicar.indicar_community.utils.Constants.NUM_OF_BOARD_BUTTONS;
-import static com.indicar.indicar_community.utils.Constants.NUM_OF_MAIN_TAB_BUTTONS;
-import static com.indicar.indicar_community.utils.Constants.PROFILE;
-import static com.indicar.indicar_community.utils.Constants.STORE;
-import static com.indicar.indicar_community.utils.Constants.TUNING;
 
 public class AddPhotoActivity extends AppCompatActivity {
     private final int IMG_ALL_PHOTOS_CLICKED = R.drawable.all_photos_clicked;
@@ -36,7 +24,7 @@ public class AddPhotoActivity extends AppCompatActivity {
     private final int IMG_ALL_PHOTOS_UNCLICKED = R.drawable.all_photos_unclicked;
     private final int IMG_ALBUM_UNCLICKED = R.drawable.album_unclicked;
 
-    private ActionbarManager actionbarManager; // 액션바 커스텀 클래스
+//    private ActionbarManager actionbarManager; // 액션바 커스텀 클래스
     private ImageView[] actionbarTabButtons; //게시판 버튼 배열
     private int currentTab = 0; //현재 게시판
     private ImageView actionbarBtnBack;
@@ -46,7 +34,7 @@ public class AddPhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_photo);
-
+/*
         actionbarManager = new ActionbarManager(this);
         actionbarManager.setCustomActionbar(AV_ADD_PHOTO);
         actionbarTabButtons = actionbarManager.getTabButtons();
@@ -57,10 +45,10 @@ public class AddPhotoActivity extends AppCompatActivity {
                 finish();
             }
         });
-        //initViewPager();
-        setTabButtons();
+        //initViewPager();*/
+//        setTabButtons();
     }
-
+/*
     private void initViewPager(){
         //뷰페이저 세팅
         pager = findViewById(R.id.vp_photos);
@@ -151,5 +139,5 @@ public class AddPhotoActivity extends AppCompatActivity {
 
         //////////////////// 뷰 로딩 ////////////////////
 
-    }
+    }*/
 }

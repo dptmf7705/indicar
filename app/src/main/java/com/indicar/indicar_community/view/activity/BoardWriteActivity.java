@@ -3,78 +3,64 @@ package com.indicar.indicar_community.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
-import android.view.WindowManager;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.indicar.indicar_community.R;
-import com.indicar.indicar_community.utils.ActionbarManager;
-import com.indicar.indicar_community.utils.BoardWriteAdapter;
-import com.indicar.indicar_community.vo.BoardWriteVO;
-
-import java.util.ArrayList;
-
-import static com.indicar.indicar_community.utils.Constants.*;
+import com.indicar.indicar_community.utils.CustomActionBar;
+import com.indicar.indicar_community.utils.WriteFilterRadio;
 
 public class BoardWriteActivity extends AppCompatActivity {
-    private RecyclerView itemView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
+    private ImageView btn_next;
+    private CustomActionBar customActionBar;
+    private View actionBarView;
+    private WriteFilterRadio filterRadio;
 
-    private ActionbarManager actionbarManager;
-    private ImageView actionbarBtnBack;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_right_bottom);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_board_write);
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-
-        actionbarManager = new ActionbarManager(this);
-        actionbarManager.setCustomActionbar(AV_BOARD_WRITE);
-
-        actionbarBtnBack = actionbarManager.getLeft_btn();
-        actionbarBtnBack.setOnClickListener(new View.OnClickListener() {
+        customActionBar = new CustomActionBar(this, getSupportActionBar());
+        customActionBar.setBackgroundImage(R.drawable.logo_write);
+        customActionBar.setLeftButtonImage(R.drawable.btn_back);
+        customActionBar.commit();
+        (customActionBar.getLeftButton()).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
+                overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_right_bottom);
             }
         });
 
-        itemView = findViewById(R.id.rv_board_write);
-        ArrayList<BoardWriteVO> items = new ArrayList<>();
-        items.add(new BoardWriteVO());
-        items.add(new BoardWriteVO());
+        ImageButton buttonDayLife = findViewById(R.id.buttonDayLife);
+        ImageButton buttonMarket = findViewById(R.id.buttonMarket);
+        ImageButton buttonDIY = findViewById(R.id.buttonDIY);
+        filterRadio = new WriteFilterRadio(buttonDayLife, buttonMarket, buttonDIY);
 
-        layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
-        itemView.setLayoutManager(layoutManager);
+        btn_next = findViewById(R.id.btn_next);
+        btn_next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int filter = filterRadio.getChecked();
+                if(filter < 0){
+                    Toast.makeText(getApplicationContext(), "카테고리를 선택해 주세요.", Toast.LENGTH_LONG).show();
+                } else {
+                    Intent intent = new Intent(getApplicationContext(), BoardWriteDetailActivity.class);
+                    intent.putExtra("filter", filter);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.enter_no_anim_start, R.anim.exit_no_anim_start);
+                }
+            }
+        });
 
-        adapter = new BoardWriteAdapter(this, items);
-        itemView.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if(resultCode != RESULT_OK){
-            return;
-        }
-
-        switch (requestCode){
-            case PICK_FROM_CAMERA:
-                data.getData();
-
-                break;
-            case PICK_FROM_ALBUM:
-
-                break;
-            case CROP_FROM_IMAGE:
-
-                break;
-        }
     }
 }

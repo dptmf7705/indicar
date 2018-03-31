@@ -1,170 +1,107 @@
 package com.indicar.indicar_community.view.activity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.support.design.widget.TabLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.indicar.indicar_community.R;
-import com.indicar.indicar_community.utils.ActionbarManager;
-import com.indicar.indicar_community.view.fragment.CommunityFragment;
-import com.indicar.indicar_community.view.fragment.ProfileFragment;
-import com.indicar.indicar_community.view.fragment.StoreFragment;
-import com.indicar.indicar_community.view.fragment.TunningFragment;
-import com.tsengvn.typekit.TypekitContextWrapper;
+import com.indicar.indicar_community.utils.CustomActionBar;
+import com.indicar.indicar_community.utils.CustomViewPager;
+import com.indicar.indicar_community.utils.MainTabPagerAdapter;
+import com.indicar.indicar_community.utils.MainPageTransformer;
 
-import static com.indicar.indicar_community.utils.Constants.*;
+import static com.indicar.indicar_community.utils.Constants.NUM_OF_MAIN_TAB_BUTTONS;
 
 public class MainActivity extends AppCompatActivity {
-    private final int IMG_POPULAR_CLICKED = R.drawable.tab_popular_clicked;
-    private final int IMG_ALL_CLICKED = R.drawable.tab_all_cliked;
-    private final int IMG_POPULAR_UNCLICKED = R.drawable.tab_popular_unclicked;
-    private final int IMG_ALL_UNCLICKED = R.drawable.tab_all_unclicked;
-
-    private ViewPager pager; //뷰페이저
-    private ActionbarManager actionbarManager; // 액션바 커스텀 클래스
-    private ImageView[] mainTabButtons = new ImageView[NUM_OF_MAIN_TAB_BUTTONS]; // 하단 탭 버튼 배열
-    private int currentMainTab = TUNING; // 현재 탭
-
-    private ImageView[] boardButtons; //게시판 버튼 배열
-    private int currentBoardTab = 0; //현재 게시판
-
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(TypekitContextWrapper.wrap(newBase));
-    }
+    private CustomActionBar customActionBar;
+    private TabLayout tabLayout;
+    private CustomViewPager viewPager;
+    private MainTabPagerAdapter pagerAdapter;
+    public static final int[] IMAGE_TAB_ICON = { // 하단 탭 버튼 레이아웃
+            R.drawable.tab_t,
+            R.drawable.tab_c,
+            R.drawable.tab_s,
+            R.drawable.tab_a
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        customActionBar = new CustomActionBar(this, getSupportActionBar());
+        customActionBar.setBackgroundImage(R.drawable.logo_tuning);
+        customActionBar.commit();
 
-        actionbarManager = new ActionbarManager(MainActivity.this);
-        actionbarManager.setCustomActionbar(currentMainTab);
-        initViewPager();
-    }
+        viewPager = findViewById(R.id.viewPager);
+        viewPager.setPageTransformer(true, new MainPageTransformer());
 
-    private void setBoardTabButtons(){
-        boardButtons = actionbarManager.getTabButtons();
-        changeBoardTab(currentMainTab);
+        tabLayout = findViewById(R.id.tabLayout);
 
-        for(int i = 0; i < NUM_OF_BOARD_BUTTONS; i++){
-            boardButtons[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int tag = (int) view.getTag();
-
-                    // 현재 탭과 다른 탭이 눌렸을 때
-                    if(currentBoardTab != tag) {
-                        changeBoardTab(tag);
-                        currentBoardTab = tag;
-                    }
-                }
-            });
+        tabLayout.setupWithViewPager(viewPager);
+        pagerAdapter = new MainTabPagerAdapter(this, getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
+        viewPager.setPagingEnabled(false);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        for(int i = 0 ; i < NUM_OF_MAIN_TAB_BUTTONS ; i++) {
+            View view = getLayoutInflater().inflate(R.layout.layout_main_tab, null);
+            ImageView imageView = view.findViewById(R.id.image);
+            imageView.setImageResource(IMAGE_TAB_ICON[i]);
+            tabLayout.getTabAt(i).setCustomView(view);
         }
-    }
-
-    private void changeBoardTab(int tag){
-        switch (tag){
-            case POPULAR:
-                boardButtons[POPULAR].setImageResource(IMG_POPULAR_CLICKED);
-                boardButtons[ALL].setImageResource(IMG_ALL_UNCLICKED);
-                break;
-            case ALL:
-                boardButtons[POPULAR].setImageResource(IMG_POPULAR_UNCLICKED);
-                boardButtons[ALL].setImageResource(IMG_ALL_CLICKED);
-                break;
-        }
-
-        //////////////////// 게시판 로딩 ////////////////////
-
-    }
-
-    private void initViewPager(){
-        // 탭 버튼 세팅
-        for(int i = 0 ; i < NUM_OF_MAIN_TAB_BUTTONS ; i++){
-            mainTabButtons[i] = findViewById(LAYOUT_MAIN_TAB_BUTTONS[i]);
-            mainTabButtons[i].setTag(i);
-            mainTabButtons[i].setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                        int tag = (int) view.getTag();
-                        pager.setCurrentItem(tag);
-                }
-            });
-        }
-
-        //뷰페이저 세팅
-        pager = findViewById(R.id.view_pager);
-        pager.setAdapter(new pagerAdapter(getSupportFragmentManager()));
-        pager.setCurrentItem(currentMainTab);
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        tabLayout.setFocusableInTouchMode(false);
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                /* 버튼 색 변경, 액션바 이미지 변경(setActionBar() 호출) */
+            public void onTabSelected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+
+                viewPager.setCurrentItem(position);
+                ActionBar actionBar = customActionBar.getActionBar();
+                customActionBar.removeLeftButton();
+
+                switch (position) {
+                    case 0:
+                        customActionBar.setBackgroundImage(R.drawable.logo_tuning);
+                        actionBar.setElevation(2);
+                        break;
+                    case 1:
+                        customActionBar.setBackgroundImage(R.drawable.logo_community);
+                        customActionBar.setLeftButtonImage(R.drawable.btn_car_filter);
+                        (customActionBar.getLeftButton()).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(MainActivity.this, CarFilterActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.enter_no_anim_start, R.anim.exit_no_anim_start);
+                            }
+                        });
+                        actionBar.setElevation(0);
+                         break;
+                    case 2:
+                        customActionBar.setBackgroundImage(R.drawable.logo_tuning);
+                        actionBar.setElevation(2);
+                        break;
+                    case 3:
+                        customActionBar.setBackgroundImage(R.drawable.logo_community);
+                        actionBar.setElevation(2);
+                        break;
+                }
+                customActionBar.commit();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
             }
 
             @Override
-            public void onPageSelected(int position) {
-                if(currentMainTab != position){
-                    actionbarManager.setCustomActionbar(position);
-
-                    /* 커뮤니티 탭이 눌리면 게시판 탭 로딩 */
-                    if(position == COMMUNITY){
-                        setBoardTabButtons();
-                    }
-
-                    currentMainTab = position;
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
-    }
-
-    private class pagerAdapter extends FragmentStatePagerAdapter{
-
-        public pagerAdapter(FragmentManager fragmentManager){
-            super(fragmentManager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment = null;
-
-            switch (position){
-                case TUNING:
-                    fragment = new TunningFragment();
-                    break;
-                case COMMUNITY:
-                    CommunityFragment communityFragment = new CommunityFragment();
-                    communityFragment.setBtnFilter(actionbarManager.getLeft_btn());
-                    fragment = communityFragment;
-                    break;
-                case STORE:
-                    fragment = new StoreFragment();
-                    break;
-                case PROFILE:
-                    fragment = new ProfileFragment();
-                    break;
-            }
-
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_OF_MAIN_TAB_BUTTONS;
-        }
     }
 
 }

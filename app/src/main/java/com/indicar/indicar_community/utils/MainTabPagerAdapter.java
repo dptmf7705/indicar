@@ -1,5 +1,6 @@
-package com.indicar.indicar_community.view.activity;
+package com.indicar.indicar_community.utils;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -9,46 +10,43 @@ import com.indicar.indicar_community.view.fragment.ProfileFragment;
 import com.indicar.indicar_community.view.fragment.StoreFragment;
 import com.indicar.indicar_community.view.fragment.TunningFragment;
 
-import static com.indicar.indicar_community.utils.Constants.*;
-
 /**
- * Created by yeseul on 2018-03-12.
+ * Created by yeseul on 2018-03-24.
  */
 
-public class ViewPagerAdapter  extends FragmentStatePagerAdapter {
+public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
+    private final static int TAB_COUNT = 4;
 
-    public ViewPagerAdapter(FragmentManager fragmentManager){
+    private Context context;
+
+    public MainTabPagerAdapter(Context context, FragmentManager fragmentManager) {
         super(fragmentManager);
+        this.context = context;
     }
 
     @Override
     public Fragment getItem(int position) {
         Fragment fragment = null;
 
-        switch (position){
-            case TUNING:
+        switch (position) {
+            case 0:
                 fragment = new TunningFragment();
                 break;
-            case COMMUNITY:
-                CommunityFragment communityFragment = new CommunityFragment();
-//                communityFragment.setBtnFilter(actionbarManager.getLeft_btn());
-                fragment = communityFragment;
+            case 1:
+                fragment = new CommunityFragment();
                 break;
-            case STORE:
+            case 2:
                 fragment = new StoreFragment();
                 break;
-            case PROFILE:
+            case 3:
                 fragment = new ProfileFragment();
                 break;
         }
-
         return fragment;
     }
 
     @Override
     public int getCount() {
-        return NUM_OF_MAIN_TAB_BUTTONS;
+        return TAB_COUNT;
     }
-
-
 }
