@@ -10,7 +10,7 @@
 
     <!-- Splash Activity 테마 -->
     <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:layout">@layout/activity_a00_splash</item>
+        <item name="android:layout">@layout/a0_activity_splash</item>
         <item name="colorPrimary">@color/colorSplashBackground</item>
         <item name="colorPrimaryDark">@color/colorSplashBackground</item>
     </style>

@@ -1,17 +1,13 @@
 package com.indicar.indicar_community.view.activity;
 
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.utils.CustomActionBar;
 
-public class CarFilterActivity extends AppCompatActivity {
+public class C0CarFilterActivity extends AppCompatActivity {
     private CustomActionBar customActionBar;
 
     @Override
@@ -23,7 +19,7 @@ public class CarFilterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_filter);
+        setContentView(R.layout.m2_activity_car_filter);
 
         customActionBar = new CustomActionBar(this, getSupportActionBar());
         customActionBar.setBackgroundImage(R.drawable.logo_community);

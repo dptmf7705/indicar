@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.indicar.indicar_community.view.activity.C21BoardWriteActivity">
+    tools:context="com.indicar.indicar_community.view.activity.W1BoardWriteActivity">
 
     <ImageView
         android:id="@+id/iv_share"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
         android:adjustViewBounds="true"
-        android:src="@drawable/img_write_main_share"/>
+        android:src="@drawable/button_share"/>
 
     <LinearLayout
         android:layout_width="match_parent"

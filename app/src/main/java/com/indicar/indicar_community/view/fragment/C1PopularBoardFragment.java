@@ -37,9 +37,8 @@ import cz.msebera.android.httpclient.Header;
  * 1. refresh 했을때 카드 재배치..
  *  -> 어댑터 추가할때 사진 width, height 미리 계산해서 넘기기
  *
- *
  * */
-public class C11PopularBoardFragment extends Fragment {
+public class C1PopularBoardFragment extends Fragment {
     private Context context;
     private RecyclerView recyclerView;
     private BoardPopularListAdapter adapter;
@@ -47,7 +46,7 @@ public class C11PopularBoardFragment extends Fragment {
     private ArrayList<BbsVO> boardVoList;
     private SwipeRefreshLayout refreshView;
 
-    public C11PopularBoardFragment() {
+    public C1PopularBoardFragment() {
         // Required empty public constructor
     }
 
@@ -55,14 +54,14 @@ public class C11PopularBoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_c01_popular_board, container, false);
+        View view = inflater.inflate(R.layout.c1_fragment_popular_board, container, false);
         context = view.getContext();
         recyclerView = view.findViewById(R.id.recycler_view);
 
         layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new BoardPopularListAdapter(context, R.layout.layout_c01_popular_board_list_item);
+        adapter = new BoardPopularListAdapter(context, R.layout.c1_layout_popular_board_list_item);
         recyclerView.setAdapter(adapter);
 
         selectBoardArticles();

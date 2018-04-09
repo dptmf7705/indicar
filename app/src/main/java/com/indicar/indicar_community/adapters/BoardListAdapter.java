@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.indicar.indicar_community.R;
-import com.indicar.indicar_community.view.activity.C13BoardDetailActivity;
+import com.indicar.indicar_community.view.activity.C3BoardDetailActivity;
 import com.indicar.indicar_community.vo.BbsVO;
 import com.indicar.indicar_community.vo.FileDetailVO;
 
@@ -63,7 +63,7 @@ public class BoardListAdapter extends RecyclerView.Adapter<BoardListAdapter.View
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, C13BoardDetailActivity.class);
+                Intent intent = new Intent(context, C3BoardDetailActivity.class);
                 intent.putExtra("ntt_id", item.getNtt_id());
                 intent.putExtra("bbs_id", item.getBbs_id());
                 intent.putParcelableArrayListExtra("files", item.getFileList());

@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.indicar.indicar_community.view.fragment.C11PopularBoardFragment;
-import com.indicar.indicar_community.view.fragment.C12AllBoardFragment;
+import com.indicar.indicar_community.view.fragment.C1PopularBoardFragment;
+import com.indicar.indicar_community.view.fragment.C2AllBoardFragment;
 
 import static com.indicar.indicar_community.utils.Constants.*;
 
@@ -28,10 +28,10 @@ public class CommunityPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position){
             case 0:
-                fragment = new C11PopularBoardFragment();
+                fragment = new C1PopularBoardFragment();
                 break;
             case 1:
-                fragment = new C12AllBoardFragment();
+                fragment = new C2AllBoardFragment();
                 break;
         }
 

@@ -8,12 +8,12 @@ import android.view.View;
 
 import com.indicar.indicar_community.R;
 
-public class A00SplashActivity extends AppCompatActivity {
+public class A0SplashActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_a00_splash);
+        setContentView(R.layout.a0_activity_splash);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
@@ -21,7 +21,7 @@ public class A00SplashActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getApplicationContext(), A01MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), A1MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
                 finish();

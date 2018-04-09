@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
         android:name=".utils.App"
@@ -16,26 +17,41 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.activity.A01MainActivity"
+        <activity android:name=".view.activity.A1MainActivity"
             android:windowSoftInputMode="adjustNothing">
 
         </activity>
-        <activity android:name=".view.activity.CarFilterActivity" />
-        <activity android:name=".view.activity.C13BoardDetailActivity" />
+        <activity android:name=".view.activity.C0CarFilterActivity" />
+        <activity android:name=".view.activity.C3BoardDetailActivity" />
         <activity android:name=".view.activity.BoardWrite" />
         <activity android:name=".view.activity.AddPhotoActivity" />
-        <activity android:name=".view.activity.C21BoardWriteActivity" />
-        <activity android:name=".view.activity.UploadTestActivity" />
-        <activity android:name=".view.activity.C22BoardWriteDetailActivity" />
-        <activity android:name=".view.activity.BoardSearchActivity" />
-        <activity android:name=".view.activity.A00SplashActivity"
-            android:theme="@style/LaunchTheme">
+        <activity android:name=".view.activity.W1BoardWriteActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".view.activity.UploadTestActivity" />
+        <activity android:name=".view.activity.W2BoardWriteDetailActivity"
+            android:windowSoftInputMode="adjustResize">
+
+        </activity>
+        <activity android:name=".view.activity.BoardSearchActivity" />
+        <activity android:name=".view.activity.A0SplashActivity"
+            android:theme="@style/LaunchTheme">
+        </activity>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.indicar.indicar_community.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

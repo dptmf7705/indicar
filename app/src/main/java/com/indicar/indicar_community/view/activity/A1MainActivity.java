@@ -16,7 +16,7 @@ import com.indicar.indicar_community.utils.MainPageTransformer;
 
 import static com.indicar.indicar_community.utils.Constants.NUM_OF_MAIN_TAB_BUTTONS;
 
-public class A01MainActivity extends AppCompatActivity {
+public class A1MainActivity extends AppCompatActivity {
     private CustomActionBar customActionBar;
     private TabLayout tabLayout;
     private CustomViewPager viewPager;
@@ -31,7 +31,7 @@ public class A01MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_a01_main);
+        setContentView(R.layout.a1_activity_main);
         customActionBar = new CustomActionBar(this, getSupportActionBar());
         customActionBar.setBackgroundImage(R.drawable.logo_tuning);
         customActionBar.commit();
@@ -47,7 +47,7 @@ public class A01MainActivity extends AppCompatActivity {
         viewPager.setPagingEnabled(false);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         for(int i = 0 ; i < NUM_OF_MAIN_TAB_BUTTONS ; i++) {
-            View view = getLayoutInflater().inflate(R.layout.layout_main_tab, null);
+            View view = getLayoutInflater().inflate(R.layout.a1_layout_main_tab, null);
             ImageView imageView = view.findViewById(R.id.image);
             imageView.setImageResource(IMAGE_TAB_ICON[i]);
             tabLayout.getTabAt(i).setCustomView(view);
@@ -73,7 +73,7 @@ public class A01MainActivity extends AppCompatActivity {
                         (customActionBar.getLeftButton()).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(A01MainActivity.this, CarFilterActivity.class);
+                                Intent intent = new Intent(A1MainActivity.this, C0CarFilterActivity.class);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.enter_no_anim_start, R.anim.exit_no_anim_start);
                             }

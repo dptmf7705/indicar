@@ -10,12 +10,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.adapters.BoardDetailAdapter;
@@ -56,7 +54,7 @@ import static android.view.inputmethod.InputMethodManager.SHOW_FORCED;
  * @author yeseul
  */
 
-public class C13BoardDetailActivity extends AppCompatActivity {
+public class C3BoardDetailActivity extends AppCompatActivity {
     private CustomActionBar customActionBar;
     private ImageView actionbarLeftBtn;
     private RecyclerView itemView;
@@ -78,7 +76,7 @@ public class C13BoardDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_board_detail);
+        setContentView(R.layout.c3_activity_board_detail);
 
         inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         itemView = findViewById(R.id.recyclerView);

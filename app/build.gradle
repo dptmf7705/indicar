@@ -38,6 +38,12 @@ dependencies {
     //커스텀 폰트
     compile "com.github.katoro:typekit:1.0.1"
     //탭 레이아웃
-    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:design:26.1.0'
+    //viewPagerLayoutManager
+    compile 'io.apptik.multiview:layoutmanagers:0.0.3'
+    //위험권한체크
+    compile 'gun0912.ted:tedpermission:2.1.1'
+    //앨범 이미지 다중선택
+    compile 'gun0912.ted:tedbottompicker:1.1.0'
 
 }

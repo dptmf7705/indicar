@@ -32,7 +32,7 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-public class C12AllBoardFragment extends Fragment {
+public class C2AllBoardFragment extends Fragment {
     private Context context;
     private RecyclerView recyclerView;
     private BoardListAdapter adapter;
@@ -40,7 +40,7 @@ public class C12AllBoardFragment extends Fragment {
     private ArrayList<BbsVO> boardVoList;
     private SwipeRefreshLayout refreshView;
 
-    public C12AllBoardFragment() {
+    public C2AllBoardFragment() {
         // Required empty public constructor
     }
 
@@ -48,14 +48,14 @@ public class C12AllBoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_c02_all_board, container, false);
+        View view = inflater.inflate(R.layout.c2_fragment_all_board, container, false);
         context = view.getContext();
         recyclerView = view.findViewById(R.id.recycler_view);
 
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new BoardListAdapter(context, R.layout.layout_c02_all_board_list_item);
+        adapter = new BoardListAdapter(context, R.layout.c2_layout_all_board_list_item);
         recyclerView.setAdapter(adapter);
 
         selectBoardArticles();

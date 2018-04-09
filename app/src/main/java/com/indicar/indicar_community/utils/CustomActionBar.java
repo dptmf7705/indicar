@@ -30,7 +30,7 @@ public class CustomActionBar {
         actionBar.setDisplayShowHomeEnabled(false);     //홈 아이콘 숨김처리
 
         LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(R.layout.layout_actionbar, null);
+        view = inflater.inflate(R.layout.a0_layout_actionbar, null);
 
         leftButton = view.findViewById(R.id.leftButton);
         background = view.findViewById(R.id.imageCenter);

@@ -12,10 +12,10 @@ import com.indicar.indicar_community.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class A03ShoppingFragment extends Fragment {
+public class M3ShoppingFragment extends Fragment {
 
 
-    public A03ShoppingFragment() {
+    public M3ShoppingFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,7 @@ public class A03ShoppingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_a03_shopping, container, false);
+        return inflater.inflate(R.layout.m3_fragment_shopping, container, false);
     }
 
 }

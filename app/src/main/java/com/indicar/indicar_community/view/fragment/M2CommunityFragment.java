@@ -25,7 +25,7 @@ import android.widget.TextView;
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.adapters.CommunityPagerAdapter;
 import com.indicar.indicar_community.utils.HTTPClient;
-import com.indicar.indicar_community.view.activity.C21BoardWriteActivity;
+import com.indicar.indicar_community.view.activity.W1BoardWriteActivity;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -38,7 +38,7 @@ import static android.view.inputmethod.EditorInfo.IME_ACTION_SEARCH;
 import static android.view.inputmethod.InputMethodManager.SHOW_FORCED;
 import static com.indicar.indicar_community.utils.Constants.NUM_OF_BOARD_BUTTONS;
 
-public class A02CommunityFragment extends Fragment {
+public class M2CommunityFragment extends Fragment {
     private final String[] TAB_NAME = {"인기", "전체"};
     private String bbs_id;
     private Context context;
@@ -50,7 +50,7 @@ public class A02CommunityFragment extends Fragment {
     private ImageButton searchButton;
     private EditText searchText;
 
-    public A02CommunityFragment() {
+    public M2CommunityFragment() {
         // Required empty public constructor
     }
 
@@ -67,7 +67,7 @@ public class A02CommunityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_a02_community, container, false);
+        View view = inflater.inflate(R.layout.m2_fragment_community, container, false);
         context = view.getContext();
 
         ImageView iv_write_board = view.findViewById(R.id.iv_write_board);
@@ -75,7 +75,7 @@ public class A02CommunityFragment extends Fragment {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    Intent intent = new Intent(context, C21BoardWriteActivity.class);
+                    Intent intent = new Intent(context, W1BoardWriteActivity.class);
                     context.startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.enter_right_bottom, R.anim.exit_no_anim);
                 }

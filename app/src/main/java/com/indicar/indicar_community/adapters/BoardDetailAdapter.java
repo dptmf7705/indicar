@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.indicar.indicar_community.R;
-import com.indicar.indicar_community.vo.BbsVO;
 import com.indicar.indicar_community.vo.BoardItemVO;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class BoardDetailAdapter extends RecyclerView.Adapter<BoardDetailAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_board_detail_item, null);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.c3_layout_board_detail_item, null);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }

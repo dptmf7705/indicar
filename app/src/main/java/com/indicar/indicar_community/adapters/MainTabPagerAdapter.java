@@ -5,10 +5,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.indicar.indicar_community.view.fragment.A02CommunityFragment;
-import com.indicar.indicar_community.view.fragment.A04AccountFragment;
-import com.indicar.indicar_community.view.fragment.A03ShoppingFragment;
-import com.indicar.indicar_community.view.fragment.A01TunningFragment;
+import com.indicar.indicar_community.view.fragment.M2CommunityFragment;
+import com.indicar.indicar_community.view.fragment.M4AccountFragment;
+import com.indicar.indicar_community.view.fragment.M3ShoppingFragment;
+import com.indicar.indicar_community.view.fragment.M1TunningFragment;
 
 /**
  * Created by yeseul on 2018-03-24.
@@ -30,16 +30,16 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                fragment = new A01TunningFragment();
+                fragment = new M1TunningFragment();
                 break;
             case 1:
-                fragment = new A02CommunityFragment();
+                fragment = new M2CommunityFragment();
                 break;
             case 2:
-                fragment = new A03ShoppingFragment();
+                fragment = new M3ShoppingFragment();
                 break;
             case 3:
-                fragment = new A04AccountFragment();
+                fragment = new M4AccountFragment();
                 break;
         }
         return fragment;

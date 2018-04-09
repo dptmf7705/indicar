@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.indicar.indicar_community.view.fragment.A01TunningFragment">
+    tools:context="com.indicar.indicar_community.view.fragment.M1TunningFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
