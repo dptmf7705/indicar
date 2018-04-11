@@ -2,6 +2,7 @@ package com.indicar.indicar_community.view.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
@@ -21,32 +22,55 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.adapters.BoardWriteListAdapter;
 import com.indicar.indicar_community.utils.CustomActionBar;
+import com.indicar.indicar_community.utils.HTTPClient;
+import com.indicar.indicar_community.viewHolder.BoardWriteViewHolder;
 import com.indicar.indicar_community.vo.BoardWriteVO;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import gun0912.tedbottompicker.TedBottomPicker;
+import cz.msebera.android.httpclient.Header;
 import io.apptik.multiview.layoutmanagers.ViewPagerLayoutManager;
 
-public class W2BoardWriteDetailActivity extends AppCompatActivity{
+/**
+ * TODO
+ * 1. 페이지 하나 일 때 삭제 시, 내용이 있으면 reset
+ * 2. 리사이클러 뷰 어댑터 : 페이지 추가, 사진 추가 기능 나눠서 구현
+ *
+ *
+ *
+ * */
+
+public class W2BoardWriteDetailActivity extends AppCompatActivity implements View.OnClickListener {
     private final int MAX_PAGE = 15;
     private int currentPage = -1;
     private int pageCount = 0;
 
     private static final int PICK_FROM_CAMERA = 1;
-    private static final int PICK_FROM_ALBUM = 2;
-    private static final int CROP_FROM_CAMERA = 3;
+    private static final int CROP_FROM_CAMERA = 2;
+    private static final int PICKER_REQUEST_CODE = 3;
+
+    private List<Uri> selectedPhotoList;
+    private List<String> selectedPhotoPath;
 
     private Uri photoUri;
-    private String mCurrentPhotoPath;
 
     private CustomActionBar customActionBar;
 
@@ -61,7 +85,11 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
     private RecyclerView recyclerView;
     private ViewPagerLayoutManager layoutManager;
 
-    private TedBottomPicker bottomPicker;
+    private ImageButton btnSubmit;
+    private ImageButton btnCancel;
+
+    private ArrayList<BoardWriteVO> list;
+    private BoardWriteViewHolder currentViewHolder;
 
     /**
      * 뒤로가기 버튼 눌렀을 때
@@ -79,13 +107,14 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
         setContentView(R.layout.w2_activity_board_write_detail);
 
         // 키보드 input mode
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
-        setupActionBar();
-        setupView();
+        initView();
+        setupPager();
+        addPage(); // 첫 페이지 추가
     }
 
-    private void setupActionBar() {
+    private void initActionBar() {
         customActionBar = new CustomActionBar(this, getSupportActionBar());
         customActionBar.setBackgroundImage(R.drawable.logo_write);
         customActionBar.setLeftButtonImage(R.drawable.btn_back);
@@ -101,115 +130,138 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
         });
     }
 
-    private void setupView() {
+    private void initView() {
+
+        initActionBar();
+
         currentPageView = findViewById(R.id.currentPage);
+
         totalPageView = findViewById(R.id.totalPage);
 
         btnAdd = findViewById(R.id.btnAddSlide);
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        btnAdd.setOnClickListener(this);
+
+        btnDelete = findViewById(R.id.btnDeleteSlide);
+        btnDelete.setOnClickListener(this);
+
+        btnPrev = findViewById(R.id.buttonPrev);
+        btnPrev.setOnClickListener(this);
+
+        btnNext = findViewById(R.id.buttonNext);
+        btnNext.setOnClickListener(this);
+
+        btnCancel = findViewById(R.id.buttonCancel);
+        btnCancel.setOnClickListener(this);
+
+        btnSubmit = findViewById(R.id.buttonSubmit);
+        btnSubmit.setOnClickListener(this);
+
+        recyclerView = findViewById(R.id.recyclerView);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+
+        /**
+         * 리사이클러 뷰 관련 클릭 이벤트 처리
+         */
+        switch (view.getId()){
+            case R.id.btnAddSlide: // 페이지 추가
                 if(pageCount < MAX_PAGE) {
                     addPage();
                 }
-            }
-        });
-        btnDelete = findViewById(R.id.btnDeleteSlide);
-        btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.btnDeleteSlide: // 현재 페이지 삭제
                 if(pageCount > 1) {
                     removePage();
                 }
-            }
-        });
-
-        btnPrev = findViewById(R.id.buttonPrev);
-        btnPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.buttonPrev: // 이전 페이지로 이동
                 if(currentPage > 0) {
                     pageChangeTo(currentPage - 1);
                 }
-            }
-        });
-        btnNext = findViewById(R.id.buttonNext);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                break;
+            case R.id.buttonNext: // 다음 페이지로 이동
                 if(currentPage < (pageCount - 1)) {
                     pageChangeTo(currentPage + 1);
                 }
-            }
-        });
+                break;
+            case R.id.buttonCancel: // 글작성 취소
 
-        setupPager();
+                break;
+            case R.id.buttonSubmit: // 게시글 업로드
+                list = adapter.getItems();
+            /*
+                for(int i = 0 ; i < list.size() ; i++){
+                    BoardWriteVO vo = list.get(i);
+                    if(vo.getText() == null && vo.getBitmap() == null){
+                        list.remove(i);
+                    }
+                }*/
+                insertBoardArticle();
+                break;
+        }
+
     }
 
     private void setupPager() {
-        recyclerView = findViewById(R.id.recyclerView);
-        adapter = new BoardWriteListAdapter(this, R.layout.w2_layout_board_write_item);
+        adapter = new BoardWriteListAdapter(this, R.layout.w2_layout_board_write_item,
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        /** 사진 추가 관련 클릭 이벤트 처리 */
+                        if(view.getTag() != null){
+                            int tag = Integer.parseInt(view.getTag().toString());
+
+                            switch (tag) {
+                                case 0: // 앨범에서 사진 선택
+                                    openBottomPicker();
+                                    break;
+                                case 1: // 카메라 사진 촬영
+                                    takePhoto();
+                                    break;
+                                case 2: // 적용된 이미지 삭제
+                                    break;
+                            }
+                        }
+                    }
+                });
         layoutManager = new ViewPagerLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 currentPage = layoutManager.findFirstVisibleItemPosition();
-
-                BoardWriteListAdapter.ViewHolder holder = (BoardWriteListAdapter.ViewHolder) recyclerView.findViewHolderForAdapterPosition(currentPage);
-                holder.buttonAlbum.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //goToAlbum();
-                        openBottomPicker();
-                    }
-                });
-                holder.buttonCamera.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        takePhoto();
-                    }
-                });
+                currentViewHolder = (BoardWriteViewHolder) recyclerView.findViewHolderForAdapterPosition(currentPage);
                 currentPageView.setText("" + (currentPage + 1));
             }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
         });
-        addPage();
     }
 
     private void openBottomPicker() {
-        bottomPicker = new TedBottomPicker.Builder(this)
-                .setOnMultiImageSelectedListener(new TedBottomPicker.OnMultiImageSelectedListener() {
-                    @Override
-                    public void onImagesSelected(ArrayList<Uri> uriList) {
-
-                    }
-                })
-                .showCameraTile(false)
-                .setPreviewMaxCount(Integer.MAX_VALUE)
-                .setSelectMaxCount(15)
-                .setSelectedForeground(R.drawable.selected_image_foreground)
-                .setSpacing(2)
-                .setPeekHeight(R.dimen.tedbottompicker_selected_image_height*3)
-                .create();
-
-        bottomPicker.show(getSupportFragmentManager());
+        Matisse.from(this)
+                .choose(MimeType.allOf())
+                .countable(true)
+                .maxSelectable(15)
+                .theme(R.style.photoPickerTheme)
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(0.85f)
+                .imageEngine(new GlideEngine())
+                .forResult(PICKER_REQUEST_CODE);
     }
-
-
+    
     /**
-     * currentPage 다음에 페이지 하나 추가한 후 추가된 페이지로 이동
+     * currentPage 다음에 페이지 하나 추가한 후, 해당 페이지로 이동
      */
     private void addPage(){
         // pageCount 가 15보다 작을 때만 페이지를 추가한다.
         if(pageCount < MAX_PAGE) {
             /* 페이지 추가 */
-            adapter.addItem(currentPage + 1, new BoardWriteVO()); // 어댑터에 새로운 페이지 추가
+           BoardWriteVO vo = new BoardWriteVO();
+            adapter.addItem(currentPage + 1, vo); // 어댑터에 새로운 페이지 추가
             pageCount = adapter.getItemCount(); // 페이지 개수 어댑터에서 받아옴
             totalPageView.setText("" + pageCount); // 페이지 개수 출력
 
@@ -219,6 +271,32 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     *  list 개수 만큼 페이지 추가 (앨범 이미지 다중 선택시 호출)
+     * */
+    private void addPageList(ArrayList<BoardWriteVO> list){
+        if((pageCount + list.size()) <= MAX_PAGE){
+            adapter.addItemList(currentPage, list);
+            pageCount = adapter.getItemCount();
+            totalPageView.setText("" + pageCount);
+            
+            pageChangeTo(currentPage);
+        } else{
+            Toast.makeText(this, "페이지 수 최대", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void addPageList(int pageCount){
+        ArrayList<BoardWriteVO> list = new ArrayList<>();
+        for(int i = 0 ; i < pageCount ; i++){
+            list.add(new BoardWriteVO());
+        }
+        addPageList(list);
+    }
+
+    /**
+     * currentPage 삭제
+     * */
     private void removePage(){
         // pageCount 가 1보다 클 때만 페이지를 삭제한다.
         if(pageCount > 1){
@@ -229,24 +307,22 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
         }
     }
 
+    /**
+     * 해당 position 의 페이지로 이동
+     * */
     private void pageChangeTo(int position){
         currentPage = position;
         recyclerView.smoothScrollToPosition(currentPage);
     }
 
-
+    /**
+     * 이미지 선택 후 로직 처리
+     * */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
             return;
-        }
-        if (requestCode == PICK_FROM_ALBUM) {
-            if (data == null) {
-                return;
-            }
-            photoUri = data.getData();
-            cropImage();
         } else if (requestCode == PICK_FROM_CAMERA) {
             cropImage();
             // 갤러리에 나타나게
@@ -254,26 +330,49 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
                     new String[]{photoUri.getPath()}, null,
                     new MediaScannerConnection.OnScanCompletedListener() {
                         public void onScanCompleted(String path, Uri uri) {
+
                         }
                     });
         } else if (requestCode == CROP_FROM_CAMERA) {
-            Bitmap bitmap = null;
-            try {
-               bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), photoUri);
-            } catch (IOException e) {
-                e.printStackTrace();
+            //////////////////// 현재 페이지의 이미지 뷰에 뿌리기 ////////////////////
+            /*Glide.with(this).load(photoUri).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    adapter.setImagePicked(currentPage, resource);
+                    addPage();
+                }
+            });*/
+
+            adapter.setImagePicked(currentPage, photoUri);
+            addPage();
+
+        } else if (requestCode == PICKER_REQUEST_CODE){
+            selectedPhotoList = Matisse.obtainResult(data); // 앨범에서 받아온 uri 리스트
+            final int IMAGE_COUNT = selectedPhotoList.size(); // 리스트 개수
+
+            //////////////////// 페이지 하나씩 추가하면서 이미지 뷰에 뿌리기 ////////////////////
+
+            ArrayList<BoardWriteVO> list = new ArrayList<>();
+            for(int i = 0 ; i < IMAGE_COUNT ; i++){
+                BoardWriteVO vo = new BoardWriteVO();
+                vo.setUri(selectedPhotoList.get(i));
+                list.add(vo);
+                /*final int position = TEMP_CURRENT_PAGE + i;
+                Glide.with(this).load(selectedPhotoList.get(i)).asBitmap().placeholder(R.drawable.app_icon).into(new SimpleTarget<Bitmap>() {
+                    @Override
+                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                        adapter.setImagePicked(position, selectedPhotoList.get());
+                    }
+                });*/
             }
-            adapter.setImagePicked(currentPage, bitmap);
+
+            addPageList(list);
         }
-        recyclerView.smoothScrollToPosition(currentPage);
     }
 
-    //Android N crop image
+
+    // 이미지 크롭
     public void cropImage() {
-/*        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            this.grantUriPermission("com.android.camera", photoUri,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }*/
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(photoUri, "image/*");
 
@@ -294,6 +393,7 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
             }
             intent.putExtra("crop", "true");
             intent.putExtra("scale", true);
+
             File croppedFileName = null;
             try {
                 croppedFileName = createImageFile();
@@ -301,7 +401,7 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
                 e.printStackTrace();
             }
 
-            File folder = new File(Environment.getExternalStorageDirectory() + "/NOSTest/");
+            File folder = new File(Environment.getExternalStorageDirectory() + "/indicar/");
             File tempFile = new File(folder.toString(), croppedFileName.getName());
 
             photoUri = FileProvider.getUriForFile(this,
@@ -333,12 +433,11 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
         String imageFileName = "nostest_" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/NOSTest/");
+        File storageDir = new File(Environment.getExternalStorageDirectory() + "/indicar/");
         if (!storageDir.exists()) {
             storageDir.mkdirs();
         }
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
 
@@ -360,10 +459,33 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity{
         }
     }
 
-    private void goToAlbum() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        startActivityForResult(intent, PICK_FROM_ALBUM);
+    private void insertBoardArticle() {
+        RequestParams params = new RequestParams();
+        params.put("bbs_id", "test_main");
+        params.put("ntt_sj", "제목");
+        params.put("ntt_cn ", "내용");
+        params.put("ntcr_nm", "글쓴이");
+
+        for(int i = 0 ; i < list.size() ; i++) {
+            try {
+                params.put("file", new File(list.get(i).getUri().getPath()));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            params.put("fileCn_" + i, list.get(i).getText());
+        }
+
+        HTTPClient.uploadFiles("/insertBoardArticle", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
 }

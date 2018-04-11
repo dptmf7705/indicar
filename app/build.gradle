@@ -44,6 +44,7 @@ dependencies {
     //위험권한체크
     compile 'gun0912.ted:tedpermission:2.1.1'
     //앨범 이미지 다중선택
-    compile 'gun0912.ted:tedbottompicker:1.1.0'
+    compile 'com.zhihu.android:matisse:0.4.3'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
 
 }

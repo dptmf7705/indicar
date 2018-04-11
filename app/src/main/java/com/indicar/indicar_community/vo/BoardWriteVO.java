@@ -1,21 +1,28 @@
 package com.indicar.indicar_community.vo;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * Created by yeseul on 2018-02-26.
  */
 
-public class BoardWriteVO {
-    private Bitmap bitmap;
+public class BoardWriteVO{
+    private Uri uri;
     private String text;
 
-    public Bitmap getBitmap() {
-        return bitmap;
+    public BoardWriteVO(){
+
     }
 
-    public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+    public Uri getUri() {
+        return uri;
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 
     public String getText() {
@@ -25,4 +32,5 @@ public class BoardWriteVO {
     public void setText(String text) {
         this.text = text;
     }
+
 }

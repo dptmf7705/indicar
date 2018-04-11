@@ -15,4 +15,11 @@
         <item name="colorPrimaryDark">@color/colorSplashBackground</item>
     </style>
 
+    <!-- Photo Picker 테마 -->
+    <style name="photoPickerTheme" parent="Matisse.Zhihu">
+        <item name="colorPrimary">#fcfcfc</item>
+        <item name="colorPrimaryDark">#ffffff</item>
+        <item name="album.title.color">#525252</item>
+        <item name="album.count.color">#525252</item>
+    </style>
 </resources>

@@ -27,13 +27,7 @@
         <activity android:name=".view.activity.AddPhotoActivity" />
         <activity android:name=".view.activity.W1BoardWriteActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".view.activity.UploadTestActivity" />
         <activity android:name=".view.activity.W2BoardWriteDetailActivity"
             android:windowSoftInputMode="adjustResize">
 
@@ -41,6 +35,11 @@
         <activity android:name=".view.activity.BoardSearchActivity" />
         <activity android:name=".view.activity.A0SplashActivity"
             android:theme="@style/LaunchTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <provider

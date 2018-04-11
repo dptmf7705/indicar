@@ -4,6 +4,8 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import static com.loopj.android.http.AsyncHttpClient.HEADER_CONTENT_TYPE;
+
 /**
  * Created by yeseul on 2018-02-23.
  */
@@ -28,5 +30,9 @@ public class HTTPClient {
         return BASE_URL + url;
     }
 
+    public static void uploadFiles(String url, RequestParams params, AsyncHttpResponseHandler responseHandler){
+        client.addHeader(HEADER_CONTENT_TYPE, "multipart/form-data");
+        client.post(getAbsoluteURL(url), params,responseHandler);
+    }
 
 }

@@ -1,47 +1,21 @@
 package com.indicar.indicar_community.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Point;
 import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.content.FileProvider;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.indicar.indicar_community.R;
-import com.indicar.indicar_community.view.fragment.BoardWriteItemFragment;
+import com.indicar.indicar_community.viewHolder.BoardWriteViewHolder;
 import com.indicar.indicar_community.vo.BoardWriteVO;
-import com.indicar.indicar_community.vo.WriteFileAndTextVO;
 
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-
-import static com.indicar.indicar_community.utils.Constants.PICK_FROM_ALBUM;
-import static com.indicar.indicar_community.utils.Constants.PICK_FROM_CAMERA;
-import static com.loopj.android.http.AsyncHttpClient.log;
 
 /**
  * Created by yeseul on 2018-03-25.
@@ -59,111 +33,54 @@ import static com.loopj.android.http.AsyncHttpClient.log;
  *
  */
 
-public class BoardWriteListAdapter extends RecyclerView.Adapter<BoardWriteListAdapter.ViewHolder> {
+public class BoardWriteListAdapter extends RecyclerView.Adapter<BoardWriteViewHolder>{
     private Context context;
-    private ArrayList<BoardWriteVO> items;  // write item list
-    private int layoutSrc; // laout source
-    private String mCurrentPhotoPath;
-    private Uri photoUri;
+    private int layoutSrc; // layout source
+    private ArrayList<BoardWriteVO> items = new ArrayList<>();  // write item list
+    private View.OnClickListener onClickListener;
 
-    private static final int PICK_FROM_CAMERA = 1;
-    private static final int PICK_FROM_ALBUM = 2;
-    private static final int CROP_FROM_CAMERA = 3;
-
-    public BoardWriteListAdapter(Context context, int layoutSrc){
+    public BoardWriteListAdapter(Context context, int layoutSrc, View.OnClickListener onClickListener) {
         this.context = context;
         this.layoutSrc = layoutSrc;
-        items = new ArrayList<>();
+        this.onClickListener = onClickListener;
     }
 
-
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(layoutSrc, null);
-        ViewHolder viewHolder = new ViewHolder(view);
+    public BoardWriteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(layoutSrc, null);
+        BoardWriteViewHolder viewHolder = new BoardWriteViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final BoardWriteViewHolder holder, int position) {
         final BoardWriteVO item = items.get(position);
-        Bitmap bitmap = item.getBitmap();
-        if(bitmap != null){
-            holder.buttonCamera.setVisibility(View.GONE);
-            holder.buttonAlbum.setVisibility(View.GONE);
-            holder.imagePicked.setVisibility(View.VISIBLE);
-            holder.imagePicked.setImageBitmap(item.getBitmap());
+
+        Uri uri = item.getUri();
+        if(uri != null){
+            holder.setImageViewVisible();
+            Glide.with(context).load(uri).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override
+                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    holder.imagePicked.setImageBitmap(resource);
+                    holder.setButtonClickListener(onClickListener);
+                }
+            });
         } else {
-            holder.buttonCamera.setVisibility(View.VISIBLE);
-            holder.buttonCamera.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //takePhoto();
-                }
-            });
-            holder.buttonAlbum.setVisibility(View.VISIBLE);
-            holder.buttonAlbum.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //goToAlbum();
-                }
-            });
-            holder.imagePicked.setVisibility(View.GONE);
-            holder.imagePicked.setImageBitmap(bitmap);
+            holder.setPickButtonsVisible();
+            holder.setButtonClickListener(onClickListener);
         }
 
         if(item.getText() != null) {
             holder.textWrite.setText("" + item.getText());
         }
-    }
-/*
 
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "indicar_" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/indicar/");
-        if (!storageDir.exists()) {
-            storageDir.mkdirs();
-        }
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-        return image;
     }
-
-    private void takePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photoFile = null;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException e) {
-            Toast.makeText(context, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            ((Activity)context).finish();
-            e.printStackTrace();
-        }
-        if (photoFile != null) {
-            photoUri = FileProvider.getUriForFile(context,
-                    "com.indicar.indicar_community.provider", photoFile);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            ((Activity)context).startActivityForResult(intent, PICK_FROM_CAMERA);
-        }
-    }
-
-    private void goToAlbum() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-        ((Activity)context).startActivityForResult(intent, PICK_FROM_ALBUM);
-    }
-*/
-
 
     @Override
     public int getItemCount() {
-        if(items != null){
-            return  items.size();
-        } else{
-            return 0;
-        }
+        return items.size();
     }
 
     @Override
@@ -171,26 +88,14 @@ public class BoardWriteListAdapter extends RecyclerView.Adapter<BoardWriteListAd
         return position;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageButton buttonAlbum;
-        public ImageButton buttonCamera;
-        public ImageButton imagePicked;
-        public EditText textWrite;
-        public View view;
-
-        public ViewHolder(View view) {
-            super(view);
-            buttonAlbum = view.findViewById(R.id.buttonAlbum);
-            buttonCamera = view.findViewById(R.id.buttonCamera);
-            imagePicked = view.findViewById(R.id.imagePicked);
-            textWrite = view.findViewById(R.id.textWrite);
-            this.view = view;
-        }
-    }
-
     public void addItem(int index, BoardWriteVO item){
         items.add(index, item);
         notifyItemInserted(index);
+    }
+
+    public void addItemList(int index, ArrayList<BoardWriteVO> item){
+        items.addAll(index, item);
+        notifyItemRangeInserted(index, item.size());
     }
 
     public void removeItem(int index){
@@ -198,9 +103,13 @@ public class BoardWriteListAdapter extends RecyclerView.Adapter<BoardWriteListAd
         notifyItemRemoved(index);
     }
 
-    public void setImagePicked(int index, Bitmap bitmap){
-        items.get(index).setBitmap(bitmap);
+    public void setImagePicked(int index, Uri uri){
+        items.get(index).setUri(uri);
         notifyItemChanged(index);
+    }
+
+    public ArrayList<BoardWriteVO> getItems() {
+        return items;
     }
 
 }
