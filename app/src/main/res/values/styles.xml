@@ -10,7 +10,7 @@
 
     <!-- Splash Activity 테마 -->
     <style name="LaunchTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:layout">@layout/a0_activity_splash</item>
+        <item name="android:layout">@layout/splash_activity</item>
         <item name="colorPrimary">@color/colorSplashBackground</item>
         <item name="colorPrimaryDark">@color/colorSplashBackground</item>
     </style>
@@ -21,5 +21,25 @@
         <item name="colorPrimaryDark">#ffffff</item>
         <item name="album.title.color">#525252</item>
         <item name="album.count.color">#525252</item>
+    </style>
+
+    <!-- ImageButton 공통 스타일 테마 -->
+    <style name="imageButtonCustomStyle" parent="@android:style/Widget.ImageButton">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!-- 게시글 TextView 공통 스타일 테마 -->
+    <style name="textViewBoardContentStyle" parent="@android:style/Widget.TextView">
+        <item name="android:layout_margin">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="textViewBoardInfoStyle"  parent="@android:style/Widget.TextView">
+        <item name="android:textSize">15sp</item>
     </style>
 </resources>

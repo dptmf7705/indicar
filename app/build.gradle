@@ -45,6 +45,13 @@ dependencies {
     compile 'gun0912.ted:tedpermission:2.1.1'
     //앨범 이미지 다중선택
     compile 'com.zhihu.android:matisse:0.4.3'
+    //글라이드 이미지 로드
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'jp.wasabeef:glide-transformations:1.0.6@aar'
 
+    //RxJava
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    compile 'io.reactivex.rxjava2:rxjava:2.1.6'
 }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.indicar.indicar_community.view.activity.W1BoardWriteActivity">
+    tools:context="com.indicar.indicar_community.view.W1BoardWriteActivity">
 
     <ImageView
         android:id="@+id/iv_share"
