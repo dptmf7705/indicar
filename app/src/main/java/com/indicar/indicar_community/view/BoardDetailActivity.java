@@ -52,6 +52,10 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
     BoardDetailAdapter boardAdapter;
     BoardCommentAdapter commentAdapter;
 
+    String bbsId;
+    String nttId;
+    String atchFileId;
+
     @Override
     protected int getLayoutId() {
         return R.layout.board_detail_activity;
@@ -59,21 +63,15 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
 
     @Override
     protected void onResume() {
-        super.onResume();
-
         Log.d(TAG, "onResume()");
 
-        Intent intent = getIntent();
-        String bbsId = intent.getStringExtra("bbs_id");
-        String nttId = intent.getStringExtra("ntt_id");
-        String atchFileId = intent.getStringExtra("atch_file_id");
-
-        Log.d(TAG, "boardDetailViewModel" + boardDetailViewModel.toString());
+        super.onResume();
 
         boardDetailViewModel.addObserver(this);
         boardDetailViewModel.start(bbsId, nttId, atchFileId);
-        boardCommentViewModel.addObserver(this);
+//        boardCommentViewModel.addObserver(this);
 //        boardCommentViewModel.start(bbsId, nttId);
+        boardDetailViewModel.onResume();
     }
 
     @Override
@@ -93,6 +91,11 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
         binding.setViewModel(boardDetailViewModel);
 
         Log.d(TAG, "onCreate()");
+
+        Intent intent = getIntent();
+        bbsId = intent.getStringExtra("bbs_id");
+        nttId = intent.getStringExtra("ntt_id");
+        atchFileId = intent.getStringExtra("atch_file_id");
 
         initView();
 
@@ -128,16 +131,6 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
 
     }
 */
-
-    public BoardDetailViewModel getBoardDetailViewModel(){
-
-        return boardDetailViewModel;
-    }
-
-    public BoardCommentViewModel getBoardCommentViewModel(){
-
-        return boardCommentViewModel;
-    }
 
     private void setCommentView() {
 

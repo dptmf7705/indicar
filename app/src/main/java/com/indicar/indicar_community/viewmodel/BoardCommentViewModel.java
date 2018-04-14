@@ -1,5 +1,7 @@
 package com.indicar.indicar_community.viewmodel;
 
+import android.content.Intent;
+
 import com.indicar.indicar_community.model.BaseModel;
 import com.indicar.indicar_community.model.BoardCommentModel;
 
@@ -60,6 +62,16 @@ public class BoardCommentViewModel extends BaseViewModel {
 
     @Override
     public void onDestroy() {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 }

@@ -26,12 +26,9 @@
         <activity android:name=".view.W1BoardWriteActivity">
 
         </activity>
-        <activity android:name=".view.W2BoardWriteDetailActivity"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
+        <activity android:name=".view.BoardWriteDetailActivity"/>
         <activity android:name=".view.BoardSearchActivity" />
-        <activity android:name=".view.A0SplashActivity"
+        <activity android:name=".view.SplashActivity"
             android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

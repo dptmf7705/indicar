@@ -1,5 +1,7 @@
 package com.indicar.indicar_community.viewmodel;
 
+import android.content.Intent;
+
 import java.util.Observable;
 
 /**
@@ -25,6 +27,16 @@ public class BoardListViewModel extends Observable implements IBaseViewModel {
 
     @Override
     public void onDestroy() {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
 
     }
 }

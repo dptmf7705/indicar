@@ -55,7 +55,6 @@ public class BoardDetailAdapter extends BaseRecyclerViewAdapter<BoardFileVO, Rec
             Log.d(TAG, "onBindView() with ViewHolder: BoardDetailHeaderViewHolder");
             Log.d(TAG, "onBindView() board info: " + boardHeader.toString());
 
-            ((BoardDetailHeaderViewHolder) holder).binding.setViewModel(((BoardDetailActivity)context).getBoardDetailViewModel());
             ((BoardDetailHeaderViewHolder) holder).binding.setBoard(boardHeader);
             ((BoardDetailHeaderViewHolder) holder).binding.setBoardItem(itemList.get(position));
 

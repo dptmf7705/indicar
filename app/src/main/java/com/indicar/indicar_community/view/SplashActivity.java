@@ -11,8 +11,12 @@ import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.databinding.SplashActivityBinding;
 import com.indicar.indicar_community.model.vo.ActionBarVO;
 
-public class A0SplashActivity extends BaseActivity<SplashActivityBinding> {
+public class SplashActivity extends BaseActivity<SplashActivityBinding> {
+
     public static ActionBarVO customActionBar = new ActionBarVO();
+
+    public ObservableInt centerImageId = new ObservableInt();
+    public ObservableInt bottomImageId = new ObservableInt();
 
     @Override
     protected int getLayoutId() {
@@ -24,6 +28,11 @@ public class A0SplashActivity extends BaseActivity<SplashActivityBinding> {
         super.onCreate(savedInstanceState);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+        centerImageId.set(R.drawable.splash_center_image);
+        binding.setCenter(centerImageId);
+        bottomImageId.set(R.drawable.splash_bottom_copywrite);
+        binding.setBottom(bottomImageId);
 
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

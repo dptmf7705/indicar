@@ -1,5 +1,6 @@
 package com.indicar.indicar_community.viewmodel;
 
+import android.content.Intent;
 import android.databinding.Observable;
 import android.databinding.ViewDataBinding;
 
@@ -12,4 +13,6 @@ public interface IBaseViewModel {
     void onResume();
     void onPause();
     void onDestroy();
+    void onActivityResult(int requestCode, int resultCode, Intent data);
+    void onBackPressed();
 }

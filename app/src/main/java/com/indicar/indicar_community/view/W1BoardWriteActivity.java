@@ -78,7 +78,7 @@ public class W1BoardWriteActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "카테고리를 선택해 주세요.", Toast.LENGTH_LONG).show();
                 } else {
 
-                    Intent intent = new Intent(getApplicationContext(), W2BoardWriteDetailActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), BoardWriteDetailActivity.class);
                     intent.putExtra("filter", filter);
                     startActivity(intent);
                     overridePendingTransition(R.anim.enter_no_anim_start, R.anim.exit_no_anim_start);

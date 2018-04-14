@@ -17,24 +17,30 @@ public class BindAdapter {
 
 
     @BindingAdapter(value = {"imageUrl", "error"}, requireAll = false)
-    public static void loadImage(ImageView imageView, String url, Drawable errorDrawable){
+    public static void loadImageByUrl(ImageView imageView, String url, Drawable errorDrawable){
         String TAG = BindAdapter.class.getSimpleName();
         Log.d(TAG, "loadImage() with url: " + url);
         ImageUtil.loadImage(imageView, url, errorDrawable);
     }
 
-    @BindingAdapter(value = {"imageResource", "error"}, requireAll = false)
-    public static void loadImage(ImageView imageView, int id, Drawable errorDrawable){
+    @BindingAdapter(value = {"imageUrl", "error"}, requireAll = false)
+    public static void loadImageById(ImageView imageView, int id, Drawable errorDrawable){
         String TAG = BindAdapter.class.getSimpleName();
         Log.d(TAG, "loadImage() with resource id: " + id);
         ImageUtil.loadImage(imageView, id, errorDrawable);
     }
 
-    @BindingAdapter(value = {"imageUrl", "error"}, requireAll = false)
-    public static void loadCircleImage(ImageButton imageView, String url, Drawable errorDrawable){
+    @BindingAdapter(value = {"circleImageUrl", "error"}, requireAll = false)
+    public static void loadCircleImageByUrl(ImageButton imageView, String url, Drawable errorDrawable){
         String TAG = BindAdapter.class.getSimpleName();
         Log.d(TAG, "loadCircleImage() with url: "+ url);
         ImageUtil.loadCircleImage(imageView, url, errorDrawable);
     }
 
+    @BindingAdapter(value = {"circleImageUrl", "error"}, requireAll = false)
+    public static void loadCircleImageById(ImageButton imageView, int id, Drawable errorDrawable){
+        String TAG = BindAdapter.class.getSimpleName();
+        Log.d(TAG, "loadCircleImage() with resource id:  "+ id);
+        ImageUtil.loadCircleImage(imageView, id, errorDrawable);
+    }
 }

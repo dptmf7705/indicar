@@ -1,5 +1,6 @@
 package com.indicar.indicar_community.viewmodel;
 
+import android.content.Intent;
 import android.databinding.Bindable;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +24,7 @@ import java.util.Observable;
  *
  */
 
-public class BoardDetailViewModel extends Observable {
+public class BoardDetailViewModel extends BaseViewModel {
 
     private static final String TAG = BoardDetailViewModel.class.getSimpleName();
 
@@ -108,4 +109,33 @@ public class BoardDetailViewModel extends Observable {
 
     }
 
+    @Override
+    public void onCreate() {
+
+    }
+
+    @Override
+    public void onResume() {
+
+    }
+
+    @Override
+    public void onPause() {
+
+    }
+
+    @Override
+    public void onDestroy() {
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+
+    }
 }

@@ -1,6 +1,5 @@
 package com.indicar.indicar_community.utils;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,7 +13,6 @@ public class ImageUtil {
     public static void loadImage(ImageView imageView, String url, Drawable errorDrawable){
         Glide.with(imageView.getContext())
                 .load(url)
-                .centerCrop()
                 .error(errorDrawable)
                 .into(imageView);
     }
@@ -22,7 +20,6 @@ public class ImageUtil {
     public static void loadImage(ImageView imageView, int id, Drawable errorDrawable){
         Glide.with(imageView.getContext())
                 .load(id)
-                .centerCrop()
                 .error(errorDrawable)
                 .into(imageView);
     }
@@ -30,6 +27,14 @@ public class ImageUtil {
     public static void loadCircleImage(ImageButton imageView, String url, Drawable errorDrawable) {
         Glide.with(imageView.getContext())
                 .load(url)
+                .error(errorDrawable)
+                .bitmapTransform(new CropCircleTransformation(Glide.get(imageView.getContext()).getBitmapPool()))
+                .into(imageView);
+    }
+
+    public static void loadCircleImage(ImageButton imageView, int id, Drawable errorDrawable) {
+        Glide.with(imageView.getContext())
+                .load(id)
                 .error(errorDrawable)
                 .bitmapTransform(new CropCircleTransformation(Glide.get(imageView.getContext()).getBitmapPool()))
                 .into(imageView);

@@ -28,6 +28,8 @@ import com.indicar.indicar_community.model.vo.BoardWriteVO;
 import com.indicar.indicar_community.utils.CustomActionBar;
 import com.indicar.indicar_community.view.adapter.BoardWriteListAdapter;
 import com.indicar.indicar_community.view.adapter.viewHolder.BoardWriteViewHolder;
+import com.indicar.indicar_community.viewmodel.IPickPhotoHelper;
+import com.indicar.indicar_community.viewmodel.PickPhotoHelper;
 import com.loopj.android.http.RequestParams;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
@@ -52,21 +54,10 @@ import io.apptik.multiview.layoutmanagers.ViewPagerLayoutManager;
  *
  * */
 
-public class W2BoardWriteDetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class BoardWriteDetailActivity extends AppCompatActivity implements View.OnClickListener {
     private final int MAX_PAGE = 15;
     private int currentPage = -1;
     private int pageCount = 0;
-
-    private static final int PICK_FROM_CAMERA = 1;
-    private static final int CROP_FROM_CAMERA = 2;
-    private static final int PICKER_REQUEST_CODE = 3;
-
-    private List<Uri> selectedPhotoList;
-    private List<String> selectedPhotoPath;
-
-    private Uri photoUri;
-
-    private CustomActionBar customActionBar;
 
     private ImageButton btnAdd;
     private ImageButton btnDelete;
@@ -85,6 +76,8 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity implements Vie
     private ArrayList<BoardWriteVO> list;
     private BoardWriteViewHolder currentViewHolder;
 
+    PickPhotoHelper pickPhotoHelper;
+
     /**
      * 뒤로가기 버튼 눌렀을 때
      * 액티비티 전환 애니메이션 설정
@@ -102,6 +95,8 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity implements Vie
 
         // 키보드 input mode
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        pickPhotoHelper = new PickPhotoHelper(this);
 
         initView();
         setupPager();
@@ -193,10 +188,41 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity implements Vie
 
                             switch (tag) {
                                 case 0: // 앨범에서 사진 선택
-                                    openBottomPicker();
+                                    pickPhotoHelper.pickFromAlbum(new IPickPhotoHelper.loadPhotoListCallBack<Uri>() {
+                                        @Override
+                                        public void onPhotoListLoaded(List<Uri> photoUriList) {
+
+                                            final int IMAGE_COUNT = photoUriList.size(); // 리스트 개수
+
+                                            ArrayList<BoardWriteVO> list = new ArrayList<>();
+
+                                            for(int i = 0 ; i < IMAGE_COUNT ; i++){
+                                                BoardWriteVO vo = new BoardWriteVO();
+                                                vo.setUri(photoUriList.get(i));
+                                                list.add(vo);
+                                            }
+                                            addPageList(list);
+                                        }
+
+                                        @Override
+                                        public void onPhotoNotAvailable() {
+                                        }
+                                    });
                                     break;
                                 case 1: // 카메라 사진 촬영
-                                    takePhoto();
+                                    pickPhotoHelper.pickFromCamera(new IPickPhotoHelper.loadPhotoCallBack<Uri>() {
+                                        @Override
+                                        public void onPhotoLoaded(Uri photoUri) {
+
+                                            adapter.setImagePicked(currentPage, photoUri);
+                                            addPage();
+                                        }
+
+                                        @Override
+                                        public void onPhotoNotAvailable() {
+
+                                        }
+                                    });
                                     break;
                                 case 2: // 적용된 이미지 삭제
                                     break;
@@ -204,6 +230,7 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity implements Vie
                         }
                     }
                 });
+
         layoutManager = new ViewPagerLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
 
         recyclerView.setLayoutManager(layoutManager);
@@ -218,18 +245,6 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity implements Vie
         });
     }
 
-    private void openBottomPicker() {
-        Matisse.from(this)
-                .choose(MimeType.allOf())
-                .countable(true)
-                .maxSelectable(15)
-                .theme(R.style.photoPickerTheme)
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                .thumbnailScale(0.85f)
-                .imageEngine(new GlideEngine())
-                .forResult(PICKER_REQUEST_CODE);
-    }
-    
     /**
      * currentPage 다음에 페이지 하나 추가한 후, 해당 페이지로 이동
      */
@@ -292,148 +307,9 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity implements Vie
         recyclerView.smoothScrollToPosition(currentPage);
     }
 
-    /**
-     * 이미지 선택 후 로직 처리
-     * */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != RESULT_OK) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        } else if (requestCode == PICK_FROM_CAMERA) {
-            cropImage();
-            // 갤러리에 나타나게
-            MediaScannerConnection.scanFile(this,
-                    new String[]{photoUri.getPath()}, null,
-                    new MediaScannerConnection.OnScanCompletedListener() {
-                        public void onScanCompleted(String path, Uri uri) {
-
-                        }
-                    });
-        } else if (requestCode == CROP_FROM_CAMERA) {
-            //////////////////// 현재 페이지의 이미지 뷰에 뿌리기 ////////////////////
-            /*Glide.with(this).load(photoUri).asBitmap().into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    adapter.setImagePicked(currentPage, resource);
-                    addPage();
-                }
-            });*/
-
-            adapter.setImagePicked(currentPage, photoUri);
-            addPage();
-
-        } else if (requestCode == PICKER_REQUEST_CODE){
-            selectedPhotoList = Matisse.obtainResult(data); // 앨범에서 받아온 uri 리스트
-            final int IMAGE_COUNT = selectedPhotoList.size(); // 리스트 개수
-
-            //////////////////// 페이지 하나씩 추가하면서 이미지 뷰에 뿌리기 ////////////////////
-
-            ArrayList<BoardWriteVO> list = new ArrayList<>();
-            for(int i = 0 ; i < IMAGE_COUNT ; i++){
-                BoardWriteVO vo = new BoardWriteVO();
-                vo.setUri(selectedPhotoList.get(i));
-                list.add(vo);
-                /*final int position = TEMP_CURRENT_PAGE + i;
-                Glide.with(this).load(selectedPhotoList.get(i)).asBitmap().placeholder(R.drawable.app_icon).into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                        adapter.setImagePicked(position, selectedPhotoList.get());
-                    }
-                });*/
-            }
-
-            addPageList(list);
-        }
-    }
-
-
-    // 이미지 크롭
-    public void cropImage() {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(photoUri, "image/*");
-
-        List<ResolveInfo> list = getPackageManager().queryIntentActivities(intent, 0);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            grantUriPermission(list.get(0).activityInfo.packageName, photoUri,
-                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        }
-        int size = list.size();
-        if (size == 0) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-            return;
-        } else {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            }
-            intent.putExtra("crop", "true");
-            intent.putExtra("scale", true);
-
-            File croppedFileName = null;
-            try {
-                croppedFileName = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            File folder = new File(Environment.getExternalStorageDirectory() + "/indicar/");
-            File tempFile = new File(folder.toString(), croppedFileName.getName());
-
-            photoUri = FileProvider.getUriForFile(this,
-                    "com.indicar.indicar_community.provider", tempFile);
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-            }
-
-            intent.putExtra("return-data", false);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-
-            Intent i = new Intent(intent);
-            ResolveInfo res = list.get(0);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                i.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-
-                grantUriPermission(res.activityInfo.packageName, photoUri,
-                        Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            }
-            i.setComponent(new ComponentName(res.activityInfo.packageName, res.activityInfo.name));
-            startActivityForResult(i, CROP_FROM_CAMERA);
-        }
-    }
-
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "nostest_" + timeStamp + "_";
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/indicar/");
-        if (!storageDir.exists()) {
-            storageDir.mkdirs();
-        }
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        return image;
-    }
-
-    private void takePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photoFile = null;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException e) {
-            Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-            finish();
-            e.printStackTrace();
-        }
-        if (photoFile != null) {
-            photoUri = FileProvider.getUriForFile(this,
-                    "com.indicar.indicar_community.provider", photoFile);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            startActivityForResult(intent, PICK_FROM_CAMERA);
-        }
+        pickPhotoHelper.onActivityResult(requestCode, resultCode, data);
     }
 
     private void insertBoardArticle() {
@@ -459,14 +335,4 @@ public class W2BoardWriteDetailActivity extends AppCompatActivity implements Vie
         }
 
     }
-
-    public String getRealPathFromURI(Uri contentUri)
-    {
-        String[] proj = { MediaStore.Audio.Media.DATA };
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
-    }
-
 }
