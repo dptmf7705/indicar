@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.databinding.BoardListFragmentBinding;
-import com.indicar.indicar_community.databinding.PopularBoardFragmentBinding;
 import com.indicar.indicar_community.utils.ScrollBottonAction;
 import com.indicar.indicar_community.view.adapter.BoardListAdapter;
 import com.indicar.indicar_community.viewmodel.BoardListViewModel;
