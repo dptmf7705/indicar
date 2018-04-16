@@ -4,7 +4,8 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import static com.loopj.android.http.AsyncHttpClient.HEADER_CONTENT_TYPE;
+import cz.msebera.android.httpclient.HttpEntity;
+import okhttp3.MultipartBody;
 
 /**
  * Created by yeseul on 2018-02-23.
@@ -32,8 +33,14 @@ public class HttpClient {
     }
 
     public static void uploadFiles(String url, RequestParams params, AsyncHttpResponseHandler responseHandler){
-        multipartClient.addHeader("Content-Type", "multipart/form-data");
+        String boundary = "---" + System.currentTimeMillis() + "---";
+
+        params.setForceMultipartEntityContentType(true);
+
+//        multipartClient.addHeader("Content-Type", "multipart/form-data; boundary=" + boundary);
         multipartClient.setURLEncodingEnabled(false);
+
         multipartClient.post(getAbsoluteURL(url), params, responseHandler);
     }
+
 }

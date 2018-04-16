@@ -1,4 +1,4 @@
-package com.indicar.indicar_community.viewmodel;
+package com.indicar.indicar_community.utils;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -15,7 +15,6 @@ import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
 import com.indicar.indicar_community.R;
-import com.indicar.indicar_community.model.vo.BoardWriteVO;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
@@ -23,7 +22,6 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 

@@ -10,11 +10,19 @@ import java.util.Date;
  */
 
 public class BoardFileVO {
-    public ObservableField<String> atchFileId = new ObservableField<>();
-    public ObservableInt fileIndex = new ObservableInt();
-    public ObservableField<String> fileUrl = new ObservableField<>();
-    public ObservableField<String> storeFileName = new ObservableField<>();
-    public ObservableField<String> originalFileName = new ObservableField<>();
-    public ObservableField<String> fileExtension = new ObservableField<>();
-    public ObservableField<String> content = new ObservableField<>();
+
+    public final ObservableField<String> atchFileId = new ObservableField<>();
+
+    public final ObservableInt fileIndex = new ObservableInt();
+
+    public final ObservableField<String> fileUrl = new ObservableField<>();
+
+    public final ObservableField<String> storeFileName = new ObservableField<>();
+
+    public final ObservableField<String> originalFileName = new ObservableField<>();
+
+    public final ObservableField<String> fileExtension = new ObservableField<>();
+
+    public final ObservableField<String> content = new ObservableField<>();
+
 }

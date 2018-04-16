@@ -61,20 +61,33 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
     }
 
     @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
     public int getItemCount() {
-        if(itemList == null) {
+        if(this.itemList == null) {
             return 0;
         }
 
-        return itemList.size();
+        return this.itemList.size();
     }
 
     public T getItem(int position){
-        if(itemList == null){
+        if(this.itemList == null){
             return null;
         }
 
-        return itemList.get(position);
+        return this.itemList.get(position);
+    }
+
+    public List<T> getItemList(){
+        if(this.itemList == null){
+            return null;
+        }
+
+        return this.itemList;
     }
 
     /**
@@ -91,6 +104,7 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
     }
 
     /**
+     * 맨 처음 item list 초기화 또는 ,
      * item list 마지막 position 뒤에 items 추가
      * */
     public void addItems(List<T> items){

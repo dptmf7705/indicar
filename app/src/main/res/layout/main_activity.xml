@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="activity"
+            type="com.indicar.indicar_community.view.MainActivity"/>
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.indicar.indicar_community.utils.CustomViewPager
+            android:id="@+id/view_pager_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:activity="@{activity}"
+            app:tabLayout="@{tabLayoutMain}"/>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout_main"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/colorTabMenu"
+            app:tabIndicatorColor="#565656"
+            app:tabBackground="@color/colorPrimary"
+            android:scaleY="-1">
+
+        </android.support.design.widget.TabLayout>
+
+    </LinearLayout>
+</layout>

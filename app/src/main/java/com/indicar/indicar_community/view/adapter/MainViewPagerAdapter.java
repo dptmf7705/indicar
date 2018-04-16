@@ -3,25 +3,22 @@ package com.indicar.indicar_community.view.adapter;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.indicar.indicar_community.view.M2CommunityFragment;
-import com.indicar.indicar_community.view.M4AccountFragment;
+import com.indicar.indicar_community.view.CommunityFragment;
 import com.indicar.indicar_community.view.M3ShoppingFragment;
-import com.indicar.indicar_community.view.M1TunningFragment;
+import com.indicar.indicar_community.view.M4AccountFragment;
+import com.indicar.indicar_community.view.TunningFragment;
 
 /**
  * Created by yeseul on 2018-03-24.
  */
 
-public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
-    private final static int TAB_COUNT = 4;
+public class MainViewPagerAdapter extends BaseViewPagerAdapter {
 
-    private Context context;
+    private final int TAB_COUNT = 4;
 
-    public MainTabPagerAdapter(Context context, FragmentManager fragmentManager) {
-        super(fragmentManager);
-        this.context = context;
+    public MainViewPagerAdapter(Context context, FragmentManager fm) {
+        super(context, fm);
     }
 
     @Override
@@ -30,10 +27,10 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
 
         switch (position) {
             case 0:
-                fragment = new M1TunningFragment();
+                fragment = new TunningFragment();
                 break;
             case 1:
-                fragment = new M2CommunityFragment();
+                fragment = new CommunityFragment();
                 break;
             case 2:
                 fragment = new M3ShoppingFragment();
@@ -49,4 +46,6 @@ public class MainTabPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return TAB_COUNT;
     }
+
+
 }

@@ -125,11 +125,6 @@ public class BoardDetailViewModel extends BaseViewModel {
     }
 
     @Override
-    public void onDestroy() {
-
-    }
-
-    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
     }

@@ -1,15 +1,12 @@
 package com.indicar.indicar_community.model.vo;
 
-import android.database.Observable;
 import android.databinding.ObservableField;
 
-import java.util.Date;
-
 /**
- * Created by yeseul on 2018-04-13.
+ * Created by yeseul on 2018-04-17.
  */
 
-public class BoardDetailVO {
+public class BoardVO {
 
     public ObservableField<String> boardType = new ObservableField<>();
 
@@ -28,11 +25,5 @@ public class BoardDetailVO {
     public ObservableField<String> boardTitle = new ObservableField<>();
 
     public ObservableField<String> boardContent = new ObservableField<>();
-
-    public ObservableField<Date> firstDate = new ObservableField<>();
-
-    public ObservableField<Date> lastUpdateDate = new ObservableField<>();
-
-    public ObservableField<String> readCount = new ObservableField<>();
 
 }

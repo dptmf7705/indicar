@@ -17,5 +17,19 @@ import java.util.Observable;
  */
 
 public abstract class BaseViewModel extends Observable implements IBaseViewModel {
+    public static final int ACTIVITY_FINISH = 0;
+    public static final int ACTIVITY_NEXT = 1;
+
+    @Override
+    public void notifyObservers() {
+        setChanged();
+        super.notifyObservers();
+    }
+
+    @Override
+    public void notifyObservers(Object arg) {
+        setChanged();
+        super.notifyObservers(arg);
+    }
 
 }

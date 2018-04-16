@@ -1,4 +1,4 @@
-package com.indicar.indicar_community.viewmodel;
+package com.indicar.indicar_community.utils;
 
 import android.app.Activity;
 import android.net.Uri;

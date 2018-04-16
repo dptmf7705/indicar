@@ -22,12 +22,13 @@ public class UserModel implements BaseModel<UserVO> {
     }
 
     @Override
-    public void insertDataList(HashMap<String, String> map) {
+    public void insertData(HashMap<String, Object> map) {
 
     }
 
     @Override
-    public void insertData(HashMap<String, String> map) {
+    public void updateData(HashMap<String, Object> map) {
 
     }
+
 }

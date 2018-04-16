@@ -17,24 +17,24 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.A1MainActivity"
+        <activity android:name=".view.MainActivity"
             android:windowSoftInputMode="adjustNothing">
 
-        </activity>
-        <activity android:name=".view.C0CarFilterActivity" />
-        <activity android:name=".view.BoardDetailActivity" />
-        <activity android:name=".view.W1BoardWriteActivity">
-
-        </activity>
-        <activity android:name=".view.BoardWriteDetailActivity"/>
-        <activity android:name=".view.BoardSearchActivity" />
-        <activity android:name=".view.SplashActivity"
-            android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".view.C0CarFilterActivity" />
+        <activity android:name=".view.BoardDetailActivity" />
+        <activity android:name=".view.BoardWriteActivity">
+        </activity>
+        <activity android:name=".view.BoardWriteDetailActivity"/>
+        <activity android:name=".view.BoardSearchActivity" />
+        <activity android:name=".view.SplashActivity"
+            android:theme="@style/LaunchTheme">
+
         </activity>
 
         <provider

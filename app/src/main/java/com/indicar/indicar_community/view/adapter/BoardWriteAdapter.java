@@ -2,93 +2,159 @@ package com.indicar.indicar_community.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.database.Cursor;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.indicar.indicar_community.R;
+import com.indicar.indicar_community.databinding.BoardWriteItemBinding;
 import com.indicar.indicar_community.model.vo.BoardWriteVO;
+import com.indicar.indicar_community.utils.IPickPhotoHelper;
+import com.indicar.indicar_community.utils.PickPhotoHelper;
 
-import java.io.File;
 import java.util.ArrayList;
-
-import static com.indicar.indicar_community.utils.Constants.*;
+import java.util.List;
 
 /**
- * Created by yeseul on 2018-02-26.
+ * Created by yeseul on 2018-03-25.
+ *
+ * TODO
+ * 1. -> popular, all board 도 마찬가지로. ViewHolder 만 따로만들고 어댑터 하나로 합치기
+ *
+ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//sdk 24 이상, 누가(7.0)
+ photoUri = FileProvider.getUriForFile(getApplicationContext(),// 7.0에서 바뀐 부분은 여기다.
+ BuildConfig.APPLICATION_ID + ".provider", photoFile);
+ } else {//sdk 23 이하, 7.0 미만
+ photoUri = Uri.fromFile(photoFile);
+ }
+ *
  */
 
-public class BoardWriteAdapter extends RecyclerView.Adapter<BoardWriteAdapter.ViewHolder>{
-    private Context context;
-    private ArrayList<BoardWriteVO> items;
+public class BoardWriteAdapter extends BaseRecyclerViewAdapter<BoardWriteVO, BoardWriteAdapter.BoardWriteViewHolder>{
 
-    public BoardWriteAdapter(Context context, ArrayList<BoardWriteVO> items) {
-        this.context = context;
-        this.items = items;
+    private final int PICK_FROM_ALBUM = 0;
+    private final int PICK_FROM_CAMERA = 1;
+
+    public PickPhotoHelper pickPhotoHelper;
+
+    public BoardWriteAdapter(Context context) {
+        super(context);
+    }
+
+    public BoardWriteAdapter(Context context, PickPhotoHelper pickPhotoHelper) {
+        super(context);
+        this.pickPhotoHelper = pickPhotoHelper;
+    }
+
+    public BoardWriteAdapter(Context context, List<BoardWriteVO> list) {
+        super(context, list);
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_board_write_item, null);
-        ViewHolder viewHolder = new ViewHolder(view);
-        return viewHolder;
+    protected void onBindView(BoardWriteViewHolder holder, int position) {
+        final int pos = position;
+        holder.binding.setWriteItem(itemList.get(position));
+        holder.binding.buttonFromAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                processPickPhoto(pos, PICK_FROM_ALBUM);
+            }
+        });
+
+        holder.binding.buttonFromCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                processPickPhoto(pos, PICK_FROM_CAMERA);
+            }
+        });
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        //////////////////// 흠........어렵군......... ////////////////////
+    public BoardWriteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.board_write_item, null);
+        return new BoardWriteViewHolder(view);
     }
 
-    @Override
-    public int getItemCount() {
-        return items.size();
+    public class BoardWriteViewHolder extends RecyclerView.ViewHolder {
+
+        BoardWriteItemBinding binding;
+
+        public BoardWriteViewHolder(View itemView) {
+            super(itemView);
+            binding = DataBindingUtil.bind(itemView);
+        }
     }
 
-    public class ViewHolder extends  RecyclerView.ViewHolder{
-        public LinearLayout ll_write_btn_container;
-        public ImageView iv_from_album;
-        public ImageView iv_from_camera;
-        public ImageView iv_write_photo;
-        public EditText et_write_text;
+    private void processPickPhoto(final int position, int commend) {
 
-        public ViewHolder(View view) {
-            super(view);
+        if(commend == PICK_FROM_ALBUM){
 
-            ll_write_btn_container = view.findViewById(R.id.ll_write_btn_container);
-            iv_from_album = view.findViewById(R.id.iv_from_album);
-            iv_from_camera = view.findViewById(R.id.iv_from_camera);
-            iv_write_photo = view.findViewById(R.id.iv_write_photo);
-            et_write_text = view.findViewById(R.id.et_write_text);
-            iv_from_album.setOnClickListener(new View.OnClickListener() {
+            pickPhotoHelper.pickFromAlbum(new IPickPhotoHelper.loadPhotoListCallBack<Uri>() {
                 @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(Intent.ACTION_PICK);
-                    intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
-                    intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    ((Activity) context).startActivityForResult(intent, PICK_FROM_ALBUM);
+                public void onPhotoListLoaded(List<Uri> photoUriList) {
+
+                    final int IMAGE_COUNT = photoUriList.size(); // 리스트 개수
+
+                    ArrayList<BoardWriteVO> list = new ArrayList<>();
+
+                    for(int i = 0 ; i < IMAGE_COUNT ; i++){
+                        if(i == 0){
+                            itemList.get(position).imageUrl.set(photoUriList.get(i));
+                            itemList.get(position).hasImage.set(true);
+                            itemList.get(position).filePath.set(getRealPathFromURI(photoUriList.get(i)));
+                            continue;
+                        }
+                        BoardWriteVO vo = new BoardWriteVO();
+                        vo.imageUrl.set(photoUriList.get(i));
+                        vo.hasImage.set(true);
+                        vo.filePath.set(getRealPathFromURI(photoUriList.get(i)));
+                        list.add(vo);
+                    }
+
+                    addItems(position + 1, list);
+                }
+
+                @Override
+                public void onPhotoNotAvailable() {
+
                 }
             });
-            iv_from_camera.setOnClickListener(new View.OnClickListener() {
+
+        } else if(commend == PICK_FROM_CAMERA){
+
+            pickPhotoHelper.pickFromCamera(new IPickPhotoHelper.loadPhotoCallBack<Uri>() {
                 @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                public void onPhotoLoaded(Uri photoUri) {
 
-                    String url = "tmp_" + String.valueOf(System.currentTimeMillis()) + ".jpg";
-                    Uri mImageCaptureUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory(), url));
+                    itemList.get(position).imageUrl.set(photoUri);
+                    itemList.get(position).hasImage.set(true);
+                }
 
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageCaptureUri);
-                    ((Activity) context).startActivityForResult(intent, PICK_FROM_CAMERA);
+                @Override
+                public void onPhotoNotAvailable() {
+
                 }
             });
         }
-
     }
+
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+//        CursorLoader cursorLoader = new CursorLoader(context, contentUri, proj, null, null, null);
+//        Cursor cursor = cursorLoader.loadInBackground();
+        Cursor cursor = ((Activity)context).managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        cursor.moveToFirst();
+
+        return cursor.getString(column_index);
+    }
+
 }

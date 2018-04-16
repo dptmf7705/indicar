@@ -1,6 +1,7 @@
 package com.indicar.indicar_community.view;
 
 import android.content.Intent;
+import android.databinding.ObservableInt;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -43,7 +44,8 @@ import java.util.Observer;
  * @author yeseul
  */
 
-public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding> implements Observer {
+public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding>{
+
     private final String TAG = this.getClass().getSimpleName();
 
     BoardDetailViewModel boardDetailViewModel = new BoardDetailViewModel();
@@ -62,6 +64,12 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
     }
 
     @Override
+    protected void setActionBarImage(ObservableInt centerImageId, ObservableInt leftImageId) {
+        centerImageId.set(R.drawable.logo_community);
+        leftImageId.set(R.drawable.btn_back);
+    }
+
+    @Override
     protected void onResume() {
         Log.d(TAG, "onResume()");
 
@@ -72,6 +80,7 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
 //        boardCommentViewModel.addObserver(this);
 //        boardCommentViewModel.start(bbsId, nttId);
         boardDetailViewModel.onResume();
+        boardCommentViewModel.onResume();
     }
 
     @Override
@@ -81,6 +90,8 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
 
         boardDetailViewModel.deleteObserver(this);
         boardCommentViewModel.deleteObserver(this);
+        boardDetailViewModel.onPause();
+        boardCommentViewModel.onPause();
 
         super.onPause();
     }

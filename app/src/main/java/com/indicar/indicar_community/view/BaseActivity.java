@@ -1,6 +1,8 @@
 package com.indicar.indicar_community.view;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
@@ -9,37 +11,40 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.indicar.indicar_community.databinding.ActionBarLayoutBinding;
 import com.indicar.indicar_community.utils.CustomActionBar;
+
+import java.util.Observer;
 
 /**
  * Created by yeseul on 2018-04-13.
  */
 
-public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatActivity {
+public abstract class BaseActivity<B extends ViewDataBinding> extends AppCompatActivity implements Observer {
 
-    private static final String TAG = BaseActivity.class.getSimpleName();
-    /* Data Binding
-        *
-        * layout 파일이름을 기준으로 파스칼표기법의 Binding 클래스가 자동 생성된다.
-        * */
     protected B binding;
+    protected ActionBarLayoutBinding actionBarBinding;
+
+    public final ObservableInt centerImageId = new ObservableInt();
+    public final ObservableInt leftImageId = new ObservableInt();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        /* Data Binding
-        *
-        * 1. setContentView 대신 DataBindingUtil 의 setContentView 를 사용한다.
-        * */
-
-        Log.d(TAG, "onCreate()");
-
         binding = DataBindingUtil.setContentView(this, getLayoutId());
 
-        Log.d(TAG, "onCreate() with binding: " + binding.getRoot().toString());
+        initActionBar();
     }
 
     protected abstract int getLayoutId();
+
+    protected void initActionBar(){
+        setActionBarImage(centerImageId, leftImageId);
+
+        actionBarBinding = CustomActionBar.customize(this, getSupportActionBar());
+        actionBarBinding.setActivity(this);
+    }
+
+    protected abstract void setActionBarImage(ObservableInt centerImageId, ObservableInt leftImageId);
 
 }

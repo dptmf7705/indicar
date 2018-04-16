@@ -38,13 +38,12 @@ public class BoardCommentAdapter extends BaseRecyclerViewAdapter<BoardCommentVO,
         return new BoardCommentViewHolder(view);
     }
 
-    public class BoardCommentViewHolder extends RecyclerView.ViewHolder {
 
-        BoardCommentItemBinding binding;
+
+    public class BoardCommentViewHolder extends BaseViewHolder<BoardCommentItemBinding>{
 
         public BoardCommentViewHolder(View itemView) {
             super(itemView);
-            binding = DataBindingUtil.bind(itemView);
         }
     }
 

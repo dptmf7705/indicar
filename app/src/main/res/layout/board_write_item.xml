@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="writeItem"
+            type="com.indicar.indicar_community.model.vo.BoardWriteVO"/>
+        <variable
+            name="viewModel"
+            type="com.indicar.indicar_community.viewmodel.BoardWriteViewModel"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        app:cardElevation="0dp"
+        app:cardUseCompatPadding="false">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/ll_write_btn_container"
+                    android:background="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:visibility="@{writeItem.hasImage ? View.GONE : View.VISIBLE}">
+
+                    <ImageButton
+                        style="@style/imageButtonCustomStyle"
+                        android:id="@+id/button_from_album"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/img_write_album"/>
+
+                    <ImageButton
+                        style="@style/imageButtonCustomStyle"
+                        android:id="@+id/button_from_camera"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/img_write_camera"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    style="@style/imageButtonCustomStyle"
+                    android:id="@+id/image_write"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{writeItem.hasImage ? View.VISIBLE : View.GONE}"
+                    app:imageUrl="@{writeItem.imageUrl}"/>
+
+                <EditText
+                    style="@style/textViewBoardContentStyle"
+                    android:gravity="start"
+                    android:id="@+id/et_write_text"
+                    android:background="@color/colorWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="250dp"
+                    android:text="@{writeItem.writeText}"/>
+
+            </LinearLayout>
+        </ScrollView>
+    </android.support.v7.widget.CardView>
+</layout>

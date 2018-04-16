@@ -17,6 +17,7 @@ import static android.view.MotionEvent.ACTION_UP;
  */
 
 public class ScrollBottonAction implements ViewTreeObserver.OnScrollChangedListener, View.OnTouchListener{
+
     RecyclerView scrollView;
     boolean isReady;
     List<onScrollEndListener> scrollBottomListenerList;

@@ -1,5 +1,7 @@
 package com.indicar.indicar_community.model.vo;
 
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.net.Uri;
 
 /**
@@ -7,27 +9,13 @@ import android.net.Uri;
  */
 
 public class BoardWriteVO{
-    private Uri uri;
-    private String text;
 
-    public BoardWriteVO(){
+    public final ObservableField<Uri> imageUrl = new ObservableField<>();
 
-    }
+    public final ObservableField<String> writeText = new ObservableField<>();
 
-    public Uri getUri() {
-        return uri;
-    }
+    public final ObservableBoolean hasImage = new ObservableBoolean(false);
 
-    public void setUri(Uri uri) {
-        this.uri = uri;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
+    public final ObservableField<String> filePath = new ObservableField<>();
 
 }

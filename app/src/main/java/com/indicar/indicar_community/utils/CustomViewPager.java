@@ -23,7 +23,7 @@ public class CustomViewPager extends ViewPager {
             return super.onTouchEvent(ev);
         }
 
-        return false;
+        return enabled;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class CustomViewPager extends ViewPager {
             return super.onInterceptTouchEvent(ev);
         }
 
-        return false;
+        return enabled;
     }
 
     public void setPagingEnabled(boolean enabled){

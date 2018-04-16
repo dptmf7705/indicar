@@ -1,0 +1,114 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="fragment"
+            type="com.indicar.indicar_community.view.CommunityFragment"/>
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
+
+        <LinearLayout
+            android:id="@+id/layout_search_box_container"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorPrimary"
+            android:elevation="1dp"
+            android:orientation="horizontal">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_board_type"
+                android:layout_marginLeft="65dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+                app:tabBackground="@color/colorPrimary"
+                app:tabIndicatorColor="#454545"
+                app:tabIndicatorHeight="3dp"
+                app:tabSelectedTextColor="#454545"
+                app:tabTextColor="#828282">
+
+            </android.support.design.widget.TabLayout>
+
+            <ImageButton
+                style="@style/imageButtonCustomStyle"
+                android:id="@+id/button_search_toggle"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/btn_search"/>
+            <!--        android:visibility="@{ viewModel.isSearchBarOpen ? View.GONE : View.VISIBLE }"
+                        android:onClick="@{(v) -> viewModel.toggleSearchBar()}"-->
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/searchBarLayout"
+            android:layout_below="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:elevation="1dp"
+            android:orientation="horizontal">
+            <!--android:visibility="@{ viewModel.isSearchBarOpen ? View.VISIBLE : View.GONE }"-->
+
+            <ImageButton
+                style="@style/imageButtonCustomStyle"
+                android:id="@+id/button_search"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/btn_search"/>
+            <!--android:onClick="@{(v) -> viewModel.toggleSearchBar()}"-->
+
+            <EditText
+                android:id="@+id/text_search"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="검색어를 입력하세요."
+                android:textSize="15sp"
+                android:inputType="text"
+                android:imeOptions="actionSearch"
+                android:background="@android:color/transparent"/>
+            <!--android:text="@{viewModel.textSearch}"
+            android:onTextChanged="@{(t, s, b, c) -> viewModel.setSearchText(t)}"-->
+
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager_board"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/searchBarLayout"
+            app:fragment="@{fragment}"
+            app:tabLayout="@{tabBoardType}">
+
+        </android.support.v4.view.ViewPager>
+
+        <ImageButton
+            style="@style/imageButtonCustomStyle"
+            android:id="@+id/button_board_write"
+            android:layout_margin="26dp"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:src="@drawable/btn_write_board"/>
+
+    </RelativeLayout>
+</layout>

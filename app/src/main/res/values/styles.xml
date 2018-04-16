@@ -30,7 +30,7 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <!-- 게시글 TextView 공통 스타일 테마 -->
+    <!-- 게시글 EditTextView 공통 스타일 테마 -->
     <style name="textViewBoardContentStyle" parent="@android:style/Widget.TextView">
         <item name="android:layout_margin">15dp</item>
         <item name="android:paddingBottom">15dp</item>
@@ -39,7 +39,15 @@
         <item name="android:textSize">13sp</item>
     </style>
 
+    <!-- 게시글 정보(유저이름, 좋아요, 댓글 등) TextView 스타일 테마 -->
     <style name="textViewBoardInfoStyle"  parent="@android:style/Widget.TextView">
         <item name="android:textSize">15sp</item>
     </style>
+
+    <style name="textViewBoardWritePageInfo" parent="@android:style/Widget.TextView">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
 </resources>

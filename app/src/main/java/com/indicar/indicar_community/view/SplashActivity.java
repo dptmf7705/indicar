@@ -3,17 +3,15 @@ package com.indicar.indicar_community.view;
 import android.content.Intent;
 import android.databinding.ObservableInt;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.databinding.SplashActivityBinding;
-import com.indicar.indicar_community.model.vo.ActionBarVO;
+
+import java.util.Observable;
 
 public class SplashActivity extends BaseActivity<SplashActivityBinding> {
-
-    public static ActionBarVO customActionBar = new ActionBarVO();
 
     public ObservableInt centerImageId = new ObservableInt();
     public ObservableInt bottomImageId = new ObservableInt();
@@ -21,6 +19,16 @@ public class SplashActivity extends BaseActivity<SplashActivityBinding> {
     @Override
     protected int getLayoutId() {
         return R.layout.splash_activity;
+    }
+
+    @Override
+    protected void setActionBarImage(ObservableInt centerImageId, ObservableInt leftImageId) {
+
+    }
+
+    @Override
+    protected void initActionBar() {
+
     }
 
     @Override
@@ -38,7 +46,7 @@ public class SplashActivity extends BaseActivity<SplashActivityBinding> {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getApplicationContext(), A1MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
                 finish();
@@ -46,4 +54,8 @@ public class SplashActivity extends BaseActivity<SplashActivityBinding> {
         }, 2000);
     }
 
+    @Override
+    public void update(Observable observable, Object o) {
+
+    }
 }

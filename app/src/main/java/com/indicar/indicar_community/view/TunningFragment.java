@@ -8,23 +8,28 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.indicar.indicar_community.R;
+import com.indicar.indicar_community.databinding.TunningFragmentBinding;
+
+import java.util.Observable;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class M1TunningFragment extends Fragment {
+public class TunningFragment extends BaseFragment<TunningFragmentBinding> {
 
 
-    public M1TunningFragment() {
+    public TunningFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.tunning_fragment;
     }
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.m1_fragment_tunning, container, false);
-    }
+    public void update(Observable observable, Object o) {
 
+    }
 }
