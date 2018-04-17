@@ -59,6 +59,7 @@ public class BoardListViewModel extends BaseViewModel {
             @Override
             public void onRefresh() {
                 adapter.get().clearItems();
+                currentItemCount = 0;
                 isEndOfPage = false;
                 getBoardList();
             }

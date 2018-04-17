@@ -114,18 +114,6 @@ public class CommunityFragment extends BaseFragment<CommunityFragmentBinding> {
     public void update(Observable observable, Object o) {
 
     }
-/*
-
-    */
-/**
-     * 검색 창 입력 텍스트를 실시간으로 받는다
-     * *//*
-
-    public void setSearchText(CharSequence text){
-        textSearch.set(text.toString());
-    }
-
-*/
 
 }
 

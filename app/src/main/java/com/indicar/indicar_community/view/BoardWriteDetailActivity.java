@@ -20,10 +20,6 @@ import static com.indicar.indicar_community.viewmodel.BaseViewModel.ACTIVITY_FIN
 
 /**
  * TODO
- * 1. 페이지 하나 일 때 삭제 시, 내용이 있으면 reset
- * 2. 리사이클러 뷰 어댑터 : 페이지 추가, 사진 추가 기능 나눠서 구현
- *
- *
  *
  * */
 

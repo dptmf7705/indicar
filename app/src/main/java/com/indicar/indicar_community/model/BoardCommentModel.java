@@ -58,8 +58,8 @@ public class BoardCommentModel implements BaseModel<BoardCommentVO> {
                             vo.commentIndex.set(Integer.parseInt(resultJson.getString("answer_no"))); // 댓글 index
                             vo.content.set(resultJson.getString("answer")); // 댓글 내용
                             vo.userName.set(resultJson.getString("writer_nm")); // 작성자
-                            vo.firstTime.set(DateUtil.convertStringToDate(resultJson.getString("first_time"))); // 작성 날짜
-                            vo.lastUpdateTime.set(DateUtil.convertStringToDate(resultJson.getString("last_updt_time"))); // 수정 날짜
+                            vo.firstTime.set(resultJson.getString("first_time")); // 작성 날짜
+                            vo.lastUpdateTime.set(resultJson.getString("last_updt_time")); // 수정 날짜
 
                             commentList.add(vo);
 
@@ -87,6 +87,8 @@ public class BoardCommentModel implements BaseModel<BoardCommentVO> {
 
     @Override
     public void insertData(HashMap<String, Object> map) {
+        final String URL = "/selectCommentList";
+
 
     }
 

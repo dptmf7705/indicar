@@ -31,7 +31,6 @@
         <activity android:name=".view.BoardWriteActivity">
         </activity>
         <activity android:name=".view.BoardWriteDetailActivity"/>
-        <activity android:name=".view.BoardSearchActivity" />
         <activity android:name=".view.SplashActivity"
             android:theme="@style/LaunchTheme">
 

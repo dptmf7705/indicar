@@ -33,9 +33,9 @@ public class BoardDetailVO {
 
     public ObservableField<String> boardContent = new ObservableField<>();
 
-    public ObservableField<Date> firstDate = new ObservableField<>();
+    public ObservableField<String> firstDate = new ObservableField<>();
 
-    public ObservableField<Date> lastUpdateDate = new ObservableField<>();
+    public ObservableField<String> lastUpdateDate = new ObservableField<>();
 
     public ObservableField<String> readCount = new ObservableField<>();
 

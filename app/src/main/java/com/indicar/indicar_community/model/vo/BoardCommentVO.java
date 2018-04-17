@@ -17,7 +17,7 @@ public class BoardCommentVO {
     public final ObservableInt commentIndex = new ObservableInt();
     public final ObservableField<String> content = new ObservableField<>();
     public final ObservableField<String> userName = new ObservableField<>();
-    public final ObservableField<Date> firstTime = new ObservableField<>();
-    public final ObservableField<Date> lastUpdateTime = new ObservableField<>();
+    public final ObservableField<String> firstTime = new ObservableField<>();
+    public final ObservableField<String> lastUpdateTime = new ObservableField<>();
 
 }

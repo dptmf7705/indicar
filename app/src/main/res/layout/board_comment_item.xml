@@ -48,7 +48,7 @@
                     android:layout_alignEnd="@+id/linearLayout"
                     android:layout_alignParentTop="true"
                     android:layout_alignRight="@+id/linearLayout"
-                    android:text="@{comment.firstTime}"
+                    app:date="@{comment.firstTime}"
                     android:textSize="15sp"/>
 
                 <ImageButton

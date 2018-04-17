@@ -1,6 +1,5 @@
 package com.indicar.indicar_community.view.binding;
 
-import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -8,25 +7,19 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.utils.ImageUtil;
-import com.indicar.indicar_community.utils.ScrollBottonAction;
-import com.indicar.indicar_community.view.BaseActivity;
 import com.indicar.indicar_community.view.CommunityFragment;
 import com.indicar.indicar_community.view.MainActivity;
 import com.indicar.indicar_community.view.adapter.BaseRecyclerViewAdapter;
-import com.indicar.indicar_community.view.adapter.BaseViewPagerAdapter;
 import com.indicar.indicar_community.view.adapter.BoardViewPagerAdapter;
 import com.indicar.indicar_community.view.adapter.MainViewPagerAdapter;
-
-import static com.indicar.indicar_community.utils.Constants.NUM_OF_BOARD_BUTTONS;
-import static com.indicar.indicar_community.utils.Constants.NUM_OF_MAIN_TAB_BUTTONS;
 
 /**
  * Created by yeseul on 2018-04-13.
@@ -34,6 +27,8 @@ import static com.indicar.indicar_community.utils.Constants.NUM_OF_MAIN_TAB_BUTT
 
 public class BindAdapter {
 
+    public static final int NUM_OF_BOARD_BUTTONS = 2; // 게시판 탭 버튼 개수
+    public static final int NUM_OF_MAIN_TAB_BUTTONS = 4; // 하단 탭 버튼 개수
 
     @BindingAdapter(value = {"imageUrl", "boardType"}, requireAll = false)
     public static void loadImage(ImageView imageView, String url, String boardType){
@@ -125,7 +120,7 @@ public class BindAdapter {
         };
 
         for(int i = 0 ; i < NUM_OF_MAIN_TAB_BUTTONS ; i++) {
-            View view = activity.getLayoutInflater().inflate(R.layout.a1_layout_main_tab, null);
+            View view = activity.getLayoutInflater().inflate(R.layout.main_tab_layout, null);
             ImageView imageView = view.findViewById(R.id.image);
             imageView.setImageResource(IMAGE_TAB_ICON[i]);
             tabLayout.getTabAt(i).setCustomView(view);
@@ -166,4 +161,43 @@ public class BindAdapter {
         refreshLayout.setOnRefreshListener(onRefreshListener);
     }
 
+    @BindingAdapter({"date"})
+    public static void convertDateToDisplayText(TextView textView, String inputDate) {
+
+        textView.setText(inputDate);
+ /*       SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateOnly = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date input = null;
+        try {
+            input = dateFormat.parse(inputDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        String displayString = "";
+
+        if (input == null) {
+            textView.setText(inputDate);
+        }
+
+        long diffTimeMillis = System.currentTimeMillis() - input.getTime(); // 경과된 시간 (ms)
+        int diffTime = (int) (diffTimeMillis / (1000 * 60)); // 분 단위로 변경
+
+        if (diffTime > 0) {
+            if (diffTime < 60) { // ~ 59분 전
+                displayString = diffTime + "분 전";
+            } else {
+                diffTime = diffTime / 60; // 시간 단위로 변경
+
+                if (diffTime < 24) { // ~ 23시간 전
+                    displayString = diffTime + "시간 전";
+                } else { // 날짜 출력
+                    displayString = dateOnly.format(inputDate);
+                }
+            }
+        }
+        textView.setText(displayString);
+    */
+    }
 }

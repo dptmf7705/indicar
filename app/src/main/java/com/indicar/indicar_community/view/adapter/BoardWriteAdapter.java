@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v4.content.CursorLoader;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +73,23 @@ public class BoardWriteAdapter extends BaseRecyclerViewAdapter<BoardWriteVO, Boa
             @Override
             public void onClick(View view) {
                 processPickPhoto(pos, PICK_FROM_CAMERA);
+            }
+        });
+
+        holder.binding.textWrite.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                itemList.get(pos).writeText.set(editable.toString());
             }
         });
     }

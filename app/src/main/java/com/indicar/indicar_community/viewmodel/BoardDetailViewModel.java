@@ -2,6 +2,8 @@ package com.indicar.indicar_community.viewmodel;
 
 import android.content.Intent;
 import android.databinding.Bindable;
+import android.databinding.ObservableField;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -9,7 +11,9 @@ import android.widget.Toast;
 import com.indicar.indicar_community.model.BaseModel;
 import com.indicar.indicar_community.model.BoardFileModel;
 import com.indicar.indicar_community.model.BoardModel;
+import com.indicar.indicar_community.model.vo.BoardDetailVO;
 import com.indicar.indicar_community.model.vo.BoardFileVO;
+import com.indicar.indicar_community.view.adapter.BoardDetailAdapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +33,11 @@ public class BoardDetailViewModel extends BaseViewModel {
 
     private static final String TAG = BoardDetailViewModel.class.getSimpleName();
 
+    public final ObservableField<BoardDetailAdapter> adapter = new ObservableField<>();
+    public final ObservableField<StaggeredGridLayoutManager> layoutManager = new ObservableField<>();
+    public final ObservableField<BoardDetailVO> board = new ObservableField<>();
+    public final ObservableField<BoardFileVO> boardItem = new ObservableField<>();
+
     BoardModel boardModel;
     BoardFileModel fileModel;
 //    UserModel userModel;
@@ -44,26 +53,8 @@ public class BoardDetailViewModel extends BaseViewModel {
 
     }
 
-    public void onCreate(String bbsId, String nttId, String atchFileId){
+    public void onCreate(String bbsId, String nttId){
         getBoardData(bbsId, nttId);
-        getFileData(atchFileId);
-    }
-
-    private void getFileData(String atchFileId) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("atch_file_id", atchFileId);
-
-        fileModel.getDataList(map, new BaseModel.LoadDataListCallBack() {
-            @Override
-            public void onDataListLoaded(List list) {
-                notifyObservers(list);
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        });
     }
 
     public void getBoardData(String bbsId, String nttId){
@@ -74,7 +65,12 @@ public class BoardDetailViewModel extends BaseViewModel {
         boardModel.getData(map, new BaseModel.LoadDataCallBack() {
             @Override
             public void onDataLoaded(Object data) {
-                notifyObservers(data);
+
+                board.set((BoardDetailVO) data);
+                notifyObservers();
+
+                String atchFileId = ((BoardDetailVO)data).atchFileId.get();
+                getFileData(atchFileId);
             }
 
             @Override
@@ -83,6 +79,35 @@ public class BoardDetailViewModel extends BaseViewModel {
             }
         });
     }
+
+    private void getFileData(String atchFileId) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("atch_file_id", atchFileId);
+
+        Log.d("getFileData", "atch_file_id: " + atchFileId);
+
+        fileModel.getDataList(map, new BaseModel.LoadDataListCallBack() {
+            @Override
+            public void onDataListLoaded(List list) {
+
+                if (list != null) {
+                    boardItem.set((BoardFileVO) list.get(0));
+                    notifyObservers();
+
+                    list.remove(0);
+                    adapter.get().addItems(list);
+
+                    Log.d("getFileData", "test" + adapter.get().getItem(0).atchFileId);
+
+                }
+            }
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
 
     /* Data Binding
     *

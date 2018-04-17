@@ -6,6 +6,8 @@ import com.tsengvn.typekit.Typekit;
 
 /**
  * Created by yeseul on 2018-02-23.
+ *
+ *  글꼴 설정
  */
 
 public class App extends Application{

@@ -64,7 +64,7 @@
                 <EditText
                     style="@style/textViewBoardContentStyle"
                     android:gravity="start"
-                    android:id="@+id/et_write_text"
+                    android:id="@+id/text_write"
                     android:background="@color/colorWhite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

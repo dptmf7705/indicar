@@ -38,7 +38,4 @@ public class CarFilterActivity extends BaseActivity<CarFilterActivityBinding> {
 
     }
 
-//    private void initActionBar() {
-//        CustomActionBar.with(this).init(getSupportActionBar());
-//    }
 }

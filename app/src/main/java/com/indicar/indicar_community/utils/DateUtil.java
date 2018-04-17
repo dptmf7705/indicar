@@ -16,13 +16,13 @@ public class DateUtil {
     /**
      * json 파싱할 때 사용
      * */
-    public static Date convertStringToDate(String dateString){
+    public static String convertStringToDate(String dateString){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         try {
             Date result = dateFormat.parse(dateString);
             Log.d("convertStringToDate", "convertStringToDate() called.... result: " + dateFormat.format(result).toString());
-            return result;
+            return result.toString();
         } catch (ParseException e) {
             e.printStackTrace();
             Log.d("convertStringToDate", "convertStringToDate() called.... error: " + e.getLocalizedMessage());

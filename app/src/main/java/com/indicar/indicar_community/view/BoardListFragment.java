@@ -114,7 +114,6 @@ public class BoardListFragment extends BaseFragment<BoardListFragmentBinding> {
 
     private void openBoardDetail(HashMap<String, String> map){
         Intent intent = new Intent(context, BoardDetailActivity.class);
-        intent.putExtra("atch_file_id", map.get("atch_file_id"));
         intent.putExtra("bbs_id", map.get("bbs_id"));
         intent.putExtra("ntt_id", map.get("ntt_id"));
         startActivity(intent);

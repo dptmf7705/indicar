@@ -5,8 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.indicar.indicar_community.view.CommunityFragment;
-import com.indicar.indicar_community.view.M3ShoppingFragment;
-import com.indicar.indicar_community.view.M4AccountFragment;
+import com.indicar.indicar_community.view.ShoppingFragment;
+import com.indicar.indicar_community.view.AccountFragment;
 import com.indicar.indicar_community.view.TunningFragment;
 
 /**
@@ -33,10 +33,10 @@ public class MainViewPagerAdapter extends BaseViewPagerAdapter {
                 fragment = new CommunityFragment();
                 break;
             case 2:
-                fragment = new M3ShoppingFragment();
+                fragment = new ShoppingFragment();
                 break;
             case 3:
-                fragment = new M4AccountFragment();
+                fragment = new AccountFragment();
                 break;
         }
         return fragment;

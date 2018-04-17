@@ -11,6 +11,8 @@ import com.indicar.indicar_community.model.BoardModel;
 import com.indicar.indicar_community.model.vo.BoardWriteVO;
 import com.indicar.indicar_community.view.adapter.BaseRecyclerViewAdapter;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -36,7 +38,7 @@ public class BoardWriteViewModel extends BaseViewModel {
     public final ObservableField<LinearLayoutManager> layoutManager = new ObservableField<>();
     public final ObservableField<RecyclerView.OnScrollListener> onScrollListener = new ObservableField<>();
     public final ObservableField<RecyclerView.OnChildAttachStateChangeListener> onChildChangeListener = new ObservableField<>();
-    
+
     public BoardWriteViewModel(){
         this.model = new BoardModel();
     }
@@ -164,12 +166,22 @@ public class BoardWriteViewModel extends BaseViewModel {
 
         List<BoardWriteVO> dataList = adapter.get().getItemList();
 
+        File[] fileList = new File[dataList.size()];
+
+        List<String> contentList = new ArrayList<>();
+
+        for(int i = 0 ; i < dataList.size() ; i++){
+            fileList[i] = new File(dataList.get(i).filePath.get());
+            contentList.add(dataList.get(i).writeText.get());
+        }
+
         HashMap<String, Object> map = new HashMap<>();
         map.put("bbs_id", boardType.get());
         map.put("ntt_sj", "제목없음");
         map.put("ntt_cn", "내용없음");
         map.put("ntcr_nm", "작성자");
-        map.put("item_list", dataList);
+        map.put("file_list", fileList);
+        map.put("content_list", contentList);
 
         model.insertData(map);
 
@@ -183,5 +195,6 @@ public class BoardWriteViewModel extends BaseViewModel {
 
         notifyObservers(ACTIVITY_FINISH);
     }
+
 
 }

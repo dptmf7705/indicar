@@ -95,8 +95,8 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
                             vo.boardTitle.set(resultJson.getString("ntt_sj")); // 제목
                             vo.boardContent.set(resultJson.getString("ntt_cn")); // 내용
                             vo.userName.set(resultJson.getString("ntcr_nm")); // 작성자
-                            vo.firstDate.set(DateUtil.convertStringToDate(resultJson.getString("frst_time"))); // 작성 날짜
-                            vo.lastUpdateDate.set(DateUtil.convertStringToDate(resultJson.getString("last_updt_time"))); // 수정 날짜
+                            vo.firstDate.set(resultJson.getString("frst_time")); // 작성 날짜
+                            vo.lastUpdateDate.set(resultJson.getString("last_updt_time")); // 수정 날짜
                             vo.likeCount.set(resultJson.getString("like")); // 좋아요 count
                             vo.commentCount.set(resultJson.getString("CntCOMMENT")); // 댓글 count
                             vo.readCount.set(resultJson.getString("rdcnt")); // 조회수 count
@@ -148,8 +148,8 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
                     board.boardTitle.set(resultJson.getString("ntt_sj")); // 제목
                     board.boardContent.set(resultJson.getString("ntt_cn")); // 내용
                     board.userName.set(resultJson.getString("ntcr_nm")); // 작성자
-//                    board.firstDate.set(DateUtil.convertStringToDate(resultJson.getString("frst_time"))); // 작성 날짜
-//                    board.lastUpdateDate.set(DateUtil.convertStringToDate(resultJson.getString("last_updt_time"))); // 수정 날짜
+                    board.firstDate.set(resultJson.getString("frst_time")); // 작성 날짜
+                    board.lastUpdateDate.set(resultJson.getString("last_updt_time")); // 수정 날짜
                     board.likeCount.set(resultJson.getString("like")); // 좋아요 count
                     board.readCount.set(resultJson.getString("rdcnt")); // 조회수 count
 
@@ -171,13 +171,13 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
     public void insertData(HashMap<String, Object> map) {
         final String URL = "/insertBoardArticle";
 
-        List<BoardWriteVO> list = (List<BoardWriteVO>) map.get("item_list");
-
         String bbsId = map.get("bbs_id").toString();
         String nttSj = map.get("ntt_sj").toString();
         String nttCn = map.get("ntt_cn").toString();
         String ntcrNm = "관리자";
         String ntcrId = "admin";
+        File[] fileList = (File[]) map.get("file_list");
+        List<String> contentList = (List<String>) map.get("content_list");
 
         RequestParams params = new RequestParams();
         params.put("bbs_id", bbsId);
@@ -185,21 +185,14 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
         params.put("ntt_cn", nttCn);
         params.put("ntcr_nm", ntcrNm);
         params.put("ntcr_id", ntcrId);
+        try {
+            params.put("file", fileList);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-
-        for (int i = 0 ; i < list.size() ; i++) {
-
-            String path = list.get(i).filePath.get();
-
-            Log.d(TAG, "file path: " + path);
-
-            try {
-                params.put("file", new File(path), "image/jpeg");
-            } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-            }
-            params.put("fileCn_" + i, list.get(i).writeText.get());
-
+        for( int i = 0 ; i < contentList.size() ; i++){
+            params.put("fileCn_" + i, contentList.get(i));
         }
 
         HttpClient.uploadFiles(URL, params, new AsyncHttpResponseHandler() {
@@ -214,7 +207,6 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
                 Log.e(TAG, responseBody.toString());
             }
         });
-
     }
 
     @Override

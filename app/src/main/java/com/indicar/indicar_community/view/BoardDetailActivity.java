@@ -101,21 +101,14 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
         Intent intent = getIntent();
         String bbsId = intent.getStringExtra("bbs_id");
         String nttId = intent.getStringExtra("ntt_id");
-        String atchFileId = intent.getStringExtra("atch_file_id");
 
-        boardDetailViewModel.onCreate(bbsId, nttId, atchFileId);
-        boardCommentViewModel.onCreate(bbsId, nttId);
+        boardDetailViewModel.layoutManager.set(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
 
-        /* TODO. view model setting */
+        binding.recyclerviewBoardContainer.setNestedScrollingEnabled(false);
 
-        initView();
+        boardDetailViewModel.adapter.set(new BoardDetailAdapter(this));
 
-        setBoardView();
-
-//        setCommentView();
-    }
-
-    private void initView() {
+        boardDetailViewModel.onCreate(bbsId, nttId);
 
         binding.imagebuttonLike.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -145,34 +138,8 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
         binding.recyclerviewCommentContainer.setAdapter(commentAdapter);
     }
 
-    private void setBoardView() {
-
-        binding.recyclerviewBoardContainer
-                .setLayoutManager(
-                        new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-
-        binding.recyclerviewBoardContainer.setNestedScrollingEnabled(false);
-
-        boardAdapter = new BoardDetailAdapter(this);
-
-        binding.recyclerviewBoardContainer.setAdapter(boardAdapter);
-    }
-
     @Override
     public void update(Observable observable, Object o) {
 
-        Log.d(TAG, "update()");
-
-        if(observable instanceof BoardDetailViewModel){
-
-            if(o instanceof List){
-                boardAdapter.addItems((List<BoardFileVO>) o);
-            } else if (o instanceof BoardDetailVO){
-                boardAdapter.setBoardHeader((BoardDetailVO) o);
-            }
-
-        }/*else if(observable instanceof BoardCommentViewModel){
-            commentAdapter.addItems((List<BoardCommentVO>) o);
-        }*/
     }
 }
