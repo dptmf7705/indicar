@@ -35,10 +35,18 @@ import static com.indicar.indicar_community.utils.Constants.NUM_OF_MAIN_TAB_BUTT
 public class BindAdapter {
 
 
-    @BindingAdapter(value = {"imageUrl", "error"}, requireAll = false)
-    public static void loadImage(ImageView imageView, String url, Drawable errorDrawable){
+    @BindingAdapter(value = {"imageUrl", "boardType"}, requireAll = false)
+    public static void loadImage(ImageView imageView, String url, String boardType){
 
-        ImageUtil.loadImage(imageView, url, errorDrawable);
+        int placeHolderId = R.drawable.button_share;
+
+        if(boardType != null) {
+            if (boardType.equals("daylife")) placeHolderId = R.drawable.button_daylife_deactive;
+            else if (boardType.equals("market")) placeHolderId = R.drawable.button_market_deactive;
+            else if (boardType.equals("diy")) placeHolderId = R.drawable.button_diy_deactive;
+        }
+
+        ImageUtil.loadImage(imageView, url, placeHolderId);
     }
 
     @BindingAdapter(value = {"imageUrl", "error"}, requireAll = false)

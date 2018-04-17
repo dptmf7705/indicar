@@ -1,6 +1,7 @@
 package com.indicar.indicar_community.utils;
 
 import android.databinding.BindingConversion;
+import android.util.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,12 +17,15 @@ public class DateUtil {
      * json 파싱할 때 사용
      * */
     public static Date convertStringToDate(String dateString){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
         try {
-            return dateFormat.parse(dateString);
+            Date result = dateFormat.parse(dateString);
+            Log.d("convertStringToDate", "convertStringToDate() called.... result: " + dateFormat.format(result).toString());
+            return result;
         } catch (ParseException e) {
             e.printStackTrace();
+            Log.d("convertStringToDate", "convertStringToDate() called.... error: " + e.getLocalizedMessage());
             return null;
         }
     }

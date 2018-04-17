@@ -23,7 +23,7 @@ public class BoardCommentViewModel extends BaseViewModel {
 //        this.userModel = new UserModel();
     }
 
-    public void start(String bbsId, String nttId){
+    public void onCreate(String bbsId, String nttId){
         getCommentData(bbsId, nttId);
     }
 
@@ -69,4 +69,5 @@ public class BoardCommentViewModel extends BaseViewModel {
     public void onBackPressed() {
 
     }
+
 }

@@ -4,7 +4,10 @@ import android.databinding.BindingConversion;
 import android.util.Log;
 import android.view.View;
 
+import com.indicar.indicar_community.R;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -24,11 +27,16 @@ public class BindConversion {
      * */
     @BindingConversion
     public static String convertDateToDisplayText(Date inputDate){
-        SimpleDateFormat dateOnly = new SimpleDateFormat("yyyy/MM/dd");
-        Date currentDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat dateOnly = new SimpleDateFormat("yyyy-MM-dd");
+
+        // 현재시간
+        Calendar cal = Calendar.getInstance();
+        Date currentTime = cal.getTime();
+        
         String displayString = "";
 
-        long diffTimeMillis = currentDate.getTime() - inputDate.getTime(); // 경과된 시간 (ms)
+        long diffTimeMillis = currentTime.getTime() - inputDate.getTime(); // 경과된 시간 (ms)
         int diffTime = (int) (diffTimeMillis / (1000 * 60)); // 분 단위로 변경
 
         if(diffTime > 0) {
@@ -52,6 +60,5 @@ public class BindConversion {
         Log.d("", "convertBooleanToVisibility() called ... with visible: " + visible);
         return visible ? View.VISIBLE : View.GONE;
     }
-
 
 }

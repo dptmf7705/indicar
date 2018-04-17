@@ -34,30 +34,26 @@ public class BoardListAdapter extends BaseRecyclerViewAdapter<BoardDetailVO, Rec
     }
 
     @Override
-    protected void onBindView(RecyclerView.ViewHolder holder, int position) {
-        BoardDetailVO vo = itemList.get(position);
-        if(holder instanceof BoardPopularViewHolder) {
-            ((BoardPopularViewHolder) holder).binding.textUserName.setText(vo.userName.get());
-            ((BoardPopularViewHolder) holder).binding.textBoardType.setText(vo.boardType.get());
-            ((BoardPopularViewHolder) holder).binding.textBoardTitle.setText(vo.boardTitle.get());
-            ((BoardPopularViewHolder) holder).binding.textBoardContent.setText(vo.boardContent.get());
-            ((BoardPopularViewHolder) holder).binding.textLike.setText(vo.likeCount.get());
-            ((BoardPopularViewHolder) holder).binding.textComment.setText(vo.commentCount.get());
-        } else if(holder instanceof BoardAllViewHolder){
-            ((BoardAllViewHolder) holder).binding.textUserName.setText(vo.userName.get());
-            ((BoardAllViewHolder) holder).binding.textBoardType.setText(vo.boardType.get());
-            ((BoardAllViewHolder) holder).binding.textBoardContent.setText(vo.boardContent.get());
-            ((BoardAllViewHolder) holder).binding.textLike.setText(vo.likeCount.get());
-            ((BoardAllViewHolder) holder).binding.textComment.setText(vo.commentCount.get());
-        }
-    }
-
-    @Override
     public int getItemViewType(int position) {
         if(viewType == BOARD_POPULAR){
             return BOARD_POPULAR;
         } else {
             return BOARD_ALL;
+        }
+    }
+
+    public void setBoardFile(int position, String imageUrl){
+        itemList.get(position).mainImageUrl.set(imageUrl);
+        notifyItemChanged(position);
+    }
+
+    @Override
+    protected void onBindView(RecyclerView.ViewHolder holder, int position) {
+        BoardDetailVO vo = itemList.get(position);
+        if(holder instanceof BoardPopularViewHolder) {
+            ((BoardPopularViewHolder) holder).binding.setItem(vo);
+        } else if(holder instanceof BoardAllViewHolder){
+            ((BoardAllViewHolder) holder).binding.setItem(vo);
         }
     }
 

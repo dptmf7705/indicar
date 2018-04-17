@@ -13,7 +13,6 @@ import com.indicar.indicar_community.databinding.BoardDetailItemBinding;
 import com.indicar.indicar_community.databinding.BoardDetailItemHeaderBinding;
 import com.indicar.indicar_community.model.vo.BoardDetailVO;
 import com.indicar.indicar_community.model.vo.BoardFileVO;
-import com.indicar.indicar_community.view.BoardDetailActivity;
 
 import java.util.List;
 
@@ -53,8 +52,6 @@ public class BoardDetailAdapter extends BaseRecyclerViewAdapter<BoardFileVO, Rec
         if(holder instanceof BoardDetailHeaderViewHolder){
 
             Log.d(TAG, "onBindView() with ViewHolder: BoardDetailHeaderViewHolder");
-            Log.d(TAG, "onBindView() board info: " + boardHeader.toString());
-
             ((BoardDetailHeaderViewHolder) holder).binding.setBoard(boardHeader);
             ((BoardDetailHeaderViewHolder) holder).binding.setBoardItem(itemList.get(position));
 

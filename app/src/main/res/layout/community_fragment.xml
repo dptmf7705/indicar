@@ -48,19 +48,20 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/btn_search"/>
-            <!--        android:visibility="@{ viewModel.isSearchBarOpen ? View.GONE : View.VISIBLE }"
-                        android:onClick="@{(v) -> viewModel.toggleSearchBar()}"-->
+                android:src="@drawable/btn_search"
+                android:visibility="@{ fragment.isSearchBarOpen ? View.INVISIBLE : View.VISIBLE }"
+                android:onClick="@{(v) -> fragment.toggleSearchBar()}"/>
+
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/searchBarLayout"
-            android:layout_below="@+id/linearLayout"
+            android:layout_below="@+id/layout_search_box_container"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:elevation="1dp"
-            android:orientation="horizontal">
-            <!--android:visibility="@{ viewModel.isSearchBarOpen ? View.VISIBLE : View.GONE }"-->
+            android:orientation="horizontal"
+            android:visibility="@{ fragment.isSearchBarOpen ? View.VISIBLE : View.GONE }">
 
             <ImageButton
                 style="@style/imageButtonCustomStyle"
@@ -70,8 +71,9 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/btn_search"/>
-            <!--android:onClick="@{(v) -> viewModel.toggleSearchBar()}"-->
+                android:src="@drawable/btn_search"
+                android:onClick="@{(v) -> fragment.toggleSearchBar()}"/>
+
 
             <EditText
                 android:id="@+id/text_search"
@@ -82,9 +84,9 @@
                 android:textSize="15sp"
                 android:inputType="text"
                 android:imeOptions="actionSearch"
-                android:background="@android:color/transparent"/>
-            <!--android:text="@{viewModel.textSearch}"
-            android:onTextChanged="@{(t, s, b, c) -> viewModel.setSearchText(t)}"-->
+                android:background="@android:color/transparent"
+                android:text="@{fragment.textSearch}"/>
+            <!--android:onTextChanged="@{(t, s, b, c) -> fragment.setSearchText(t)}"-->
 
         </LinearLayout>
 

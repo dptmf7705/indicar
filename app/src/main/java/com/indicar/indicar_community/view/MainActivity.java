@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity<MainActivityBinding> {
                         actionBarBinding.buttonLeft.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Intent intent = new Intent(MainActivity.this, C0CarFilterActivity.class);
+                                Intent intent = new Intent(MainActivity.this, CarFilterActivity.class);
                                 startActivity(intent);
                                 overridePendingTransition(R.anim.enter_no_anim_start, R.anim.exit_no_anim_start);
                             }

@@ -87,13 +87,14 @@ public class BoardFileModel implements BaseModel<BoardFileVO> {
         RequestParams params = new RequestParams();
         params.put("atch_file_id", atchFileId);
 
-        final BoardFileVO file = new BoardFileVO();
 
         HttpClient.post(URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int index, Header[] headers, byte[] bytes) {
                 JSONArray resultArray = null;
 
+                BoardFileVO file = new BoardFileVO();
+                
                 try {
                     resultArray = new JSONArray(new String(bytes));
                 } catch (JSONException e) {
@@ -101,7 +102,6 @@ public class BoardFileModel implements BaseModel<BoardFileVO> {
                 }
 
                 if(resultArray != null) {
-
                     for(int i = 0 ; i < resultArray.length() ; i++) {
                         try {
                             JSONObject resultJson = resultArray.getJSONObject(i);
@@ -117,7 +117,6 @@ public class BoardFileModel implements BaseModel<BoardFileVO> {
                                 file.fileExtension.set(resultJson.getString("file_extsn")); // 파일 확장자
                                 file.content.set(resultJson.getString("file_cn")); // 글 내용
                             }
-
                         } catch (JSONException e){
                             e.printStackTrace();
                         }

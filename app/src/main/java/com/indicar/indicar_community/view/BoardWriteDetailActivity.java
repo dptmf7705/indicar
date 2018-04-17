@@ -16,6 +16,8 @@ import java.util.Observable;
 
 import io.apptik.multiview.layoutmanagers.ViewPagerLayoutManager;
 
+import static com.indicar.indicar_community.viewmodel.BaseViewModel.ACTIVITY_FINISH;
+
 /**
  * TODO
  * 1. 페이지 하나 일 때 삭제 시, 내용이 있으면 reset
@@ -99,7 +101,7 @@ public class BoardWriteDetailActivity extends BaseActivity<BoardWriteDetailActiv
         if(o == null) {
             binding.recyclerviewPageContainer.smoothScrollToPosition(viewModel.currentPage.get());
         } else {
-            if(o.equals("finish")) finish();
+            if(((int)o) == ACTIVITY_FINISH) finish();
         }
 
     }

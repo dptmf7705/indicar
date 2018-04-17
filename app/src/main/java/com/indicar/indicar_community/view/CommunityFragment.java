@@ -2,6 +2,8 @@ package com.indicar.indicar_community.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -20,6 +22,9 @@ import java.util.Observable;
 import static android.view.inputmethod.InputMethodManager.SHOW_FORCED;
 
 public class CommunityFragment extends BaseFragment<CommunityFragmentBinding> {
+
+    public final ObservableField<String> textSearch = new ObservableField<>();
+    public final ObservableBoolean isSearchBarOpen = new ObservableBoolean(false);
 
     @Override
     protected int getLayoutId() {
@@ -82,9 +87,14 @@ public class CommunityFragment extends BaseFragment<CommunityFragmentBinding> {
         inputManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
     }
 
-    private void toggleSearchBar(Boolean isSearchBarOpen) {
+    /**
+     * 검색창 열기, 닫기
+     * */
+    public void toggleSearchBar() {
 
-        if(isSearchBarOpen){ // 검색창 open 애니메이션
+        isSearchBarOpen.set( !(isSearchBarOpen.get()) );
+
+        if(isSearchBarOpen.get()){ // 검색창 open 애니메이션
 
             Animation animSearchBar = AnimationUtils.loadAnimation(getContext(), R.anim.searchbar_enter);
             binding.searchBarLayout.startAnimation(animSearchBar);
@@ -102,48 +112,17 @@ public class CommunityFragment extends BaseFragment<CommunityFragmentBinding> {
 
     @Override
     public void update(Observable observable, Object o) {
-/*
-
-        if(o == null) {
-
-            toggleSearchBar(viewModel.isSearchBarOpen.get());
-
-        } else if ( ((int) o) == BaseViewModel.ACTIVITY_NEXT) {
-
-        } else if ( ((int) o) == BaseViewModel.ACTIVITY_FINISH) {
-
-        }
-*/
 
     }
 /*
 
     */
 /**
- * 검색창 열기, 닫기
- * *//*
-
-    public void toggleSearchBar(){
-
-        isSearchBarOpen.set( !(isSearchBarOpen.get()) );
-
-        notifyObservers();
-    }
-
-    */
-/**
- * 검색 창 입력 텍스트를 실시간으로 받는다
- * *//*
+     * 검색 창 입력 텍스트를 실시간으로 받는다
+     * *//*
 
     public void setSearchText(CharSequence text){
         textSearch.set(text.toString());
-    }
-
-    public void openBoardWrite(){
-
-        isWriteButtonClicked.set(true);
-
-        notifyObservers(ACTIVITY_NEXT);
     }
 
 */

@@ -54,10 +54,6 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
     BoardDetailAdapter boardAdapter;
     BoardCommentAdapter commentAdapter;
 
-    String bbsId;
-    String nttId;
-    String atchFileId;
-
     @Override
     protected int getLayoutId() {
         return R.layout.board_detail_activity;
@@ -71,14 +67,13 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
 
     @Override
     protected void onResume() {
+
         Log.d(TAG, "onResume()");
 
         super.onResume();
 
         boardDetailViewModel.addObserver(this);
-        boardDetailViewModel.start(bbsId, nttId, atchFileId);
-//        boardCommentViewModel.addObserver(this);
-//        boardCommentViewModel.start(bbsId, nttId);
+        boardCommentViewModel.addObserver(this);
         boardDetailViewModel.onResume();
         boardCommentViewModel.onResume();
     }
@@ -99,14 +94,19 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate() called...");
+
         binding.setViewModel(boardDetailViewModel);
 
-        Log.d(TAG, "onCreate()");
-
         Intent intent = getIntent();
-        bbsId = intent.getStringExtra("bbs_id");
-        nttId = intent.getStringExtra("ntt_id");
-        atchFileId = intent.getStringExtra("atch_file_id");
+        String bbsId = intent.getStringExtra("bbs_id");
+        String nttId = intent.getStringExtra("ntt_id");
+        String atchFileId = intent.getStringExtra("atch_file_id");
+
+        boardDetailViewModel.onCreate(bbsId, nttId, atchFileId);
+        boardCommentViewModel.onCreate(bbsId, nttId);
+
+        /* TODO. view model setting */
 
         initView();
 
@@ -116,8 +116,6 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
     }
 
     private void initView() {
-
-//        initActionBar();
 
         binding.imagebuttonLike.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -135,13 +133,6 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
             }
         });
     }
-/*
-
-    private void initActionBar() {
-        CustomActionBar.with(this).init(getSupportActionBar());
-
-    }
-*/
 
     private void setCommentView() {
 
@@ -167,31 +158,21 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
         binding.recyclerviewBoardContainer.setAdapter(boardAdapter);
     }
 
-/*
-    private void showKeyboard(EditText editText) {
-        inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        editText.requestFocus();
-        inputManager.toggleSoftInput(SHOW_FORCED, 0);
-    }
-
-    private void hideKeyboard(EditText editText) {
-        inputManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        editText.clearFocus();
-        inputManager.hideSoftInputFromWindow(editText.getWindowToken(), 0);
-    }
-    */
-
     @Override
     public void update(Observable observable, Object o) {
 
         Log.d(TAG, "update()");
 
         if(observable instanceof BoardDetailViewModel){
-            Toast.makeText(this, ""+o.toString(), Toast.LENGTH_SHORT).show();
-            boardAdapter.setBoardHeader((BoardDetailVO) o);
-            boardAdapter.notifyDataSetChanged();
-        }else if(observable instanceof BoardCommentViewModel){
+
+            if(o instanceof List){
+                boardAdapter.addItems((List<BoardFileVO>) o);
+            } else if (o instanceof BoardDetailVO){
+                boardAdapter.setBoardHeader((BoardDetailVO) o);
+            }
+
+        }/*else if(observable instanceof BoardCommentViewModel){
             commentAdapter.addItems((List<BoardCommentVO>) o);
-        }
+        }*/
     }
 }

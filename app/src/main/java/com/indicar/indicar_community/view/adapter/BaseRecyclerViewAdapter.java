@@ -123,7 +123,7 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
      * */
     public void addItems(int position, List<T> items){
         if(this.itemList == null){
-            return;
+            this.itemList = new ArrayList<>();
         }
         if(position > this.itemList.size()){
             return;

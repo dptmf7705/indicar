@@ -1,17 +1,11 @@
 package com.indicar.indicar_community.model;
 
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
 import com.indicar.indicar_community.model.vo.BoardDetailVO;
 import com.indicar.indicar_community.model.vo.BoardWriteVO;
 import com.indicar.indicar_community.utils.DateUtil;
 import com.indicar.indicar_community.utils.HttpClient;
-import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
@@ -19,23 +13,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
-import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.entity.ContentType;
-import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder;
-import cz.msebera.android.httpclient.entity.mime.content.ContentBody;
-import cz.msebera.android.httpclient.entity.mime.content.FileBody;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 
 /**
  * Created by yeseul on 2018-04-13.
@@ -80,23 +64,28 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
                      *      }
                      *
                      * */
+
+                    try {
+                        JSONObject json = new JSONObject(new String(bytes));
+                        if (json.getString("error").equals("out of range")) {
+                            callBack.onDataListLoaded(null);
+                            return;
+                        }
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+
                 }
 
                 if (resultArray != null) {
-
                     for (int i = 0; i < resultArray.length(); i++) {
+
                         try {
 
                             JSONObject resultJson = resultArray.getJSONObject(i);
 
-                            try {
-                                if(resultJson.getString("error").equals("out of range")){
-                                    callBack.onDataListLoaded(null);
-                                    return;
-                                }
-                            } catch (JSONException e){
-                                e.printStackTrace();
-                            }
+                        /* TODO. "error":"out of range" --> 더이상 게시물 존재하지않음 */
+
 
                             BoardDetailVO vo = new BoardDetailVO();
 
@@ -114,7 +103,7 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
 
                             boardList.add(vo);
 
-                        } catch (JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                             continue;
                         }
@@ -187,13 +176,15 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
         String bbsId = map.get("bbs_id").toString();
         String nttSj = map.get("ntt_sj").toString();
         String nttCn = map.get("ntt_cn").toString();
-        String ntcrNm = map.get("ntcr_nm").toString();
+        String ntcrNm = "관리자";
+        String ntcrId = "admin";
 
         RequestParams params = new RequestParams();
         params.put("bbs_id", bbsId);
         params.put("ntt_sj", nttSj);
         params.put("ntt_cn", nttCn);
         params.put("ntcr_nm", ntcrNm);
+        params.put("ntcr_id", ntcrId);
 
 
         for (int i = 0 ; i < list.size() ; i++) {

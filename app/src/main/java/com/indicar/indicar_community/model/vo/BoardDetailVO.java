@@ -11,11 +11,15 @@ import java.util.Date;
 
 public class BoardDetailVO {
 
+    public ObservableField<String> mainImageUrl = new ObservableField<>();
+
     public ObservableField<String> boardType = new ObservableField<>();
 
     public ObservableField<String> boardId = new ObservableField<>();
 
     public ObservableField<String> atchFileId = new ObservableField<>();
+
+    public ObservableField<String> userProfileUrl = new ObservableField<>();
 
     public ObservableField<String> userName = new ObservableField<>();
 

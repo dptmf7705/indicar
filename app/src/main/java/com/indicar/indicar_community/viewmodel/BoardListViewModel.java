@@ -7,10 +7,15 @@ import android.databinding.ObservableInt;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.indicar.indicar_community.model.BaseModel;
+import com.indicar.indicar_community.model.BoardFileModel;
 import com.indicar.indicar_community.model.BoardModel;
+import com.indicar.indicar_community.model.vo.BoardDetailVO;
+import com.indicar.indicar_community.model.vo.BoardFileVO;
 import com.indicar.indicar_community.view.adapter.BaseRecyclerViewAdapter;
+import com.indicar.indicar_community.view.adapter.BoardListAdapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,17 +31,23 @@ public class BoardListViewModel extends BaseViewModel {
 
     private static final String TAG = BoardListViewModel.class.getSimpleName();
 
-    public final ObservableField<BaseRecyclerViewAdapter> adapter = new ObservableField<>();
+    public final ObservableField<BoardListAdapter> adapter = new ObservableField<>();
     public final ObservableField<SwipeRefreshLayout.OnRefreshListener> onRefreshListener = new ObservableField<>();
     public final ObservableField<RecyclerView.LayoutManager> layoutManager = new ObservableField<>();
     public final ObservableBoolean isRefreshing = new ObservableBoolean(false);
     public final ObservableInt boardType = new ObservableInt();
 
-    BoardModel model;
+    BoardModel boardModel;
+    BoardFileModel fileModel;
+
+    Boolean isEndOfPage = false;
+
+    int currentItemCount = 0;
 
     public BoardListViewModel(){
         Log.d(TAG, "BoardListViewModel() called...");
-        model = new BoardModel();
+        boardModel = new BoardModel();
+        fileModel = new BoardFileModel();
     }
 
     @Override
@@ -48,11 +59,27 @@ public class BoardListViewModel extends BaseViewModel {
             @Override
             public void onRefresh() {
                 adapter.get().clearItems();
+                isEndOfPage = false;
                 getBoardList();
             }
         });
 
+        adapter.get().setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                BoardDetailVO vo = adapter.get().getItem(position);
+                HashMap<String, String> map = new HashMap<>();
+                map.put("atch_file_id", vo.atchFileId.get());
+                map.put("bbs_id", vo.boardType.get());
+                map.put("ntt_id", vo.boardId.get());
+
+                Log.d("onItemClick", map.toString());
+                notifyObservers(map);
+            }
+        });
+
         getBoardList();
+
     }
 
     @Override
@@ -77,8 +104,15 @@ public class BoardListViewModel extends BaseViewModel {
 
     public void getBoardList(){
 
+        if(isEndOfPage){
+            return;
+        }
+
         Log.d(TAG, "getBoardList() called...");
 
+        currentItemCount = adapter.get().getItemCount();
+
+        Log.d(TAG, "currentItemCount: " + currentItemCount);
         HashMap<String, String> map = new HashMap<>();
         map.put("bbs_id", "all");
 
@@ -87,15 +121,21 @@ public class BoardListViewModel extends BaseViewModel {
 
         map.put("pageIndex", String.valueOf(getCurrentIndex()));
 
-        model.getDataList(map, new BaseModel.LoadDataListCallBack() {
+        boardModel.getDataList(map, new BaseModel.LoadDataListCallBack() {
             @Override
             public void onDataListLoaded(List list) {
-                if(list != null) {
-                    Log.d("onDataListLoaded", list.toString());
-                    adapter.get().addItems(list);
-                    isRefreshing.set(false);
-                    notifyObservers();
+                if(list.size() != 15) {
+                    isEndOfPage = true;
                 }
+
+                Log.d("onDataListLoaded", list.toString());
+                adapter.get().addItems(currentItemCount, list);
+                Log.d("onDataListLoaded", "onDataListLoaded() currentItemCount: " + adapter.get().getItemCount());
+                isRefreshing.set(false);
+                notifyObservers();
+
+                // 메인 사진을 받아온다
+                getFile(list);
             }
 
             @Override
@@ -103,6 +143,30 @@ public class BoardListViewModel extends BaseViewModel {
 
             }
         });
+    }
+
+    private void getFile(List list) {
+
+        for(int i = 0 ; i <  list.size() ; i++){
+            final int pos = currentItemCount + i;
+            String atchFileId = ((BoardDetailVO)list.get(i)).atchFileId.get();
+            HashMap<String, String> map = new HashMap<>();
+            map.put("atch_file_id", atchFileId);
+            map.put("file_sn", String.valueOf(0));
+
+            fileModel.getData(map, new BaseModel.LoadDataCallBack() {
+                @Override
+                public void onDataLoaded(Object data) {
+                    BoardFileVO vo = (BoardFileVO) data;
+                    adapter.get().setBoardFile(pos, vo.fileUrl.get());
+                }
+
+                @Override
+                public void onDataNotAvailable() {
+
+                }
+            });
+        }
     }
 
     /**

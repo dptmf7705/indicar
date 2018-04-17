@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.indicar.indicar_community.model.BaseModel;
 import com.indicar.indicar_community.model.BoardFileModel;
 import com.indicar.indicar_community.model.BoardModel;
+import com.indicar.indicar_community.model.vo.BoardFileVO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,16 +30,21 @@ public class BoardDetailViewModel extends BaseViewModel {
     private static final String TAG = BoardDetailViewModel.class.getSimpleName();
 
     BoardModel boardModel;
-//    BoardFileModel fileModel;
+    BoardFileModel fileModel;
 //    UserModel userModel;
 
     public BoardDetailViewModel() {
         this.boardModel = new BoardModel();
-//        this.fileModel = new BoardFileModel();
+        this.fileModel = new BoardFileModel();
 //        this.userModel = new UserModel();
     }
 
-    public void start(String bbsId, String nttId, String atchFileId){
+    @Override
+    public void onCreate() {
+
+    }
+
+    public void onCreate(String bbsId, String nttId, String atchFileId){
         getBoardData(bbsId, nttId);
         getFileData(atchFileId);
     }
@@ -46,18 +52,18 @@ public class BoardDetailViewModel extends BaseViewModel {
     private void getFileData(String atchFileId) {
         HashMap<String, String> map = new HashMap<>();
         map.put("atch_file_id", atchFileId);
-/*
+
         fileModel.getDataList(map, new BaseModel.LoadDataListCallBack() {
             @Override
             public void onDataListLoaded(List list) {
-
+                notifyObservers(list);
             }
 
             @Override
             public void onDataNotAvailable() {
 
             }
-        });*/
+        });
     }
 
     public void getBoardData(String bbsId, String nttId){
@@ -68,9 +74,6 @@ public class BoardDetailViewModel extends BaseViewModel {
         boardModel.getData(map, new BaseModel.LoadDataCallBack() {
             @Override
             public void onDataLoaded(Object data) {
-
-                Log.d(TAG, "update()");
-                setChanged();
                 notifyObservers(data);
             }
 
@@ -78,19 +81,7 @@ public class BoardDetailViewModel extends BaseViewModel {
             public void onDataNotAvailable() {
 
             }
-        }); // 게시물 정보
-/*
-        fileModel.getDataList(map, new BaseModel.LoadDataListCallBack() {
-            @Override
-            public void onDataListLoaded(List list) {
-
-            }
-
-            @Override
-            public void onDataNotAvailable() {
-
-            }
-        }); // 게시글 items*/
+        });
     }
 
     /* Data Binding
@@ -106,11 +97,6 @@ public class BoardDetailViewModel extends BaseViewModel {
     * 좋아요 버튼의 onClick 메서드
     * */
     public void onCommentButtonClick(View view){
-
-    }
-
-    @Override
-    public void onCreate() {
 
     }
 

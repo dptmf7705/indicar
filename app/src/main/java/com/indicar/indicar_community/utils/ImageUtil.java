@@ -11,10 +11,10 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class ImageUtil {
 
-    public static void loadImage(ImageView imageView, String url, Drawable errorDrawable){
+    public static void loadImage(ImageView imageView, String url, int placeHolderId){
         Glide.with(imageView.getContext())
                 .load(url)
-                .error(errorDrawable)
+                .placeholder(placeHolderId)
                 .into(imageView);
     }
 

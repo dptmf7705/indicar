@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.C0CarFilterActivity" />
+        <activity android:name=".view.CarFilterActivity" />
         <activity android:name=".view.BoardDetailActivity" />
         <activity android:name=".view.BoardWriteActivity">
         </activity>

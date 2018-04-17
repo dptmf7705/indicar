@@ -1,18 +1,23 @@
 package com.indicar.indicar_community.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ScrollingView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.databinding.BoardListFragmentBinding;
+import com.indicar.indicar_community.model.vo.BoardDetailVO;
 import com.indicar.indicar_community.utils.ScrollBottonAction;
+import com.indicar.indicar_community.view.adapter.BaseRecyclerViewAdapter;
 import com.indicar.indicar_community.view.adapter.BoardListAdapter;
 import com.indicar.indicar_community.viewmodel.BoardListViewModel;
 
+import java.util.HashMap;
 import java.util.Observable;
 
 import static com.indicar.indicar_community.view.adapter.BoardListAdapter.BOARD_ALL;
@@ -76,24 +81,42 @@ public class BoardListFragment extends BaseFragment<BoardListFragmentBinding> {
         } else if(boardType == BOARD_ALL){
             viewModel.layoutManager.set(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         }
-        viewModel.adapter.set(new BoardListAdapter(context, boardType));
-        viewModel.onCreate();
 
-        binding.setViewModel(viewModel);
+        viewModel.adapter.set(new BoardListAdapter(context, boardType));
 
         new ScrollBottonAction(binding.recyclerViewBoardContainer).setOnScrollBottomListener(new ScrollBottonAction.onScrollEndListener() {
             @Override
             public void onScrollBottom(ScrollingView view) {
+                Toast.makeText(context, "onScrollBottom", Toast.LENGTH_SHORT).show();
                 viewModel.getBoardList();
             }
         });
+
+        viewModel.onCreate();
+
+        binding.setViewModel(viewModel);
 
     }
 
     @Override
     public void update(Observable observable, Object o) {
-        if(viewModel.isRefreshing.get() == false){
-            binding.refreshLayout.setRefreshing(false);
+
+        if(o == null) {
+            if (viewModel.isRefreshing.get() == false) {
+                binding.refreshLayout.setRefreshing(false);
+            }
+        } else if (o != null){
+            if(o instanceof HashMap){
+                openBoardDetail((HashMap<String, String>) o);
+            }
         }
+    }
+
+    private void openBoardDetail(HashMap<String, String> map){
+        Intent intent = new Intent(context, BoardDetailActivity.class);
+        intent.putExtra("atch_file_id", map.get("atch_file_id"));
+        intent.putExtra("bbs_id", map.get("bbs_id"));
+        intent.putExtra("ntt_id", map.get("ntt_id"));
+        startActivity(intent);
     }
 }
