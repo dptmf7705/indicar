@@ -30,10 +30,26 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <!-- ImageButton 공통 스타일 테마 -->
+    <style name="commentButtonCustomStyle" parent="@android:style/Widget.ImageButton">
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+
+
     <!-- 게시글 EditTextView 공통 스타일 테마 -->
     <style name="textViewBoardContentStyle" parent="@android:style/Widget.TextView">
-        <item name="android:layout_margin">15dp</item>
-        <item name="android:paddingBottom">15dp</item>
+        <item name="android:layout_margin">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+        <item name="android:inputType">textMultiLine</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- 게시글 EditTextView 공통 스타일 테마 -->
+    <style name="textViewCommentContentStyle" parent="@android:style/Widget.TextView">
         <item name="android:inputType">textMultiLine</item>
         <item name="android:lineSpacingMultiplier">1.3</item>
         <item name="android:textSize">13sp</item>

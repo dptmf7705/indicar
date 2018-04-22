@@ -2,17 +2,23 @@ package com.indicar.indicar_community.view;
 
 import android.content.Context;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.widget.NestedScrollView;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.databinding.CommunityFragmentBinding;
@@ -25,6 +31,12 @@ public class CommunityFragment extends BaseFragment<CommunityFragmentBinding> {
 
     public final ObservableField<String> textSearch = new ObservableField<>();
     public final ObservableBoolean isSearchBarOpen = new ObservableBoolean(false);
+    public final ObservableBoolean showButton = new ObservableBoolean(true);
+
+    float scrollY = 0;
+    float oldScrollY = 0;
+    float scrollUp = 0;
+    float scrollDown = 0;
 
     @Override
     protected int getLayoutId() {
@@ -37,6 +49,7 @@ public class CommunityFragment extends BaseFragment<CommunityFragmentBinding> {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
 
         binding.setFragment(this);
@@ -72,7 +85,6 @@ public class CommunityFragment extends BaseFragment<CommunityFragmentBinding> {
                 return true;
             }
         });
-
     }
 
     private void showKeyboard(EditText editText){
@@ -92,22 +104,37 @@ public class CommunityFragment extends BaseFragment<CommunityFragmentBinding> {
      * */
     public void toggleSearchBar() {
 
-        isSearchBarOpen.set( !(isSearchBarOpen.get()) );
+        if(!isSearchBarOpen.get()){ // 검색창 open 애니메이션
 
-        if(isSearchBarOpen.get()){ // 검색창 open 애니메이션
-
-            Animation animSearchBar = AnimationUtils.loadAnimation(getContext(), R.anim.searchbar_enter);
-            binding.searchBarLayout.startAnimation(animSearchBar);
-
-            showKeyboard(binding.textSearch);
+            openSearchBar();
 
         } else { // 검색창 close 애니메이션
 
-            Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.icon_enter);
-            binding.buttonSearch.startAnimation(anim);
+            closeSearchBar();
 
-            hideKeyboard(binding.textSearch);
         }
+    }
+
+    public void openSearchBar(){
+
+        isSearchBarOpen.set(true);
+
+        Animation animSearchBar = AnimationUtils.loadAnimation(getContext(), R.anim.searchbar_enter);
+        binding.searchBarLayout.startAnimation(animSearchBar);
+
+        showKeyboard(binding.textSearch);
+
+    }
+
+    public void closeSearchBar() {
+
+        isSearchBarOpen.set(false);
+
+        Animation anim = AnimationUtils.loadAnimation(getContext(), R.anim.icon_enter);
+        binding.buttonSearch.startAnimation(anim);
+
+        hideKeyboard(binding.textSearch);
+
     }
 
     @Override

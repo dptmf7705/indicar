@@ -1,11 +1,14 @@
 package com.indicar.indicar_community.view;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ScrollingView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -33,6 +36,11 @@ public class BoardListFragment extends BaseFragment<BoardListFragmentBinding> {
 
     BoardListViewModel viewModel;
     int boardType;
+
+    float scrollY = 0;
+    float oldScrollY = 0;
+    float scrollUp = 0;
+    float scrollDown = 0;
 
     @Override
     protected int getLayoutId() {
@@ -116,6 +124,8 @@ public class BoardListFragment extends BaseFragment<BoardListFragmentBinding> {
         Intent intent = new Intent(context, BoardDetailActivity.class);
         intent.putExtra("bbs_id", map.get("bbs_id"));
         intent.putExtra("ntt_id", map.get("ntt_id"));
+        intent.putExtra("commentCount", map.get("commentCount"));
         startActivity(intent);
+        ((Activity)context).overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
     }
 }

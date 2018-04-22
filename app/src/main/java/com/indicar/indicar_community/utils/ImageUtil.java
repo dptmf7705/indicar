@@ -6,6 +6,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.indicar.indicar_community.R;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -33,6 +34,7 @@ public class ImageUtil {
     }
 
     public static void loadCircleImage(ImageView imageView, String url, Drawable errorDrawable) {
+
         Glide.with(imageView.getContext())
                 .load(url)
                 .error(errorDrawable)

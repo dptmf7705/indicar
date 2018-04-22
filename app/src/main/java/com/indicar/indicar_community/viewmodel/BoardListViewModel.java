@@ -41,8 +41,7 @@ public class BoardListViewModel extends BaseViewModel {
     BoardFileModel fileModel;
 
     Boolean isEndOfPage = false;
-
-    int currentItemCount = 0;
+    int pageCount = 1;
 
     public BoardListViewModel(){
         Log.d(TAG, "BoardListViewModel() called...");
@@ -59,8 +58,8 @@ public class BoardListViewModel extends BaseViewModel {
             @Override
             public void onRefresh() {
                 adapter.get().clearItems();
-                currentItemCount = 0;
                 isEndOfPage = false;
+                pageCount = 1;
                 getBoardList();
             }
         });
@@ -70,9 +69,10 @@ public class BoardListViewModel extends BaseViewModel {
             public void onItemClick(View view, int position) {
                 BoardDetailVO vo = adapter.get().getItem(position);
                 HashMap<String, String> map = new HashMap<>();
-                map.put("atch_file_id", vo.atchFileId.get());
-                map.put("bbs_id", vo.boardType.get());
-                map.put("ntt_id", vo.boardId.get());
+                map.put("atch_file_id", vo.getAtchFileId());
+                map.put("bbs_id", vo.getBoardType());
+                map.put("ntt_id", vo.getBoardId());
+                map.put("commentCount", vo.getCommentCount());
 
                 Log.d("onItemClick", map.toString());
                 notifyObservers(map);
@@ -80,7 +80,6 @@ public class BoardListViewModel extends BaseViewModel {
         });
 
         getBoardList();
-
     }
 
     @Override
@@ -111,37 +110,33 @@ public class BoardListViewModel extends BaseViewModel {
 
         Log.d(TAG, "getBoardList() called...");
 
-        currentItemCount = adapter.get().getItemCount();
-
-        Log.d(TAG, "currentItemCount: " + currentItemCount);
         HashMap<String, String> map = new HashMap<>();
         map.put("bbs_id", "all");
 
         if (boardType.get() == BOARD_POPULAR) map.put("searchCnd", "pop");
         else if (boardType.get() == BOARD_ALL) map.put("searchCnd", "");
 
-        map.put("pageIndex", String.valueOf(getCurrentIndex()));
+        map.put("pageIndex", String.valueOf(pageCount));
 
         boardModel.getDataList(map, new BaseModel.LoadDataListCallBack() {
             @Override
             public void onDataListLoaded(List list) {
-                if(list.size() != 15) {
+                int size = list.size();
+                if(size != 15) {
                     isEndOfPage = true;
                 }
 
-                Log.d("onDataListLoaded", list.toString());
-                adapter.get().addItems(currentItemCount, list);
-                Log.d("onDataListLoaded", "onDataListLoaded() currentItemCount: " + adapter.get().getItemCount());
                 isRefreshing.set(false);
                 notifyObservers();
 
                 // 메인 사진을 받아온다
                 getFile(list);
+                pageCount++;
             }
 
             @Override
             public void onDataNotAvailable() {
-
+                isEndOfPage = true;
             }
         });
     }
@@ -149,38 +144,32 @@ public class BoardListViewModel extends BaseViewModel {
     private void getFile(List list) {
 
         for(int i = 0 ; i <  list.size() ; i++){
-            final int pos = currentItemCount + i;
-            String atchFileId = ((BoardDetailVO)list.get(i)).atchFileId.get();
-            HashMap<String, String> map = new HashMap<>();
-            map.put("atch_file_id", atchFileId);
-            map.put("file_sn", String.valueOf(0));
+            final BoardDetailVO board = (BoardDetailVO) list.get(i);
 
-            fileModel.getData(map, new BaseModel.LoadDataCallBack() {
-                @Override
-                public void onDataLoaded(Object data) {
-                    BoardFileVO vo = (BoardFileVO) data;
-                    adapter.get().setBoardFile(pos, vo.fileUrl.get());
-                }
+            String atchFileId = board.getAtchFileId();
 
-                @Override
-                public void onDataNotAvailable() {
+            if(!atchFileId.equals("")) {
+                HashMap<String, String> map = new HashMap<>();
+                map.put("atch_file_id", atchFileId);
+                map.put("file_sn", String.valueOf(0));
 
-                }
-            });
+                fileModel.getData(map, new BaseModel.LoadDataCallBack() {
+                    @Override
+                    public void onDataLoaded(Object data) {
+                        BoardFileVO file = (BoardFileVO) data;
+
+                        board.setMainImageUrl(file.getFileUrl());
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+
+                    }
+                });
+            }
         }
-    }
 
-    /**
-     * 현재 게시물 페이지 index 계산
-     *
-     * 현재 보이는 페이지 개수 / 15
-     * */
-    private int getCurrentIndex() {
-        int itemCount = adapter.get().getItemCount();
-        int index = (itemCount / 15) + 1;
-        Log.d(TAG, "getCurrentIndex() called... with index: " + index);
-        return index;
+        adapter.get().addItems(list);
     }
-
 
 }

@@ -12,14 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardElevation="0dp"
-        android:background="@color/colorWhite"
-        app:cardUseCompatPadding="false">
+        app:cardUseCompatPadding="false"
+        android:background="@color/colorPrimary">
 
         <LinearLayout
-            android:background="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@color/colorPrimary">
 
             <ImageView
                 style="@style/imageButtonCustomStyle"
@@ -33,6 +33,8 @@
                 android:id="@+id/textview_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorFont"
+                android:background="@color/colorPrimary"
                 android:text="@{boardItem.content}"/>
 
         </LinearLayout>

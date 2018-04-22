@@ -20,6 +20,10 @@ import java.util.Observable;
 
 public class BoardWriteActivity extends BaseActivity<BoardWriteActivityBinding> {
 
+    private static final int WRITE_DETAIL = 0;
+    private static final int WRITE_BACK = 1;
+    private static final int WRITE_CANCEL = 2;
+
     private PermissionListener permissionListener;
 
     public final ObservableInt DAY_LIFE = new ObservableInt(0);
@@ -61,7 +65,7 @@ public class BoardWriteActivity extends BaseActivity<BoardWriteActivityBinding> 
         intent.putExtra("boardType", boardTypeString);
 //        intent.putExtra("carType", carType);
 
-        startActivity(intent);
+        startActivityForResult(intent, WRITE_DETAIL);
         overridePendingTransition(R.anim.enter_no_anim_start, R.anim.exit_no_anim_start);
     }
 
@@ -111,6 +115,25 @@ public class BoardWriteActivity extends BaseActivity<BoardWriteActivityBinding> 
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_OK){
+            return;
+        }
+
+        if(requestCode == WRITE_DETAIL){
+            int result = data.getIntExtra("result", 0);
+            if(result == WRITE_BACK){
+
+            }else if(result == WRITE_CANCEL){
+                finish();
+                overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
+            }
+        }
+
+    }
 
     @Override
     public void update(Observable observable, Object o) {

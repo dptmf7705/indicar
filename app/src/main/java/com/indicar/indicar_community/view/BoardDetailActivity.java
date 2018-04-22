@@ -1,29 +1,29 @@
 package com.indicar.indicar_community.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.ObservableInt;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.DividerItemDecoration;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
+import com.commit451.teleprinter.Teleprinter;
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.databinding.BoardDetailActivityBinding;
-import com.indicar.indicar_community.model.vo.BoardCommentVO;
-import com.indicar.indicar_community.model.vo.BoardDetailVO;
-import com.indicar.indicar_community.model.vo.BoardFileVO;
-import com.indicar.indicar_community.utils.CustomActionBar;
+import com.indicar.indicar_community.view.adapter.BaseRecyclerViewAdapter;
 import com.indicar.indicar_community.view.adapter.BoardCommentAdapter;
 import com.indicar.indicar_community.view.adapter.BoardDetailAdapter;
-import com.indicar.indicar_community.viewmodel.BoardCommentViewModel;
 import com.indicar.indicar_community.viewmodel.BoardDetailViewModel;
 
-import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * 게시물 조회 화면
@@ -48,11 +48,13 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
 
     private final String TAG = this.getClass().getSimpleName();
 
-    BoardDetailViewModel boardDetailViewModel = new BoardDetailViewModel();
-    BoardCommentViewModel boardCommentViewModel = new BoardCommentViewModel();
+    BoardDetailViewModel viewModel = new BoardDetailViewModel();
 
-    BoardDetailAdapter boardAdapter;
-    BoardCommentAdapter commentAdapter;
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
+    }
 
     @Override
     protected int getLayoutId() {
@@ -72,10 +74,8 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
 
         super.onResume();
 
-        boardDetailViewModel.addObserver(this);
-        boardCommentViewModel.addObserver(this);
-        boardDetailViewModel.onResume();
-        boardCommentViewModel.onResume();
+        viewModel.addObserver(this);
+        viewModel.onResume();
     }
 
     @Override
@@ -83,10 +83,8 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
 
         Log.d(TAG, "onPause()");
 
-        boardDetailViewModel.deleteObserver(this);
-        boardCommentViewModel.deleteObserver(this);
-        boardDetailViewModel.onPause();
-        boardCommentViewModel.onPause();
+        viewModel.deleteObserver(this);
+        viewModel.onPause();
 
         super.onPause();
     }
@@ -96,19 +94,34 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate() called...");
 
-        binding.setViewModel(boardDetailViewModel);
+        binding.setViewModel(viewModel);
+
+        actionBarBinding.buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
+            }
+        });
 
         Intent intent = getIntent();
         String bbsId = intent.getStringExtra("bbs_id");
         String nttId = intent.getStringExtra("ntt_id");
+        String commentCount = intent.getStringExtra("commentCount");
 
-        boardDetailViewModel.layoutManager.set(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
+        viewModel.scrollView = binding.scrollViewContainer;
+        viewModel.keyboard = new Teleprinter(this);
+
+        viewModel.adapter.set(new BoardDetailAdapter(this, viewModel.header.get()));
+        viewModel.commentAdapter.set(new BoardCommentAdapter(this));
 
         binding.recyclerviewBoardContainer.setNestedScrollingEnabled(false);
+        binding.recyclerviewCommentContainer.setNestedScrollingEnabled(false);
 
-        boardDetailViewModel.adapter.set(new BoardDetailAdapter(this));
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
+        binding.recyclerviewCommentContainer.addItemDecoration(dividerItemDecoration);
 
-        boardDetailViewModel.onCreate(bbsId, nttId);
+        viewModel.onCreate(bbsId, nttId, commentCount);
 
         binding.imagebuttonLike.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -125,17 +138,81 @@ public class BoardDetailActivity extends BaseActivity<BoardDetailActivityBinding
                 return true;
             }
         });
+
+        viewModel.commentAdapter.get().setOnItemLongClickListener(new BaseRecyclerViewAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                showCommentDialog(position);
+            }
+        });
+
+        binding.textCommentType.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                viewModel.commentWrite.set(editable.toString());
+            }
+        });
+
+        binding.scrollViewContainer.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                int scrollDown = scrollY - oldScrollY;
+                int scrollUp = oldScrollY - scrollY;
+                Handler handler = new Handler();
+
+                if(scrollDown > 20){
+
+                    viewModel.isScrollDown.set(true);
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            viewModel.isScrollDown.set(false);
+                        }
+                    }, 2000);
+                }
+
+                if(scrollUp > 20){
+
+                    viewModel.isScrollUp.set(true);
+
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            viewModel.isScrollUp.set(false);
+                        }
+                    }, 2000);
+                }
+            }
+        });
     }
 
-    private void setCommentView() {
+    public void showCommentDialog(final int position){
+        CharSequence[] items = {"댓글 수정", "댓글 삭제"};
 
-        binding.recyclerviewCommentContainer
-                .setLayoutManager(
-                        new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
-
-        commentAdapter = new BoardCommentAdapter(this);
-
-        binding.recyclerviewCommentContainer.setAdapter(commentAdapter);
+        new AlertDialog.Builder(this)
+                .setItems(items, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(i == 0){
+                            viewModel.openCommentBoxWithUpdateItem(position);
+                        } else {
+                            viewModel.deleteCommentItem(position);
+                        }
+                    }
+                })
+                .show();
     }
 
     @Override

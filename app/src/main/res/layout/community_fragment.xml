@@ -110,7 +110,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:src="@drawable/btn_write_board"/>
+            android:src="@drawable/btn_write_board"
+            android:visibility="@{fragment.showButton ? View.VISIBLE : View.GONE}"/>
 
     </RelativeLayout>
 </layout>

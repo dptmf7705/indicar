@@ -1,5 +1,13 @@
 package com.indicar.indicar_community.model;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonStreamParser;
+import com.google.gson.reflect.TypeToken;
 import com.indicar.indicar_community.model.vo.BoardCommentVO;
 import com.indicar.indicar_community.utils.DateUtil;
 import com.indicar.indicar_community.utils.HttpClient;
@@ -10,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,43 +42,20 @@ public class BoardCommentModel implements BaseModel<BoardCommentVO> {
         params.put("bbs_id", bbsId);
         params.put("ntt_id", nttId);
 
-        final List<BoardCommentVO> commentList = new ArrayList<>();
-
+        Log.d("BoardCommentModel", "getDataList() called... with bbs_id: " + bbsId + ", ntt_id: " + nttId);
         HttpClient.post(URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                JSONArray resultArray = null;
+                JsonElement result = new JsonParser().parse(new String(responseBody));
 
-                try {
-                    resultArray = new JSONArray(new String(responseBody));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                // 댓글 존재
+                if(result.isJsonArray()){
+                    Type listType = new TypeToken<List<BoardCommentVO>>(){}.getType();
+
+                    List<BoardCommentVO> commentList = new Gson().fromJson(result, listType);
+
+                    callBack.onDataListLoaded(commentList);
                 }
-
-                if(resultArray != null){
-
-                    for (int i = 0; i < resultArray.length(); i++) {
-                        try {
-                            JSONObject resultJson = resultArray.getJSONObject(i);
-
-                            BoardCommentVO vo = new BoardCommentVO();
-                            vo.boardType.set(resultJson.getString("bbs_id")); // 게시판 id
-                            vo.boardId.set(resultJson.getString("ntt_id")); // 게시글 id
-                            vo.commentIndex.set(Integer.parseInt(resultJson.getString("answer_no"))); // 댓글 index
-                            vo.content.set(resultJson.getString("answer")); // 댓글 내용
-                            vo.userName.set(resultJson.getString("writer_nm")); // 작성자
-                            vo.firstTime.set(resultJson.getString("first_time")); // 작성 날짜
-                            vo.lastUpdateTime.set(resultJson.getString("last_updt_time")); // 수정 날짜
-
-                            commentList.add(vo);
-
-                        } catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                callBack.onDataListLoaded(commentList);
             }
 
             @Override
@@ -84,16 +70,87 @@ public class BoardCommentModel implements BaseModel<BoardCommentVO> {
 
     }
 
-
     @Override
-    public void insertData(HashMap<String, Object> map) {
-        final String URL = "/selectCommentList";
+    public void updateData(HashMap<String, Object> map, final LoadDataCallBack callBack) {
+        final String URL = "/updateComment";
 
+        String nttId = map.get("ntt_id").toString();
+        String answerNo = map.get("answer_no").toString();
+        String answer = map.get("answer").toString();
+
+        RequestParams params = new RequestParams();
+        params.put("ntt_id", nttId);
+        params.put("answer_no", answerNo);
+        params.put("answer", answer);
+
+        HttpClient.post(URL, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                callBack.onDataLoaded("success");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
 
     }
 
     @Override
-    public void updateData(HashMap<String, Object> map) {
+    public void deleteData(HashMap<String, Object> map, final LoadDataCallBack callBack) {
+        final String URL = "/deleteComment";
 
+
+        String nttId = map.get("ntt_id").toString();
+        String answerNo = map.get("answer_no").toString();
+
+        RequestParams params = new RequestParams();
+        params.put("ntt_id", nttId);
+        params.put("answer_no", answerNo);
+
+        HttpClient.post(URL, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                callBack.onDataLoaded("success");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
+
+
+    @Override
+    public void insertData(HashMap<String, Object> map, final LoadDataCallBack callBack) {
+        final String URL = "/insertComment";
+
+        String bbsId = map.get("bbs_id").toString();
+        String nttId = map.get("ntt_id").toString();
+        String answer = map.get("answer").toString();
+        String writerName = map.get("writer_nm").toString();
+        String writerId = map.get("writer_id").toString();
+
+        RequestParams params = new RequestParams();
+        params.put("bbs_id", bbsId);
+        params.put("ntt_id", nttId);
+        params.put("answer", answer);
+        params.put("writer_nm", writerName);
+        params.put("writer_id", writerId);
+
+        HttpClient.post(URL, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                callBack.onDataLoaded("success");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
+    }
+
 }

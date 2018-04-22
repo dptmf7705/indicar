@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
         <variable
             name="viewModel"
             type="com.indicar.indicar_community.viewmodel.BoardDetailViewModel"/>
@@ -10,175 +11,138 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorWhite">
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary">
 
         <android.support.v4.widget.NestedScrollView
-            android:id="@+id/scrollview_outer_frame"
+            android:id="@+id/scrollView_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:background="@color/colorPrimary">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:background="@color/colorPrimary">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview_board_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none"
+                    app:adapter="@{viewModel.adapter}"
+                    android:background="@color/colorPrimary"/>
 
                 <ImageView
                     style="@style/imageButtonCustomStyle"
-                    android:id="@+id/imageview_main"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:imageUrl="@{viewModel.boardItem.fileUrl}"
-                    app:boardType="@{viewModel.board.boardType}"/>
+                    android:src="@drawable/comment_start_shadow"/>
 
-                <LinearLayout
-                    android:background="@color/colorWhite"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp">
-
-                    <ImageButton
-                        style="@style/imageButtonCustomStyle"
-                        android:id="@+id/imagebutton_user_profile"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_vertical"
-                        app:circleImageUrl="@{viewModel.boardItem.fileUrl}"/>
-                    <!--app:circleImageUrl="@{board.userProfileUrl}"-->
-
-                    <TextView
-                        style="@style/textViewBoardInfoStyle"
-                        android:id="@+id/textview_user_name"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center_vertical"
-                        android:text="@{viewModel.board.userName}"/>
-
-                    <TextView
-                        style="@style/textViewBoardInfoStyle"
-                        android:id="@+id/textview_board_id"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical|end"
-                        android:textAlignment="textEnd"
-                        android:text="@{viewModel.board.boardType}"/>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:background="@color/colorWhite"
-                    android:layout_width="match_parent"
-                    android:layout_height="30dp"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp">
-
-                    <TextView
-                        style="@style/textViewBoardInfoStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="좋아요"/>
-
-                    <TextView
-                        style="@style/textViewBoardInfoStyle"
-                        android:id="@+id/textview_like_count"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@{viewModel.board.likeCount}"/>
-
-                    <TextView
-                        style="@style/textViewBoardInfoStyle"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="댓글"
-                        android:gravity="center_vertical"/>
-
-                    <TextView
-                        style="@style/textViewBoardInfoStyle"
-                        android:id="@+id/textview_comment_count"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="@{viewModel.board.commentCount}"/>
-
-                    <TextView
-                        style="@style/textViewBoardInfoStyle"
-                        android:id="@+id/lastDate"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical|end"
-                        android:textAlignment="textEnd"
-                        app:date="@{viewModel.board.firstDate}"/>
-
-                </LinearLayout>
-
-                <TextView
-                    style="@style/textViewBoardContentStyle"
-                    android:id="@+id/textview_main"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recyclerview_comment_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@{viewModel.boardItem.content}"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerview_board_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="vertical"
-                        app:adapter="@{viewModel.adapter}"
-                        app:layoutManager="@{viewModel.layoutManager}"/>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recyclerview_comment_container"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scrollbars="vertical"/>
-
-                </LinearLayout>
+                    android:scrollbars="none"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/colorPrimary"
+                    app:adapter="@{viewModel.commentAdapter}"/>
 
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
 
-        <ImageButton
-            style="@style/imageButtonCustomStyle"
-            android:id="@+id/imagebutton_like"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="20dp"
-            android:layout_toLeftOf="@+id/imagebutton_comment"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
             android:layout_alignParentBottom="true"
-            android:onClick="@{(v) -> viewModel.onLikeButtonClick(v)}"
-            android:src="@drawable/btn_like_unclicked"/>
+            android:background="@drawable/comment_box"
+            android:visibility="@{viewModel.showCommentBox ? View.VISIBLE : View.GONE}"
+            android:id="@+id/linearLayout2">
+
+            <ImageButton
+                style="@style/commentButtonCustomStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/button_comment"/>
+
+            <EditText
+                style="@style/textViewBoardInfoStyle"
+                android:padding="10dp"
+                android:id="@+id/text_comment_type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="댓글을 입력하세요."
+                android:text="@{viewModel.commentWrite}"
+                android:background="@android:color/transparent"/>
+
+            <ImageButton
+                android:id="@+id/button_comment_submit"
+                style="@style/commentButtonCustomStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:onClick="@{(v) -> viewModel.onSubmitClick(v)}"
+                android:src="@drawable/button_comment_submit"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_margin="20dp"
+            android:orientation="horizontal"
+            android:visibility="@{!viewModel.isScrollUp &amp;&amp; !viewModel.isScrollDown &amp;&amp; !viewModel.showCommentBox}"
+            android:id="@+id/linearLayout">
+
+            <ImageButton
+                style="@style/imageButtonCustomStyle"
+                android:id="@+id/imagebutton_like"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginRight="10dp"
+                android:onTouch="@{(v, event) -> viewModel.onLikeButtonClick(v, event)}"
+                android:src="@drawable/btn_like_unclicked"/>
+
+            <ImageButton
+                style="@style/imageButtonCustomStyle"
+                android:id="@+id/imagebutton_comment"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:onTouch="@{(v, event) -> viewModel.onCommentButtonClick(v, event, textCommentType)}"
+                android:src="@drawable/btn_comment_unclicked"/>
+
+        </LinearLayout>
 
         <ImageButton
             style="@style/imageButtonCustomStyle"
-            android:id="@+id/imagebutton_comment"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:onClick="@{(v) -> viewModel.onCommentButtonClick(v)}"
-            android:src="@drawable/btn_comment_unclicked"/>
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/button_goto_top"
+            android:onTouch="@{(v, event) -> viewModel.scrollTop(v, event, recyclerviewBoardContainer)}"
+            android:visibility="@{viewModel.isScrollUp}"/>
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            style="@style/imageButtonCustomStyle"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginBottom="5dp"
+            android:layout_above="@+id/linearLayout2"
+            android:layout_centerHorizontal="true"
+            android:onTouch="@{(v, event) -> viewModel.scrollBottom(v, event, recyclerviewCommentContainer)}"
+            android:src="@drawable/button_goto_bottom"
+            android:visibility="@{viewModel.isScrollDown}" />
 
     </RelativeLayout>
 </layout>

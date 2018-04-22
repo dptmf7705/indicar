@@ -1,7 +1,9 @@
 package com.indicar.indicar_community.view.adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -76,6 +78,13 @@ public class BoardWriteAdapter extends BaseRecyclerViewAdapter<BoardWriteVO, Boa
             }
         });
 
+        holder.binding.imageWrite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPhotoDialog(pos);
+            }
+        });
+
         holder.binding.textWrite.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -89,9 +98,34 @@ public class BoardWriteAdapter extends BaseRecyclerViewAdapter<BoardWriteVO, Boa
 
             @Override
             public void afterTextChanged(Editable editable) {
-                itemList.get(pos).writeText.set(editable.toString());
+                itemList.get(pos).setWriteText(editable.toString());
             }
         });
+    }
+
+    public void showPhotoDialog(final int position){
+
+        new AlertDialog.Builder(context)
+                .setTitle("사진을 삭제하시겠습니까?")
+                .setPositiveButton("삭제", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        removePhoto(position);
+                    }
+                })
+                .setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .show();
+    }
+
+    public void removePhoto(int position){
+        itemList.get(position).setImageUrl(null);
+        itemList.get(position).setHasImage(false);
+        itemList.get(position).setFilePath("");
     }
 
     @Override
@@ -124,15 +158,15 @@ public class BoardWriteAdapter extends BaseRecyclerViewAdapter<BoardWriteVO, Boa
 
                     for(int i = 0 ; i < IMAGE_COUNT ; i++){
                         if(i == 0){
-                            itemList.get(position).imageUrl.set(photoUriList.get(i));
-                            itemList.get(position).hasImage.set(true);
-                            itemList.get(position).filePath.set(getRealPathFromURI(photoUriList.get(i)));
+                            itemList.get(position).setImageUrl(photoUriList.get(i));
+                            itemList.get(position).setHasImage(true);
+                            itemList.get(position).setFilePath(getRealPathFromURI(photoUriList.get(i)));
                             continue;
                         }
                         BoardWriteVO vo = new BoardWriteVO();
-                        vo.imageUrl.set(photoUriList.get(i));
-                        vo.hasImage.set(true);
-                        vo.filePath.set(getRealPathFromURI(photoUriList.get(i)));
+                        vo.setImageUrl(photoUriList.get(i));
+                        vo.setHasImage(true);
+                        vo.setFilePath(getRealPathFromURI(photoUriList.get(i)));
                         list.add(vo);
                     }
 
@@ -151,8 +185,8 @@ public class BoardWriteAdapter extends BaseRecyclerViewAdapter<BoardWriteVO, Boa
                 @Override
                 public void onPhotoLoaded(Uri photoUri) {
 
-                    itemList.get(position).imageUrl.set(photoUri);
-                    itemList.get(position).hasImage.set(true);
+                    itemList.get(position).setImageUrl(photoUri);
+                    itemList.get(position).setHasImage(true);
                 }
 
                 @Override

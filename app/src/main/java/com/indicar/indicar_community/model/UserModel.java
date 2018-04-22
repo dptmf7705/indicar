@@ -22,13 +22,19 @@ public class UserModel implements BaseModel<UserVO> {
     }
 
     @Override
-    public void insertData(HashMap<String, Object> map) {
+    public void insertData(HashMap<String, Object> map, LoadDataCallBack callBack) {
 
     }
 
     @Override
-    public void updateData(HashMap<String, Object> map) {
+    public void updateData(HashMap<String, Object> map, LoadDataCallBack callBack) {
 
     }
+
+    @Override
+    public void deleteData(HashMap<String, Object> map, LoadDataCallBack callBack) {
+
+    }
+
 
 }

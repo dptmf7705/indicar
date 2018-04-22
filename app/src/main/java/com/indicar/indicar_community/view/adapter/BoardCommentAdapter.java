@@ -28,7 +28,20 @@ public class BoardCommentAdapter extends BaseRecyclerViewAdapter<BoardCommentVO,
 
     @Override
     protected void onBindView(BoardCommentViewHolder holder, int position) {
-        holder.binding.setComment(itemList.get(position));
+        final int pos = position;
+        holder.binding.setComment(itemList.get(pos));
+
+        holder.binding.textContent.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                if(onItemLongClickListener != null){
+                    onItemLongClickListener.onItemLongClick(view, pos);
+                }
+
+                return false;
+            }
+        });
     }
 
     @Override
@@ -36,8 +49,6 @@ public class BoardCommentAdapter extends BaseRecyclerViewAdapter<BoardCommentVO,
         View view = LayoutInflater.from(context).inflate(R.layout.board_comment_item, null);
         return new BoardCommentViewHolder(view);
     }
-
-
 
     public class BoardCommentViewHolder extends BaseViewHolder<BoardCommentItemBinding>{
 

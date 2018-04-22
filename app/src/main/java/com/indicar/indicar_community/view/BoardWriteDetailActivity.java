@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.ObservableInt;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.indicar.indicar_community.R;
@@ -24,6 +25,10 @@ import static com.indicar.indicar_community.viewmodel.BaseViewModel.ACTIVITY_FIN
  * */
 
 public class BoardWriteDetailActivity extends BaseActivity<BoardWriteDetailActivityBinding> {
+
+    private static final int WRITE_DETAIL = 0;
+    private static final int WRITE_BACK = 1;
+    private static final int WRITE_CANCEL = 2;
 
     BoardWriteViewModel viewModel = new BoardWriteViewModel();
 
@@ -72,6 +77,25 @@ public class BoardWriteDetailActivity extends BaseActivity<BoardWriteDetailActiv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        actionBarBinding.buttonLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
+            }
+        });
+
+        binding.buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = getIntent();
+                intent.putExtra("result", WRITE_CANCEL);
+                setResult(RESULT_OK, intent);
+                finish();
+                overridePendingTransition(R.anim.enter_no_anim, R.anim.exit_no_anim);
+            }
+        });
+
         viewModel.adapter.set(new BoardWriteAdapter(this, pickPhotoHelper));
         viewModel.layoutManager.set(new ViewPagerLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         viewModel.boardType.set(getIntent().getStringExtra("boardType"));
@@ -89,6 +113,11 @@ public class BoardWriteDetailActivity extends BaseActivity<BoardWriteDetailActiv
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         viewModel.onActivityResult(requestCode, resultCode, data);
         pickPhotoHelper.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode != RESULT_OK){
+            return;
+        }
+
     }
 
     @Override

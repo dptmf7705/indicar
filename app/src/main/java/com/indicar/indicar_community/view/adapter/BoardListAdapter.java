@@ -2,6 +2,7 @@ package com.indicar.indicar_community.view.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,6 @@ import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.databinding.BoardAllItemBinding;
 import com.indicar.indicar_community.databinding.BoardPopularItemBinding;
 import com.indicar.indicar_community.model.vo.BoardDetailVO;
-
-import java.util.List;
 
 /**
  * Created by yeseul on 2018-04-17.
@@ -43,17 +42,46 @@ public class BoardListAdapter extends BaseRecyclerViewAdapter<BoardDetailVO, Rec
     }
 
     public void setBoardFile(int position, String imageUrl){
-        itemList.get(position).mainImageUrl.set(imageUrl);
+        itemList.get(position).setMainImageUrl(imageUrl);
         notifyItemChanged(position);
     }
 
     @Override
     protected void onBindView(RecyclerView.ViewHolder holder, int position) {
+        final int pos = position;
         BoardDetailVO vo = itemList.get(position);
+
         if(holder instanceof BoardPopularViewHolder) {
+
             ((BoardPopularViewHolder) holder).binding.setItem(vo);
+            ((BoardPopularViewHolder) holder).binding.imageMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(onItemClickListener != null){
+                        onItemClickListener.onItemClick(view, pos);
+                    }
+                }
+            });
+
+            if((position % 2) == 0){ // 짝수
+                ((BoardPopularViewHolder) holder).binding.container.setGravity(Gravity.RIGHT);
+            } else {
+                ((BoardPopularViewHolder) holder).binding.container.setGravity(Gravity.LEFT);
+            }
+
         } else if(holder instanceof BoardAllViewHolder){
+
             ((BoardAllViewHolder) holder).binding.setItem(vo);
+            ((BoardAllViewHolder) holder).binding.imageMain.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(onItemClickListener != null){
+                        onItemClickListener.onItemClick(view, pos);
+                    }
+                }
+            });
         }
     }
 

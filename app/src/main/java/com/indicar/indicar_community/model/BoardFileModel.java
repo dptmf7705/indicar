@@ -1,5 +1,11 @@
 package com.indicar.indicar_community.model;
 
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.indicar.indicar_community.model.vo.BoardFileVO;
 import com.indicar.indicar_community.utils.HttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -9,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +28,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class BoardFileModel implements BaseModel<BoardFileVO> {
 
+    private static final String TAG = BoardFileModel.class.getSimpleName();
+
     @Override
     public void getDataList(HashMap<String, String> map, final LoadDataListCallBack callBack) {
         final String URL = "/selectFileInfs";
@@ -30,42 +39,12 @@ public class BoardFileModel implements BaseModel<BoardFileVO> {
         RequestParams params = new RequestParams();
         params.put("atch_file_id", atchFileId);
 
-        final List<BoardFileVO> fileList = new ArrayList<>();
-
         HttpClient.post(URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int index, Header[] headers, byte[] bytes) {
-                JSONArray resultArray = null;
+                Type listType = new TypeToken<List<BoardFileVO>>(){}.getType();
 
-                try {
-                    resultArray = new JSONArray(new String(bytes));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                if(resultArray != null) {
-
-                    for(int i = 0 ; i < resultArray.length() ; i++) {
-                        try {
-                            JSONObject resultJson = resultArray.getJSONObject(i);
-
-                            BoardFileVO vo = new BoardFileVO();
-
-                            vo.atchFileId.set(resultJson.getString("atch_file_id")); // 파일 id
-                            vo.fileIndex.set(resultJson.getInt("file_sn")); // 파일 index
-                            vo.fileUrl.set(resultJson.getString("file_stre_cours")); // 파일 url
-                            vo.storeFileName.set(resultJson.getString("stre_file_nm")); // 파일 이름 (DB)
-                            vo.originalFileName.set(resultJson.getString("orignl_file_nm")); // 파일 이름 (원본)
-                            vo.fileExtension.set(resultJson.getString("file_extsn")); // 파일 확장자
-                            vo.content.set(resultJson.getString("file_cn")); // 글 내용
-
-                            fileList.add(vo);
-
-                        } catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                List<BoardFileVO> fileList = new Gson().fromJson(new String(bytes), listType);
 
                 callBack.onDataListLoaded(fileList);
             }
@@ -78,52 +57,23 @@ public class BoardFileModel implements BaseModel<BoardFileVO> {
     }
 
     @Override
-    public void getData(HashMap<String, String> map, final LoadDataCallBack callBack) {
+    public void getData(final HashMap<String, String> map, final LoadDataCallBack callBack) {
         final String URL = "/selectFileInfs";
 
         String atchFileId = map.get("atch_file_id");
-        final String fileIndex = map.get("file_sn");
 
         RequestParams params = new RequestParams();
         params.put("atch_file_id", atchFileId);
 
-
+        Log.d(TAG, "getData() called ... with atch_file_id: " + atchFileId);
         HttpClient.post(URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int index, Header[] headers, byte[] bytes) {
-                JSONArray resultArray = null;
 
-                BoardFileVO file = new BoardFileVO();
-                
-                try {
-                    resultArray = new JSONArray(new String(bytes));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Type listType = new TypeToken<List<BoardFileVO>>(){}.getType();
+                List<BoardFileVO> array = new Gson().fromJson(new String(bytes), listType);
 
-                if(resultArray != null) {
-                    for(int i = 0 ; i < resultArray.length() ; i++) {
-                        try {
-                            JSONObject resultJson = resultArray.getJSONObject(i);
-
-                            String file_sn = resultJson.getString("file_sn"); // 파일 index
-
-                            if(fileIndex.equals(file_sn)) {
-                                file.atchFileId.set(resultJson.getString("atch_file_id")); // 파일 id
-                                file.fileIndex.set(resultJson.getInt("file_sn")); // 파일 index
-                                file.fileUrl.set(resultJson.getString("file_stre_cours")); // 파일 url
-                                file.storeFileName.set(resultJson.getString("stre_file_nm")); // 파일 이름 (DB)
-                                file.originalFileName.set(resultJson.getString("orignl_file_nm")); // 파일 이름 (원본)
-                                file.fileExtension.set(resultJson.getString("file_extsn")); // 파일 확장자
-                                file.content.set(resultJson.getString("file_cn")); // 글 내용
-                            }
-                        } catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
-                callBack.onDataLoaded(file);
+                callBack.onDataLoaded(array.get(0));
             }
 
             @Override
@@ -133,15 +83,20 @@ public class BoardFileModel implements BaseModel<BoardFileVO> {
         });
     }
 
-
     @Override
-    public void insertData(HashMap<String, Object> map) {
+    public void insertData(HashMap<String, Object> map, LoadDataCallBack callBack) {
 
     }
 
     @Override
-    public void updateData(HashMap<String, Object> map) {
+    public void updateData(HashMap<String, Object> map, LoadDataCallBack callBack) {
 
     }
+
+    @Override
+    public void deleteData(HashMap<String, Object> map, LoadDataCallBack callBack) {
+
+    }
+
 
 }

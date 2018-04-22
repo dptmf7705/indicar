@@ -50,6 +50,6 @@ dependencies {
     compile 'jp.wasabeef:glide-transformations:1.0.6@aar'
     // gson
     compile 'com.google.code.gson:gson:2.8.2'
-
-
+    // keyboard 리스너 라이브러리
+    compile 'com.github.Commit451:Teleprinter:1.0.2'
 }

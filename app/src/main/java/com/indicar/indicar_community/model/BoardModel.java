@@ -2,6 +2,14 @@ package com.indicar.indicar_community.model;
 
 import android.util.Log;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import com.indicar.indicar_community.model.vo.BoardDetailVO;
 import com.indicar.indicar_community.model.vo.BoardWriteVO;
 import com.indicar.indicar_community.utils.DateUtil;
@@ -15,6 +23,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -44,73 +53,38 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
         params.put("pageIndex", pageIndex);
         params.put("pageUnit", PAGE_UNIT_COUNT);
 
-        final List<BoardDetailVO> boardList = new ArrayList<>();
-
         HttpClient.post(URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int index, Header[] headers, byte[] bytes) {
-                JSONArray resultArray = null;
+                JsonElement result = new JsonParser().parse(new String(bytes));
 
-                try {
-                    resultArray = new JSONArray(new String(bytes));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    /**
-                     *  if, last page
-                     *  response)
-                     *
-                     *      {
-                     *          "error" : "out of range"
-                     *      }
-                     *
-                     * */
+                // 게시물 리스트 존재
+                if (result.isJsonArray()){
+                    JsonArray array = result.getAsJsonArray();
 
-                    try {
-                        JSONObject json = new JSONObject(new String(bytes));
-                        if (json.getString("error").equals("out of range")) {
-                            callBack.onDataListLoaded(null);
-                            return;
-                        }
-                    } catch (JSONException e1) {
-                        e1.printStackTrace();
+                    List<BoardDetailVO> boardList = new ArrayList<>();
+
+                    for(int i = 0 ; i < array.size() ; i++) {
+
+                        // 게시물 끝
+                        if (!array.get(i).isJsonObject()) break;
+
+                        BoardDetailVO vo = new Gson().fromJson(array.get(i), BoardDetailVO.class);
+                        Log.d(TAG, "board vo(" + i + ") : " + vo.toString());
+                        boardList.add(vo);
                     }
 
+                    callBack.onDataListLoaded(boardList);
+
+                } else {
+
+                    callBack.onDataNotAvailable();
                 }
 
-                if (resultArray != null) {
-                    for (int i = 0; i < resultArray.length(); i++) {
+                Type listType = new TypeToken<List<BoardDetailVO>>(){}.getType();
 
-                        try {
+                List<BoardDetailVO> boardList = new Gson().fromJson(new String(bytes), listType);
 
-                            JSONObject resultJson = resultArray.getJSONObject(i);
-
-                        /* TODO. "error":"out of range" --> 더이상 게시물 존재하지않음 */
-
-
-                            BoardDetailVO vo = new BoardDetailVO();
-
-                            vo.boardType.set(resultJson.getString("bbs_id")); // 게시판 id
-                            vo.boardId.set(resultJson.getString("ntt_id")); // 게시글 id
-                            vo.atchFileId.set(resultJson.getString("atch_file_id")); // 파일 id
-                            vo.boardTitle.set(resultJson.getString("ntt_sj")); // 제목
-                            vo.boardContent.set(resultJson.getString("ntt_cn")); // 내용
-                            vo.userName.set(resultJson.getString("ntcr_nm")); // 작성자
-                            vo.firstDate.set(resultJson.getString("frst_time")); // 작성 날짜
-                            vo.lastUpdateDate.set(resultJson.getString("last_updt_time")); // 수정 날짜
-                            vo.likeCount.set(resultJson.getString("like")); // 좋아요 count
-                            vo.commentCount.set(resultJson.getString("CntCOMMENT")); // 댓글 count
-                            vo.readCount.set(resultJson.getString("rdcnt")); // 조회수 count
-
-                            boardList.add(vo);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            continue;
-                        }
-                    }
-                }
-
-                callBack.onDataListLoaded(boardList);
             }
 
             @Override
@@ -139,24 +113,10 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
         HttpClient.post(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int index, Header[] headers, byte[] bytes) {
-                try {
-                    JSONObject resultJson = new JSONObject(new String(bytes));
 
-                    board.boardType.set(resultJson.getString("bbs_id")); // 게시판 id
-                    board.boardId.set(resultJson.getString("ntt_id")); // 게시글 id
-                    board.atchFileId.set(resultJson.getString("atch_file_id")); // 파일 id
-                    board.boardTitle.set(resultJson.getString("ntt_sj")); // 제목
-                    board.boardContent.set(resultJson.getString("ntt_cn")); // 내용
-                    board.userName.set(resultJson.getString("ntcr_nm")); // 작성자
-                    board.firstDate.set(resultJson.getString("frst_time")); // 작성 날짜
-                    board.lastUpdateDate.set(resultJson.getString("last_updt_time")); // 수정 날짜
-                    board.likeCount.set(resultJson.getString("like")); // 좋아요 count
-                    board.readCount.set(resultJson.getString("rdcnt")); // 조회수 count
+                BoardDetailVO board = new Gson().fromJson(new String(bytes), BoardDetailVO.class);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                Log.d(TAG, "board vo : " + board.toString());
                 callBack.onDataLoaded(board);
             }
 
@@ -168,7 +128,7 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
     }
 
     @Override
-    public void insertData(HashMap<String, Object> map) {
+    public void insertData(HashMap<String, Object> map, LoadDataCallBack callBack) {
         final String URL = "/insertBoardArticle";
 
         String bbsId = map.get("bbs_id").toString();
@@ -198,19 +158,24 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
         HttpClient.uploadFiles(URL, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.e(TAG, responseBody.toString());
+
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.e(TAG, error.toString());
-                Log.e(TAG, responseBody.toString());
+
             }
         });
     }
 
     @Override
-    public void updateData(HashMap<String, Object> map) {
+    public void updateData(HashMap<String, Object> map, LoadDataCallBack callBack) {
 
     }
+
+    @Override
+    public void deleteData(HashMap<String, Object> map, LoadDataCallBack callBack) {
+
+    }
+
 }

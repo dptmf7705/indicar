@@ -1,5 +1,7 @@
 package com.indicar.indicar_community.viewmodel;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
@@ -7,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.indicar.indicar_community.model.BaseModel;
 import com.indicar.indicar_community.model.BoardModel;
 import com.indicar.indicar_community.model.vo.BoardWriteVO;
 import com.indicar.indicar_community.view.adapter.BaseRecyclerViewAdapter;
@@ -171,8 +174,8 @@ public class BoardWriteViewModel extends BaseViewModel {
         List<String> contentList = new ArrayList<>();
 
         for(int i = 0 ; i < dataList.size() ; i++){
-            fileList[i] = new File(dataList.get(i).filePath.get());
-            contentList.add(dataList.get(i).writeText.get());
+            fileList[i] = new File(dataList.get(i).getFilePath());
+            contentList.add(dataList.get(i).getWriteText());
         }
 
         HashMap<String, Object> map = new HashMap<>();
@@ -183,7 +186,17 @@ public class BoardWriteViewModel extends BaseViewModel {
         map.put("file_list", fileList);
         map.put("content_list", contentList);
 
-        model.insertData(map);
+        model.insertData(map, new BaseModel.LoadDataCallBack() {
+            @Override
+            public void onDataLoaded(Object data) {
+
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
 
         notifyObservers(ACTIVITY_FINISH);
     }

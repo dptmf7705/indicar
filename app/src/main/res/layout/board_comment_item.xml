@@ -4,72 +4,91 @@
 
     <data>
         <variable name="comment" type="com.indicar.indicar_community.model.vo.BoardCommentVO"/>
-        <!--    <variable name="user" type="com.indicar.indicar_community.model.vo.UserVO"/>  -->
     </data>
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <ImageView
-            style="@style/imageButtonCustomStyle"
-            android:id="@+id/image_user_profile"
-            android:padding="10dp"
-            android:layout_width="60dp"
-            android:layout_height="60dp"/>
-        <!--app:imageUrl="@{comment.userImageUrl}"-->
-        <!--app:error="@{@drawable/app_icon}"-->
+        android:gravity="center_vertical"
+        app:cardUseCompatPadding="false"
+        android:background="@color/colorPrimary">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="vertical">
+            android:orientation="horizontal"
+            android:padding="10dp"
+
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                style="@style/imageButtonCustomStyle"
+                android:id="@+id/image_user_profile"
+                android:padding="10dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:circleImageUrl="@{comment.userProfileUrl}"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical"
+                android:background="@color/colorPrimary">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:background="@color/colorPrimary">
+
+                    <TextView
+                        style="@style/textViewBoardInfoStyle"
+                        android:id="@+id/text_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorFont"
+                        android:text="@{comment.userName}"
+                        android:background="@color/colorPrimary"/>
+
+                    <TextView
+                        style="@style/textViewBoardInfoStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:textColor="@color/colorFont"
+                        android:background="@color/colorPrimary"
+                        android:text="│"/>
+
+                    <TextView
+                        style="@style/textViewBoardInfoStyle"
+                        android:id="@+id/text_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorFontLight"
+                        android:background="@color/colorPrimary"
+                        app:date="@{comment.firstTime}"/>
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/text_user_name"
-                    android:layout_width="wrap_content"
+                    style="@style/textViewCommentContentStyle"
+                    android:id="@+id/text_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
-                    android:text="@{comment.userName}"/>
-
-                <TextView
-                    android:id="@+id/text_date"
-                    android:layout_marginLeft="10dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignEnd="@+id/linearLayout"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignRight="@+id/linearLayout"
-                    app:date="@{comment.firstTime}"
-                    android:textSize="15sp"/>
-
-                <ImageButton
-                    android:id="@+id/imagebutton_update"
-                    style="@style/imageButtonCustomStyle"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@mipmap/ic_pencel"/>
-                <!--android:visibility="@{user.userName == comment.userName}"-->
-                <!--android:onClick="@{viewModel.onUpdateClick}"-->
+                    android:singleLine="false"
+                    android:textColor="@color/colorFont"
+                    android:background="@color/colorPrimary"
+                    android:text="@{comment.content}"/>
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/text_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="false"
-                android:textSize="15sp"
-                android:text="@{comment.content}"/>
-
         </LinearLayout>
+
     </android.support.v7.widget.CardView>
 </layout>

@@ -13,9 +13,11 @@ public interface BaseModel<T> {
 
     void getData(HashMap<String, String> map, LoadDataCallBack callBack);
 
-    void insertData(HashMap<String, Object> map);
+    void insertData(HashMap<String, Object> map, LoadDataCallBack callBack);
 
-    void updateData(HashMap<String, Object> map);
+    void updateData(HashMap<String, Object> map, LoadDataCallBack callBack);
+
+    void deleteData(HashMap<String, Object> map, LoadDataCallBack callBack);
 
     interface LoadDataListCallBack<T> {
 
