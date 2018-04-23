@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.indicar.indicar_community.R;
 import com.indicar.indicar_community.databinding.BoardListFragmentBinding;
 import com.indicar.indicar_community.model.vo.BoardDetailVO;
+import com.indicar.indicar_community.utils.RecyclerViewDecoration;
 import com.indicar.indicar_community.utils.ScrollBottonAction;
 import com.indicar.indicar_community.view.adapter.BaseRecyclerViewAdapter;
 import com.indicar.indicar_community.view.adapter.BoardListAdapter;
@@ -88,6 +89,7 @@ public class BoardListFragment extends BaseFragment<BoardListFragmentBinding> {
             viewModel.layoutManager.set(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL));
         } else if(boardType == BOARD_ALL){
             viewModel.layoutManager.set(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+            binding.recyclerViewBoardContainer.setPadding(10,10,10,10);
         }
 
         viewModel.adapter.set(new BoardListAdapter(context, boardType));

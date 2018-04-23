@@ -41,7 +41,7 @@ public class ImageViewBinding {
 
         Glide.with(imageView.getContext())
                 .load(url)
-                .placeholder(placeHolderId)
+                .asBitmap()
                 .into(imageView);
 
 //        ImageUtil.loadImage(imageView, url, placeHolderId);

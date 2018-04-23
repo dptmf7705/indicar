@@ -18,6 +18,7 @@ import com.indicar.indicar_community.model.BoardCommentModel;
 import com.indicar.indicar_community.model.BoardFileModel;
 import com.indicar.indicar_community.model.BoardModel;
 import com.indicar.indicar_community.model.vo.BoardDetailVO;
+import com.indicar.indicar_community.model.vo.BoardFileVO;
 import com.indicar.indicar_community.view.adapter.BoardCommentAdapter;
 import com.indicar.indicar_community.view.adapter.BoardDetailAdapter;
 
@@ -56,6 +57,7 @@ public class BoardDetailViewModel extends BaseViewModel {
     int answerNo;
 
     int commentCount;
+    String mainImageUrl;
 
     public Teleprinter keyboard = null;
     public NestedScrollView scrollView = null;
@@ -123,6 +125,10 @@ public class BoardDetailViewModel extends BaseViewModel {
 
                 if (list != null) {
                     adapter.get().addItems(list);
+                    mainImageUrl = ((BoardFileVO)list.get(0)).getFileUrl();
+                    if(commentCount > 0){
+                        getCommentList(bbsId, nttId);
+                    }
                 }
             }
             @Override

@@ -64,7 +64,7 @@ public class PickPhotoHelper implements IPickPhotoHelper<Uri> {
 
     private void openPhotoPicker(){
         Matisse.from(context)
-                .choose(MimeType.allOf())
+                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
                 .countable(true)
                 .maxSelectable(15)
                 .theme(R.style.photoPickerTheme)

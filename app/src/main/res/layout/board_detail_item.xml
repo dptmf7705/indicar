@@ -22,7 +22,6 @@
             android:background="@color/colorPrimary">
 
             <ImageView
-                style="@style/imageButtonCustomStyle"
                 android:id="@+id/imageview_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

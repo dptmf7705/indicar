@@ -2,6 +2,7 @@ package com.indicar.indicar_community.view.adapter;
 
 import android.content.Context;
 import android.databinding.ObservableField;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,8 @@ public class BoardDetailAdapter extends BaseRecyclerViewAdapter<BoardFileVO, Rec
 
     private static final int BOARD_HEADER = 0;
     private static final int BOARD_ITEM = 1;
+    private OnMenuClickListener onMenuClickListener;
+    private OnUpdateClickListener onUpdateClickListener;
 
     public BoardDetailAdapter(Context context, BoardDetailVO header){
         super(context);
@@ -50,21 +53,54 @@ public class BoardDetailAdapter extends BaseRecyclerViewAdapter<BoardFileVO, Rec
     }
 
     @Override
-    protected void onBindView(RecyclerView.ViewHolder holder, int position) {
+    protected void onBindView(final RecyclerView.ViewHolder holder, int position) {
+
+        final int pos = position;
 
         if(holder instanceof BoardItemViewHolder){
 
             ((BoardItemViewHolder)holder).binding.setBoardItem(itemList.get(position));
 
+//            ((BoardItemViewHolder) holder).binding.buttonUpdate.setOnClickListener();
+
         } else if(holder instanceof BoardHeaderViewHolder){
 
             ((BoardHeaderViewHolder) holder).binding.setBoard(boardHeader.get());
+            ((BoardHeaderViewHolder) holder).binding.buttonMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if(onMenuClickListener != null){
+                        onMenuClickListener.onMenuClick(view, pos);
+                    }
+
+                }
+            });
 
             if(itemList != null && itemList.size() > 0) {
                 ((BoardHeaderViewHolder) holder).binding.setItem(itemList.get(0));
             }
         }
     }
+    
+    public void setOnMenuClickListener(OnMenuClickListener onMenuClickListener){
+        this.onMenuClickListener = onMenuClickListener;
+    }
+
+    public interface OnMenuClickListener{
+
+        void onMenuClick(View view, int position);
+    }
+
+    public void setOnUpdateClickListener(OnUpdateClickListener OnUpdateClickListener){
+        this.onUpdateClickListener = OnUpdateClickListener;
+    }
+
+    public interface OnUpdateClickListener{
+
+        void onUpdateClick(View view, int position);
+    }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

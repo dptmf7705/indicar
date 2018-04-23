@@ -11,4 +11,6 @@
         <color name="colorFont">#525252</color>
         <color name="colorFontLight">#979797</color>
         <color name="colorSplashBackground">#ededed</color>
+        <color name="colorPrimaryBackground">#ececec</color>
+        <color name="popularTextFrame">#32787878</color>
 </resources>

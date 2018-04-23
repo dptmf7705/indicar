@@ -169,13 +169,64 @@ public class BoardModel implements BaseModel<BoardDetailVO> {
     }
 
     @Override
-    public void updateData(HashMap<String, Object> map, LoadDataCallBack callBack) {
+    public void updateData(HashMap<String, Object> map, final LoadDataCallBack callBack) {
+        final String URL = "/updateBoardArticle";
 
+        String bbsId = map.get("bbs_id").toString();
+        String nttSj = map.get("ntt_sj").toString();
+        String nttCn = map.get("file_sn").toString();
+        String command = map.get("command").toString();
+        File file = (File) map.get("file");
+        String fileCn = map.get("file_cn").toString();
+
+        RequestParams params = new RequestParams();
+        params.put("bbs_id", bbsId);
+        params.put("ntt_sj", nttSj);
+        params.put("ntt_cn", nttCn);
+        params.put("command", command);
+        params.put("file_cn", fileCn);
+
+        try {
+            params.put("file", file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        HttpClient.uploadFiles(URL, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                callBack.onDataLoaded("success");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
     @Override
-    public void deleteData(HashMap<String, Object> map, LoadDataCallBack callBack) {
+    public void deleteData(HashMap<String, Object> map, final LoadDataCallBack callBack) {
+        final String URL = "/deleteBoardArticle";
 
+        String bbsId = map.get("bbs_id").toString();
+        String nttId = map.get("ntt_id").toString();
+
+        RequestParams params = new RequestParams();
+        params.put("bbs_id", bbsId);
+        params.put("ntt_id", nttId);
+
+        HttpClient.post(URL, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                callBack.onDataLoaded("success");
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+            }
+        });
     }
 
 }
