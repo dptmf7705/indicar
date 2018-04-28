@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.indicar.indicar_community.viewmodel.BoardDetailViewModel"/>
+            type="com.indicar.indicar_community.b2_community.boardDetail.BoardDetailViewModel"/>
     </data>
 
     <RelativeLayout

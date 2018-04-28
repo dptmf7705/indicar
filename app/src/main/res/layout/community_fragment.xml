@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="fragment"
-            type="com.indicar.indicar_community.view.CommunityFragment"/>
+            type="com.indicar.indicar_community.b2_community.CommunityFragment"/>
     </data>
 
     <RelativeLayout
@@ -16,7 +16,7 @@
         <LinearLayout
             android:id="@+id/layout_search_box_container"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="45dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
@@ -26,54 +26,66 @@
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab_board_type"
-                android:layout_marginLeft="65dp"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:background="@color/colorPrimary"
                 android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
                 app:tabBackground="@color/colorPrimary"
+                app:tabGravity="center"
+                app:tabMinWidth="70dp"
                 app:tabIndicatorColor="#454545"
-                app:tabIndicatorHeight="3dp"
+                app:tabIndicatorHeight="2dp"
                 app:tabSelectedTextColor="#454545"
-                app:tabTextColor="#828282">
+                app:tabTextColor="#828282"/>
 
-            </android.support.design.widget.TabLayout>
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <ImageButton
+                android:background="@android:color/transparent"
+                android:padding="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/btn_car_filter"/>
 
             <ImageButton
                 style="@style/imageButtonCustomStyle"
                 android:id="@+id/button_search_toggle"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_marginRight="5dp"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/btn_search"
-                android:visibility="@{ fragment.isSearchBarOpen ? View.INVISIBLE : View.VISIBLE }"
                 android:onClick="@{(v) -> fragment.toggleSearchBar()}"/>
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/searchBarLayout"
-            android:layout_below="@+id/layout_search_box_container"
+            android:id="@+id/search_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:elevation="1dp"
             android:orientation="horizontal"
+            android:background="@color/colorPrimary"
             android:visibility="@{ fragment.isSearchBarOpen ? View.VISIBLE : View.GONE }">
 
             <ImageButton
                 style="@style/imageButtonCustomStyle"
                 android:id="@+id/button_search"
-                android:layout_width="25dp"
-                android:layout_height="30dp"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/btn_search"
-                android:onClick="@{(v) -> fragment.toggleSearchBar()}"/>
-
+                android:src="@drawable/btn_back"
+                android:onClick="@{(v) -> fragment.toggleSearchBar()}"
+                android:visibility="@{ fragment.isSearchBarOpen ? View.VISIBLE : View.GONE }"/>
 
             <EditText
                 android:id="@+id/text_search"
@@ -81,11 +93,12 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:hint="검색어를 입력하세요."
-                android:textSize="15sp"
+                android:textSize="13sp"
                 android:inputType="text"
                 android:imeOptions="actionSearch"
                 android:background="@android:color/transparent"
-                android:text="@{fragment.textSearch}"/>
+                android:text="@{fragment.textSearch}"
+                android:visibility="@{ fragment.isSearchBarOpen ? View.VISIBLE : View.GONE }"/>
             <!--android:onTextChanged="@{(t, s, b, c) -> fragment.setSearchText(t)}"-->
 
         </LinearLayout>
@@ -96,7 +109,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/searchBarLayout"
+            android:layout_below="@id/layout_search_box_container"
             app:fragment="@{fragment}"
             app:tabLayout="@{tabBoardType}">
 

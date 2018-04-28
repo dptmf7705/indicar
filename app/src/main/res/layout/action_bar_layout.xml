@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="activity"
-            type="com.indicar.indicar_community.view.BaseActivity"/>
+            type="com.indicar.indicar_community.BaseActivity"/>
     </data>
 
     <RelativeLayout
@@ -14,35 +14,34 @@
         android:paddingBottom="5dp"
         android:background="@color/colorActionBar">
 
-            <ImageButton
-                style="@style/imageButtonCustomStyle"
-                android:id="@+id/button_left"
-                android:padding="10dp"
-                android:maxWidth="90dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="15dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:visibility="@{activity.leftImageId == 0 ? View.GONE : View.VISIBLE}"
-                app:imageUrl="@{activity.leftImageId}"/>
+        <ImageButton
+            style="@style/imageButtonCustomStyle"
+            android:id="@+id/button_left"
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:visibility="@{activity.leftImageId == 0 ? View.GONE : View.VISIBLE}"
+            app:imageUrl="@{activity.leftImageId}"/>
 
-            <ImageView
-                style="@style/imageButtonCustomStyle"
-                android:id="@+id/image_center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                app:imageUrl="@{activity.centerImageId}"/>
+        <ImageView
+            style="@style/imageButtonCustomStyle"
+            android:id="@+id/image_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            app:imageUrl="@{activity.centerImageId}"/>
 
-            <ImageView
-                style="@style/imageButtonCustomStyle"
-                android:paddingRight="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/logo_indicar"/>
+        <ImageView
+            style="@style/imageButtonCustomStyle"
+            android:paddingRight="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/logo_indicar"/>
 
     </RelativeLayout>
 

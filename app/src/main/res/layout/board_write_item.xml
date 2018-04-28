@@ -3,13 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="android.view.View"/>
-
         <variable
             name="writeItem"
-            type="com.indicar.indicar_community.model.vo.BoardWriteVO"/>
+            type="com.indicar.indicar_community.data.vo.BoardWriteVO"/>
         <variable
             name="viewModel"
-            type="com.indicar.indicar_community.viewmodel.BoardWriteViewModel"/>
+            type="com.indicar.indicar_community.b2_community.boardWrite.BoardWriteViewModel"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -22,6 +21,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

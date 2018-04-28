@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
     <data>
+        <import type="android.view.View"/>
         <variable
-            name="activity"
-            type="com.indicar.indicar_community.view.BoardWriteActivity"/>
+            name="viewModel"
+            type="com.indicar.indicar_community.b2_community.boardWrite.BoardWriteViewModel"/>
     </data>
 
     <LinearLayout
@@ -12,99 +14,61 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
-            style="@style/imageButtonCustomStyle"
+        <!-- intro 페이지 일때 visible -->
+        <include
+            android:id="@+id/intro"
+            layout="@layout/board_write_intro_layout"
+            bind:viewModel="@{viewModel}"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/button_share"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="@{viewModel.isIntroPage ? View.VISIBLE : View.GONE}"/>
 
-        <LinearLayout
+        <!-- deatil 페이지 일때 visible -->
+        <include
+            android:id="@+id/detail"
+            layout="@layout/board_write_detail_layout"
+            bind:viewModel="@{viewModel}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_weight="1">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="@{viewModel.isIntroPage ? View.GONE : View.VISIBLE}"/>
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:layout_margin="20dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitStart"
-                android:src="@drawable/text_write_category_car" />
-
-            <ImageButton
-                style="@style/imageButtonCustomStyle"
-                android:id="@+id/button_search_car"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:src="@drawable/img_search_bar" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:layout_margin="20dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitStart"
-                android:src="@drawable/text_write_category_board" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    style="@style/imageButtonCustomStyle"
-                    android:id="@+id/button_day_life"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="@{(v) -> activity.setBoardType(activity.DAY_LIFE.get())}"
-                    app:setSelected="@{activity.boardType == activity.DAY_LIFE ? true : false}"
-                    android:src="@drawable/write_filter_daylife_selector" />
-
-                <ImageButton
-                    style="@style/imageButtonCustomStyle"
-                    android:id="@+id/button_market"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="@{(v) -> activity.setBoardType(activity.MARKET.get())}"
-                    app:setSelected="@{activity.boardType == activity.MARKET ? true : false}"
-                    android:src="@drawable/write_filter_market_selector" />
-
-                <ImageButton
-                    style="@style/imageButtonCustomStyle"
-                    android:id="@+id/button_diy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:onClick="@{(v) -> activity.setBoardType(activity.DIY.get())}"
-                    app:setSelected="@{activity.boardType == activity.DIY ? true : false}"
-                    android:src="@drawable/write_filter_diy_selector" />
-
-            </LinearLayout>
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
-
+        <!-- intro 페이지 일때 visible -->
         <ImageButton
             style="@style/imageButtonCustomStyle"
             android:id="@+id/button_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{(v) -> activity.startActivity()}"
-            android:src="@drawable/btn_next"/>
+            android:src="@drawable/btn_next"
+            android:onClick="@{(v) -> viewModel.onNextButtonClicked()}"
+            android:visibility="@{viewModel.isIntroPage ? View.VISIBLE : View.GONE}"/>
 
+        <!-- deatil 페이지 일때 visible -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="@{viewModel.isIntroPage ? View.GONE : View.VISIBLE}">
+
+            <ImageButton
+                style="@style/imageButtonCustomStyle"
+                android:id="@+id/button_cancel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{(v) -> viewModel.onCancelButtonClicked()}"
+                android:src="@drawable/btn_quit"/>
+
+            <ImageButton
+                style="@style/imageButtonCustomStyle"
+                android:id="@+id/button_submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{(v) -> viewModel.onSubmitButtonClicked()}"
+                android:src="@drawable/btn_upload_board"/>
+
+        </LinearLayout>
     </LinearLayout>
 </layout>

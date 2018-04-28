@@ -5,11 +5,11 @@
     <data>
         <variable
             name="item"
-            type="com.indicar.indicar_community.model.vo.BoardFileVO"/>
+            type="com.indicar.indicar_community.data.vo.BoardFileVO"/>
 
         <variable
             name="board"
-            type="com.indicar.indicar_community.model.vo.BoardDetailVO"/>
+            type="com.indicar.indicar_community.data.vo.BoardDetailVO"/>
     </data>
 
     <LinearLayout

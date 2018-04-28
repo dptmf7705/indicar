@@ -3,13 +3,13 @@
     <data>
         <variable
             name="viewModel"
-            type="com.indicar.indicar_community.viewmodel.BoardListViewModel"/>
+            type="com.indicar.indicar_community.b2_community.boardList.BoardListViewModel"/>
     </data>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/colorPrimaryBackground">
+        android:background="@color/colorFontLight">
 
         <!--app:onRefreshListener="@{viewModel::onRefresh}"-->
         <android.support.v4.widget.SwipeRefreshLayout

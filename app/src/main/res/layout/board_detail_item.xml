@@ -5,7 +5,7 @@
     <data>
         <variable
             name="boardItem"
-            type="com.indicar.indicar_community.model.vo.BoardFileVO"/>
+            type="com.indicar.indicar_community.data.vo.BoardFileVO"/>
     </data>
 
     <android.support.v7.widget.CardView
